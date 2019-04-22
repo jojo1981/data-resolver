@@ -52,7 +52,7 @@ class PropertyExtractor implements ExtractorInterface
     public function extract(Context $context)
     {
         if (
-            !$this->propertyHandler->supports($context->getData()) ||
+            !$this->propertyHandler->supports($this->propertyName, $context->getData()) ||
             !$this->propertyHandler->hasValueForPropertyName($this->propertyName, $context->getData())
         ) {
             throw new ExtractorException(\sprintf(

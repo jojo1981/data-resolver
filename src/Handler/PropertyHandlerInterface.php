@@ -19,10 +19,11 @@ use Jojo1981\DataResolver\Handler\Exception\HandlerException;
 interface PropertyHandlerInterface
 {
     /**
+     * @param string $propertyName
      * @param mixed $data
      * @return bool
      */
-    public function supports($data): bool;
+    public function supports(string $propertyName, $data): bool;
 
     /**
      * @param string $propertyName

@@ -21,10 +21,11 @@ class ObjectPropertyHandler implements PropertyHandlerInterface
     private $reflectionClasses = [];
 
     /**
+     * @param string $propertyName
      * @param mixed $data
      * @return bool
      */
-    public function supports($data): bool
+    public function supports(string $propertyName, $data): bool
     {
         return \is_object($data);
     }
@@ -37,7 +38,7 @@ class ObjectPropertyHandler implements PropertyHandlerInterface
      */
     public function getValueForPropertyName(string $propertyName, $data)
     {
-        if (!$this->supports($data)) {
+        if (!$this->supports($propertyName, $data)) {
             $this->throwUnsupportedException('getValueForPropertyName');
         }
 
@@ -62,7 +63,7 @@ class ObjectPropertyHandler implements PropertyHandlerInterface
      */
     public function hasValueForPropertyName(string $propertyName, $data): bool
     {
-        if (!$this->supports($data)) {
+        if (!$this->supports($propertyName, $data)) {
             $this->throwUnsupportedException('hasValueForPropertyName');
         }
 

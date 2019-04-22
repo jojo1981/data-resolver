@@ -38,13 +38,14 @@ class CompositePropertyHandler implements PropertyHandlerInterface
     }
 
     /**
+     * @param string $propertyName
      * @param mixed $data
      * @return bool
      */
-    public function supports($data): bool
+    public function supports(string $propertyName, $data): bool
     {
         foreach ($this->handlers as $handler) {
-            if ($handler->supports($data)) {
+            if ($handler->supports($propertyName, $data)) {
                 return true;
             }
         }
@@ -60,7 +61,7 @@ class CompositePropertyHandler implements PropertyHandlerInterface
      */
     public function getValueForPropertyName(string $propertyName, $data)
     {
-        return $this->getSupportedHandler('getValueForPropertyName', $data)
+        return $this->getSupportedHandler('getValueForPropertyName', $propertyName, $data)
             ->getValueForPropertyName($propertyName, $data);
     }
 
@@ -72,20 +73,21 @@ class CompositePropertyHandler implements PropertyHandlerInterface
      */
     public function hasValueForPropertyName(string $propertyName, $data): bool
     {
-        return $this->getSupportedHandler('hasValueForPropertyName', $data)
+        return $this->getSupportedHandler('hasValueForPropertyName', $propertyName, $data)
             ->hasValueForPropertyName($propertyName, $data);
     }
 
     /**
      * @param string $methodName
+     * @param string $propertyName
      * @param $data
-     * @return PropertyHandlerInterface
      * @throws HandlerException
+     * @return PropertyHandlerInterface
      */
-    private function getSupportedHandler(string $methodName, $data): PropertyHandlerInterface
+    private function getSupportedHandler(string $methodName, string $propertyName, $data): PropertyHandlerInterface
     {
         foreach ($this->handlers as $handler) {
-            if ($handler->supports($data)) {
+            if ($handler->supports($propertyName, $data)) {
                 return $handler;
             }
         }
