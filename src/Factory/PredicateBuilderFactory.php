@@ -12,10 +12,12 @@ namespace Jojo1981\DataResolver\Factory;
 use Jojo1981\DataResolver\Builder\ExtractorBuilderInterface;
 use Jojo1981\DataResolver\Builder\Predicate\AllPredicateBuilder;
 use Jojo1981\DataResolver\Builder\Predicate\AndPredicateBuilder;
+use Jojo1981\DataResolver\Builder\Predicate\CallBackPredicateBuilder;
 use Jojo1981\DataResolver\Builder\Predicate\ConditionalPredicateBuilder;
 use Jojo1981\DataResolver\Builder\Predicate\EqualsPredicateBuilder;
 use Jojo1981\DataResolver\Builder\Predicate\ExtractorPredicateBuilder;
 use Jojo1981\DataResolver\Builder\Predicate\NonePredicateBuilder;
+use Jojo1981\DataResolver\Builder\Predicate\NotPredicateBuilder;
 use Jojo1981\DataResolver\Builder\Predicate\OrPredicateBuilder;
 use Jojo1981\DataResolver\Builder\Predicate\PredicateBuilder;
 use Jojo1981\DataResolver\Builder\Predicate\SomePredicateBuilder;
@@ -80,6 +82,24 @@ class PredicateBuilderFactory
     public function getEqualsPredicateBuilder($expectedValue): EqualsPredicateBuilder
     {
         return new EqualsPredicateBuilder($expectedValue);
+    }
+
+    /**
+     * @param PredicateBuilderInterface $predicateBuilder
+     * @return NotPredicateBuilder
+     */
+    public function getNotPredicateBuilder(PredicateBuilderInterface $predicateBuilder): NotPredicateBuilder
+    {
+        return new NotPredicateBuilder($predicateBuilder);
+    }
+
+    /**
+     * @param callable $callback
+     * @return CallBackPredicateBuilder
+     */
+    public function getCallBackPredicateBuilder(callable $callback): CallBackPredicateBuilder
+    {
+        return new CallBackPredicateBuilder($callback);
     }
 
     /**

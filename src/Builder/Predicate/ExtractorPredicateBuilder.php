@@ -52,6 +52,39 @@ class ExtractorPredicateBuilder
     }
 
     /**
+     * @param mixed $expectedValue
+     * @return ConditionalPredicateBuilder
+     */
+    public function notEquals($expectedValue): ConditionalPredicateBuilder
+    {
+        return $this->not($this->predicateBuilderFactory->getEqualsPredicateBuilder($expectedValue));
+    }
+
+    /**
+     * @param callable $callback
+     * @return ConditionalPredicateBuilder
+     */
+    public function callback(callable $callback): ConditionalPredicateBuilder
+    {
+        return $this->predicateBuilderFactory->getConditionalPredicateBuilder(
+            $this->extractorBuilder,
+            $this->predicateBuilderFactory->getCallBackPredicateBuilder($callback)
+        );
+    }
+
+    /**
+     * @param PredicateBuilderInterface $predicateBuilder
+     * @return ConditionalPredicateBuilder
+     */
+    public function not(PredicateBuilderInterface $predicateBuilder): ConditionalPredicateBuilder
+    {
+        return $this->predicateBuilderFactory->getConditionalPredicateBuilder(
+            $this->extractorBuilder,
+            $this->predicateBuilderFactory->getNotPredicateBuilder($predicateBuilder)
+        );
+    }
+
+    /**
      * @param PredicateBuilderInterface $predicateBuilder
      * @return ConditionalPredicateBuilder
      */
