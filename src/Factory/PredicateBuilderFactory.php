@@ -48,18 +48,16 @@ class PredicateBuilderFactory
     }
 
     /**
-     * @param ExtractorBuilderInterface $extractorBuilder
      * @param PredicateBuilderInterface $leftPredicateBuilder
      * @param PredicateBuilderInterface $rightPredicateBuilder
      * @return AndPredicateBuilder
      */
     public function getAndPredicateBuilder(
-        ExtractorBuilderInterface $extractorBuilder,
         PredicateBuilderInterface $leftPredicateBuilder,
         PredicateBuilderInterface $rightPredicateBuilder
     ): AndPredicateBuilder
     {
-        return new AndPredicateBuilder($extractorBuilder, $leftPredicateBuilder, $rightPredicateBuilder);
+        return new AndPredicateBuilder($leftPredicateBuilder, $rightPredicateBuilder);
     }
 
     /**
@@ -103,18 +101,16 @@ class PredicateBuilderFactory
     }
 
     /**
-     * @param ExtractorBuilderInterface $extractorBuilder
      * @param PredicateBuilderInterface $leftPredicateBuilder
      * @param PredicateBuilderInterface $rightPredicateBuilder
      * @return OrPredicateBuilder
      */
     public function getOrPredicateBuilder(
-        ExtractorBuilderInterface $extractorBuilder,
         PredicateBuilderInterface $leftPredicateBuilder,
         PredicateBuilderInterface $rightPredicateBuilder
     ): OrPredicateBuilder
     {
-        return new OrPredicateBuilder($extractorBuilder, $leftPredicateBuilder, $rightPredicateBuilder);
+        return new OrPredicateBuilder($leftPredicateBuilder, $rightPredicateBuilder);
     }
 
     /**

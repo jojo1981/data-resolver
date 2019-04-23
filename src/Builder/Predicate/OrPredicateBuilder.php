@@ -20,9 +20,6 @@ use Jojo1981\DataResolver\Predicate\PredicateInterface;
  */
 class OrPredicateBuilder implements PredicateBuilderInterface
 {
-    /** @var ExtractorBuilderInterface */
-    private $extractorBuilder;
-
     /** @var PredicateBuilderInterface */
     private $leftPredicateBuilder;
 
@@ -30,16 +27,13 @@ class OrPredicateBuilder implements PredicateBuilderInterface
     private $rightPredicateBuilder;
 
     /**
-     * @param ExtractorBuilderInterface $extractorBuilder
      * @param PredicateBuilderInterface $leftPredicateBuilder
      * @param PredicateBuilderInterface $rightPredicateBuilder
      */
     public function __construct(
-        ExtractorBuilderInterface $extractorBuilder,
         PredicateBuilderInterface $leftPredicateBuilder,
         PredicateBuilderInterface $rightPredicateBuilder
     ) {
-        $this->extractorBuilder = $extractorBuilder;
         $this->leftPredicateBuilder = $leftPredicateBuilder;
         $this->rightPredicateBuilder = $rightPredicateBuilder;
     }
@@ -49,12 +43,9 @@ class OrPredicateBuilder implements PredicateBuilderInterface
      */
     public function build(): PredicateInterface
     {
-        return new ExtractorPredicate(
-            $this->extractorBuilder->build(),
-            new OrPredicate(
-                $this->leftPredicateBuilder->build(),
-                $this->rightPredicateBuilder->build()
-            )
+        return new OrPredicate(
+            $this->leftPredicateBuilder->build(),
+            $this->rightPredicateBuilder->build()
         );
     }
 }
