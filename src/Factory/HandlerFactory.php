@@ -16,6 +16,7 @@ use Jojo1981\DataResolver\Handler\PropertyHandlerInterface;
 use Jojo1981\DataResolver\Handler\SequenceHandler\ArraySequenceHandler;
 use Jojo1981\DataResolver\Handler\SequenceHandler\CompositeSequenceHandler;
 use Jojo1981\DataResolver\Handler\SequenceHandlerInterface;
+use Jojo1981\DataResolver\NamingStrategy\DefaultNamingStrategy;
 
 /**
  * @package Jojo1981\DataResolver\Factory
@@ -111,9 +112,8 @@ class HandlerFactory
      */
     public static function getDefaultPropertyHandlers(): array
     {
-        return [new ObjectPropertyHandler(), new AssociativeArrayPropertyHandler()];
+        return [new ObjectPropertyHandler(new DefaultNamingStrategy()), new AssociativeArrayPropertyHandler()];
     }
-
 
     /**
      * @return SequenceHandlerInterface[]

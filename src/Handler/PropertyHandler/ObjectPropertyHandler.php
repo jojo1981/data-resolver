@@ -11,14 +11,26 @@ namespace Jojo1981\DataResolver\Handler\PropertyHandler;
 
 use Jojo1981\DataResolver\Handler\Exception\HandlerException;
 use Jojo1981\DataResolver\Handler\PropertyHandlerInterface;
+use Jojo1981\DataResolver\NamingStrategy\NamingStrategyInterface;
 
 /**
  * @package Jojo1981\DataResolver\Handler\PropertyHandler
  */
 class ObjectPropertyHandler implements PropertyHandlerInterface
 {
+    /** @var NamingStrategyInterface */
+    private $namingStrategy;
+
     /** @var \ReflectionClass[] */
     private $reflectionClasses = [];
+
+    /**
+     * @param NamingStrategyInterface $namingStrategy
+     */
+    public function __construct(NamingStrategyInterface $namingStrategy)
+    {
+        $this->namingStrategy = $namingStrategy;
+    }
 
     /**
      * @param string $propertyName
@@ -42,14 +54,27 @@ class ObjectPropertyHandler implements PropertyHandlerInterface
             $this->throwUnsupportedException('getValueForPropertyName');
         }
 
-        $reflectionClass = $this->getReflectionClass($data);
-        $methodName = 'get' . \ucfirst($propertyName);
-        if (null !== $method = $this->getPublicMethod($methodName, $reflectionClass)) {
-            return $method->invoke($data);
-        }
+        if ($data instanceof \stdClass) {
+            $objectVars = \get_object_vars($data);
+            foreach ($this->namingStrategy->getPropertyNames($propertyName) as $propName) {
+                if (\array_key_exists($propName, $objectVars)) {
+                    return $objectVars[$propName];
+                }
+            }
+        } else {
+            $reflectionClass = $this->getReflectionClass($data);
 
-        if (null !== $property = $this->getPublicProperty($propertyName, $reflectionClass)) {
-            return $property->getValue($data);
+            foreach ($this->namingStrategy->getMethodNames($propertyName) as $methodName) {
+                if (null !== $method = $this->getPublicMethod($methodName, $reflectionClass)) {
+                    return $method->invoke($data);
+                }
+            }
+
+            foreach ($this->namingStrategy->getPropertyNames($propertyName) as $propName) {
+                if (null !== $property = $this->getPublicProperty($propName, $reflectionClass)) {
+                    return $property->getValue($data);
+                }
+            }
         }
 
         return null;
@@ -67,11 +92,29 @@ class ObjectPropertyHandler implements PropertyHandlerInterface
             $this->throwUnsupportedException('hasValueForPropertyName');
         }
 
-        $reflectionClass = $this->getReflectionClass($data);
-        $methodName = 'get' . \ucfirst($propertyName);
+        if ($data instanceof \stdClass) {
+            $objectVars = \get_object_vars($data);
+            foreach ($this->namingStrategy->getPropertyNames($propertyName) as $propName) {
+                if (\array_key_exists($propName, $objectVars)) {
+                    return true;
+                }
+            }
+        } else {
+            $reflectionClass = $this->getReflectionClass($data);
+            foreach ($this->namingStrategy->getMethodNames($propertyName) as $methodName) {
+                if (null !== $this->getPublicMethod($methodName, $reflectionClass)) {
+                    return true;
+                }
+            }
 
-        return null !== $this->getPublicMethod($methodName, $reflectionClass) ||
-            null !== $this->getPublicProperty($propertyName, $reflectionClass);
+            foreach ($this->namingStrategy->getPropertyNames($propertyName) as $propName) {
+                if (null !== $this->getPublicProperty($propName, $reflectionClass)) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 
     /**
