@@ -9,18 +9,16 @@
  */
 namespace Jojo1981\DataResolver;
 
-use Jojo1981\DataResolver\Builder\Predicate\ExtractorPredicateBuilder;
-use Jojo1981\DataResolver\Builder\PredicateBuilderInterface;
-use Jojo1981\DataResolver\Builder\ResolverBuilder;
 use Jojo1981\DataResolver\Factory\ExtractorBuilderFactory;
 use Jojo1981\DataResolver\Factory\HandlerFactory;
 use Jojo1981\DataResolver\Factory\PredicateBuilderFactory;
+use Jojo1981\DataResolver\Factory\ResolverBuilderFactory;
 
 /**
  * @api
  * @package Jojo1981\DataResolver
  */
-class ResolverFactory
+class Factory
 {
     /** @var null|HandlerFactory */
     private $handlerFactory;
@@ -41,62 +39,17 @@ class ResolverFactory
     }
 
     /**
-     * @return ResolverBuilder
+     * @return ResolverBuilderFactory
      */
-    public function create(): ResolverBuilder
+    public function getResolverBuilderFactory(): ResolverBuilderFactory
     {
-        return new ResolverBuilder($this->getExtractorBuilderFactory());
-    }
-
-    /**
-     * @param ResolverBuilder $resolverBuilder
-     * @return ResolverBuilder
-     */
-    public function compose(ResolverBuilder $resolverBuilder): ResolverBuilder
-    {
-        return new ResolverBuilder($this->getExtractorBuilderFactory(), $resolverBuilder);
-    }
-
-    /**
-     * @param string $propertyName
-     * @return ResolverBuilder
-     */
-    public function get(string $propertyName): ResolverBuilder
-    {
-        return $this->create()->get($propertyName);
-    }
-
-    /**
-     * @param PredicateBuilderInterface $predicateBuilder
-     * @return ResolverBuilder
-     */
-    public function filter(PredicateBuilderInterface $predicateBuilder): ResolverBuilder
-    {
-        return $this->create()->filter($predicateBuilder);
-    }
-
-    /**
-     * @param ResolverBuilder $resolverBuilder
-     * @return ResolverBuilder
-     */
-    public function flatten(ResolverBuilder $resolverBuilder): ResolverBuilder
-    {
-        return $this->create()->flatten($resolverBuilder);
-    }
-
-    /**
-     * @param string $propertyName
-     * @return ExtractorPredicateBuilder
-     */
-    public function where(string $propertyName): ExtractorPredicateBuilder
-    {
-        return $this->getPredicateBuilderFactory()->getExtractorPredicateBuilder(
-            $this->getExtractorBuilderFactory()->getPropertyExtractorBuilder($propertyName)
+        return new ResolverBuilderFactory(
+            $this->getExtractorBuilderFactory(),
+            $this->getPredicateBuilderFactory()
         );
     }
 
     /**
-     * @lazy
      * @return ExtractorBuilderFactory
      */
     private function getExtractorBuilderFactory(): ExtractorBuilderFactory
@@ -126,7 +79,6 @@ class ResolverFactory
     }
 
     /**
-     * @lazy
      * @return HandlerFactory
      */
     private function getHandlerFactory(): HandlerFactory
