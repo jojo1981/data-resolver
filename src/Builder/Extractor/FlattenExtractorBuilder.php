@@ -22,14 +22,14 @@ class FlattenExtractorBuilder implements ExtractorBuilderInterface
     /** @var SequenceHandlerInterface */
     private $sequenceHandler;
 
-    /** @var ExtractorBuilderInterface */
+    /** @var ExtractorInterface */
     private $extractor;
 
     /**
      * @param SequenceHandlerInterface $sequenceHandler
-     * @param ExtractorBuilderInterface $extractor
+     * @param ExtractorInterface $extractor
      */
-    public function __construct(SequenceHandlerInterface $sequenceHandler, ExtractorBuilderInterface $extractor)
+    public function __construct(SequenceHandlerInterface $sequenceHandler, ExtractorInterface $extractor)
     {
         $this->sequenceHandler = $sequenceHandler;
         $this->extractor = $extractor;
@@ -40,6 +40,6 @@ class FlattenExtractorBuilder implements ExtractorBuilderInterface
      */
     public function build(): ExtractorInterface
     {
-        return new FlattenExtractor($this->sequenceHandler, $this->extractor->build());
+        return new FlattenExtractor($this->sequenceHandler, $this->extractor);
     }
 }

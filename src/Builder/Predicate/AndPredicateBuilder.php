@@ -9,10 +9,8 @@
  */
 namespace Jojo1981\DataResolver\Builder\Predicate;
 
-use Jojo1981\DataResolver\Builder\ExtractorBuilderInterface;
 use Jojo1981\DataResolver\Builder\PredicateBuilderInterface;
 use Jojo1981\DataResolver\Predicate\AndPredicate;
-use Jojo1981\DataResolver\Predicate\ExtractorPredicate;
 use Jojo1981\DataResolver\Predicate\PredicateInterface;
 
 /**
@@ -20,22 +18,20 @@ use Jojo1981\DataResolver\Predicate\PredicateInterface;
  */
 class AndPredicateBuilder implements PredicateBuilderInterface
 {
-    /** @var PredicateBuilderInterface */
-    private $leftPredicateBuilder;
+    /** @var PredicateInterface */
+    private $leftPredicate;
 
-    /** @var PredicateBuilderInterface */
-    private $rightPredicateBuilder;
+    /** @var PredicateInterface */
+    private $rightPredicate;
 
     /**
-     * @param PredicateBuilderInterface $leftPredicateBuilder
-     * @param PredicateBuilderInterface $rightPredicateBuilder
+     * @param PredicateInterface $leftPredicate
+     * @param PredicateInterface $rightPredicate
      */
-    public function __construct(
-        PredicateBuilderInterface $leftPredicateBuilder,
-        PredicateBuilderInterface $rightPredicateBuilder
-    ) {
-        $this->leftPredicateBuilder = $leftPredicateBuilder;
-        $this->rightPredicateBuilder = $rightPredicateBuilder;
+    public function __construct(PredicateInterface $leftPredicate, PredicateInterface $rightPredicate)
+    {
+        $this->leftPredicate = $leftPredicate;
+        $this->rightPredicate = $rightPredicate;
     }
 
     /**
@@ -43,9 +39,6 @@ class AndPredicateBuilder implements PredicateBuilderInterface
      */
     public function build(): PredicateInterface
     {
-        return new AndPredicate(
-            $this->leftPredicateBuilder->build(),
-            $this->rightPredicateBuilder->build()
-        );
+        return new AndPredicate($this->leftPredicate, $this->rightPredicate);
     }
 }

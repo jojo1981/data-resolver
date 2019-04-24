@@ -46,7 +46,7 @@ class PredicateBuilderFactory
      */
     public function getAllPredicateBuilder(PredicateBuilderInterface $predicateBuilder): AllPredicateBuilder
     {
-        return new AllPredicateBuilder($this->sequenceHandler, $predicateBuilder);
+        return new AllPredicateBuilder($this->sequenceHandler, $predicateBuilder->build());
     }
 
     /**
@@ -59,7 +59,7 @@ class PredicateBuilderFactory
         PredicateBuilderInterface $rightPredicateBuilder
     ): AndPredicateBuilder
     {
-        return new AndPredicateBuilder($leftPredicateBuilder, $rightPredicateBuilder);
+        return new AndPredicateBuilder($leftPredicateBuilder->build(), $rightPredicateBuilder->build());
     }
 
     /**
@@ -72,7 +72,7 @@ class PredicateBuilderFactory
         PredicateBuilderInterface $predicateBuilder
     ): ConditionalPredicateBuilder
     {
-        return new ConditionalPredicateBuilder($this, $extractorBuilder, $predicateBuilder);
+        return new ConditionalPredicateBuilder($this, $extractorBuilder->build(), $predicateBuilder->build());
     }
 
     /**
@@ -90,7 +90,7 @@ class PredicateBuilderFactory
      */
     public function getNotPredicateBuilder(PredicateBuilderInterface $predicateBuilder): NotPredicateBuilder
     {
-        return new NotPredicateBuilder($predicateBuilder);
+        return new NotPredicateBuilder($predicateBuilder->build());
     }
 
     /**
@@ -117,7 +117,7 @@ class PredicateBuilderFactory
      */
     public function getNonePredicateBuilder(PredicateBuilderInterface $predicateBuilder): NonePredicateBuilder
     {
-        return new NonePredicateBuilder($this->sequenceHandler, $predicateBuilder);
+        return new NonePredicateBuilder($this->sequenceHandler, $predicateBuilder->build());
     }
 
     /**
@@ -130,7 +130,7 @@ class PredicateBuilderFactory
         PredicateBuilderInterface $rightPredicateBuilder
     ): OrPredicateBuilder
     {
-        return new OrPredicateBuilder($leftPredicateBuilder, $rightPredicateBuilder);
+        return new OrPredicateBuilder($leftPredicateBuilder->build(), $rightPredicateBuilder->build());
     }
 
     /**
@@ -139,7 +139,7 @@ class PredicateBuilderFactory
      */
     public function getPredicateBuilder(PredicateBuilderInterface $predicateBuilder): PredicateBuilder
     {
-        return new PredicateBuilder($predicateBuilder);
+        return new PredicateBuilder($predicateBuilder->build());
     }
 
     /**
@@ -148,6 +148,6 @@ class PredicateBuilderFactory
      */
     public function getSomePredicateBuilder(PredicateBuilderInterface $predicateBuilder): SomePredicateBuilder
     {
-        return new SomePredicateBuilder($this->sequenceHandler, $predicateBuilder);
+        return new SomePredicateBuilder($this->sequenceHandler, $predicateBuilder->build());
     }
 }

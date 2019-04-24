@@ -47,7 +47,7 @@ class ExtractorBuilderFactory
      */
     public function getFilterExtractorBuilder(PredicateBuilderInterface $predicateBuilder): FilterExtractorBuilder
     {
-        return new FilterExtractorBuilder($this->sequenceHandler, $predicateBuilder);
+        return new FilterExtractorBuilder($this->sequenceHandler, $predicateBuilder->build());
     }
 
     /**
@@ -56,7 +56,7 @@ class ExtractorBuilderFactory
      */
     public function getFindExtractorBuilder(PredicateBuilderInterface $predicateBuilder): FindExtractorBuilder
     {
-        return new FindExtractorBuilder($this->sequenceHandler, $predicateBuilder);
+        return new FindExtractorBuilder($this->sequenceHandler, $predicateBuilder->build());
     }
 
     /**
@@ -65,7 +65,7 @@ class ExtractorBuilderFactory
      */
     public function getFlattenExtractorBuilder(ExtractorBuilderInterface $extractorBuilder): FlattenExtractorBuilder
     {
-        return new FlattenExtractorBuilder($this->sequenceHandler, $extractorBuilder);
+        return new FlattenExtractorBuilder($this->sequenceHandler, $extractorBuilder->build());
     }
 
     /**
@@ -83,6 +83,6 @@ class ExtractorBuilderFactory
      */
     public function getResolverExtractorBuilder(ResolverBuilder $resolverBuilder): ResolverExtractorBuilder
     {
-        return new ResolverExtractorBuilder($resolverBuilder);
+        return new ResolverExtractorBuilder($resolverBuilder->build());
     }
 }

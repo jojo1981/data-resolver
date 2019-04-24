@@ -11,6 +11,7 @@ namespace Jojo1981\DataResolver\Builder\Predicate;
 
 use Jojo1981\DataResolver\Builder\ExtractorBuilderInterface;
 use Jojo1981\DataResolver\Builder\PredicateBuilderInterface;
+use Jojo1981\DataResolver\Extractor\ExtractorInterface;
 use Jojo1981\DataResolver\Factory\PredicateBuilderFactory;
 use Jojo1981\DataResolver\Predicate\ExtractorPredicate;
 use Jojo1981\DataResolver\Predicate\PredicateInterface;
@@ -23,25 +24,25 @@ class ConditionalPredicateBuilder implements PredicateBuilderInterface
     /** @var PredicateBuilderFactory */
     private $predicateBuilderFactory;
 
-    /** @var ExtractorBuilderInterface */
-    private $extractorBuilder;
+    /** @var ExtractorInterface */
+    private $extractor;
 
-    /** @var PredicateBuilderInterface */
-    private $predicateBuilder;
+    /** @var PredicateInterface */
+    private $predicate;
 
     /**
      * @param PredicateBuilderFactory $predicateBuilderFactory
-     * @param ExtractorBuilderInterface $extractorBuilder
-     * @param PredicateBuilderInterface $predicateBuilder
+     * @param ExtractorInterface $extractor
+     * @param PredicateInterface $predicate
      */
     public function __construct(
         PredicateBuilderFactory $predicateBuilderFactory,
-        ExtractorBuilderInterface $extractorBuilder,
-        PredicateBuilderInterface $predicateBuilder
+        ExtractorInterface $extractor,
+        PredicateInterface $predicate
     ) {
         $this->predicateBuilderFactory = $predicateBuilderFactory;
-        $this->extractorBuilder = $extractorBuilder;
-        $this->predicateBuilder = $predicateBuilder;
+        $this->extractor = $extractor;
+        $this->predicate = $predicate;
     }
 
     /**
@@ -77,9 +78,6 @@ class ConditionalPredicateBuilder implements PredicateBuilderInterface
      */
     public function build(): PredicateInterface
     {
-        return new ExtractorPredicate(
-            $this->extractorBuilder->build(),
-            $this->predicateBuilder->build()
-        );
+        return new ExtractorPredicate($this->extractor, $this->predicate);
     }
 }

@@ -18,15 +18,15 @@ use Jojo1981\DataResolver\Predicate\PredicateInterface;
  */
 class NotPredicateBuilder implements PredicateBuilderInterface
 {
-    /** @var PredicateBuilderInterface */
-    private $predicateBuilder;
+    /** @var PredicateInterface */
+    private $predicate;
 
     /**
-     * @param PredicateBuilderInterface $predicateBuilder
+     * @param PredicateInterface $predicate
      */
-    public function __construct(PredicateBuilderInterface $predicateBuilder)
+    public function __construct(PredicateInterface $predicate)
     {
-        $this->predicateBuilder = $predicateBuilder;
+        $this->predicate = $predicate;
     }
 
     /**
@@ -34,6 +34,6 @@ class NotPredicateBuilder implements PredicateBuilderInterface
      */
     public function build(): PredicateInterface
     {
-        return new NotPredicate($this->predicateBuilder->build());
+        return new NotPredicate($this->predicate);
     }
 }

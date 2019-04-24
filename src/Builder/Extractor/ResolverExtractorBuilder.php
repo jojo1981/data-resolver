@@ -10,24 +10,24 @@
 namespace Jojo1981\DataResolver\Builder\Extractor;
 
 use Jojo1981\DataResolver\Builder\ExtractorBuilderInterface;
-use Jojo1981\DataResolver\Builder\ResolverBuilder;
 use Jojo1981\DataResolver\Extractor\ExtractorInterface;
 use Jojo1981\DataResolver\Extractor\ResolverExtractor;
+use Jojo1981\DataResolver\Resolver;
 
 /**
  * @package Jojo1981\DataResolver\Builder\Extractor
  */
 class ResolverExtractorBuilder implements ExtractorBuilderInterface
 {
-    /** @var ResolverBuilder */
-    private $resolverBuilder;
+    /** @var Resolver */
+    private $resolver;
 
     /**
-     * @param ResolverBuilder $resolverBuilder
+     * @param Resolver $resolver
      */
-    public function __construct(ResolverBuilder $resolverBuilder)
+    public function __construct(Resolver $resolver)
     {
-        $this->resolverBuilder = $resolverBuilder;
+        $this->resolver = $resolver;
     }
 
     /**
@@ -35,6 +35,6 @@ class ResolverExtractorBuilder implements ExtractorBuilderInterface
      */
     public function build(): ExtractorInterface
     {
-        return new ResolverExtractor($this->resolverBuilder->build());
+        return new ResolverExtractor($this->resolver);
     }
 }

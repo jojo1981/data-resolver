@@ -22,17 +22,17 @@ class NonePredicateBuilder implements PredicateBuilderInterface
     /** @var SequenceHandlerInterface */
     private $sequenceHandler;
 
-    /** @var PredicateBuilderInterface */
-    private $predicateBuilder;
+    /** @var PredicateInterface */
+    private $predicate;
 
     /**
      * @param SequenceHandlerInterface $sequenceHandler
-     * @param PredicateBuilderInterface $predicateBuilder
+     * @param PredicateInterface $predicate
      */
-    public function __construct(SequenceHandlerInterface $sequenceHandler, PredicateBuilderInterface $predicateBuilder)
+    public function __construct(SequenceHandlerInterface $sequenceHandler, PredicateInterface $predicate)
     {
         $this->sequenceHandler = $sequenceHandler;
-        $this->predicateBuilder = $predicateBuilder;
+        $this->predicate = $predicate;
     }
 
     /**
@@ -40,6 +40,6 @@ class NonePredicateBuilder implements PredicateBuilderInterface
      */
     public function build(): PredicateInterface
     {
-        return new NonePredicate($this->sequenceHandler, $this->predicateBuilder->build());
+        return new NonePredicate($this->sequenceHandler, $this->predicate);
     }
 }

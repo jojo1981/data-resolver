@@ -17,15 +17,15 @@ use Jojo1981\DataResolver\Predicate\PredicateInterface;
  */
 class PredicateBuilder implements PredicateBuilderInterface
 {
-    /** @var PredicateBuilderInterface */
+    /** @var PredicateInterface */
     private $predicate;
 
     /**
-     * @param PredicateBuilderInterface $predicateBuilder
+     * @param PredicateInterface $predicate
      */
-    public function __construct(PredicateBuilderInterface $predicateBuilder)
+    public function __construct(PredicateInterface $predicate)
     {
-        $this->predicate = $predicateBuilder;
+        $this->predicate = $predicate;
     }
 
     /**
@@ -33,6 +33,6 @@ class PredicateBuilder implements PredicateBuilderInterface
      */
     public function build(): PredicateInterface
     {
-        return $this->predicate->build();
+        return $this->predicate;
     }
 }
