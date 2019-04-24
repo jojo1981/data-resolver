@@ -16,6 +16,7 @@ use Jojo1981\DataResolver\Builder\Predicate\CallBackPredicateBuilder;
 use Jojo1981\DataResolver\Builder\Predicate\ConditionalPredicateBuilder;
 use Jojo1981\DataResolver\Builder\Predicate\EqualsPredicateBuilder;
 use Jojo1981\DataResolver\Builder\Predicate\ExtractorPredicateBuilder;
+use Jojo1981\DataResolver\Builder\Predicate\InPredicateBuilder;
 use Jojo1981\DataResolver\Builder\Predicate\NonePredicateBuilder;
 use Jojo1981\DataResolver\Builder\Predicate\NotPredicateBuilder;
 use Jojo1981\DataResolver\Builder\Predicate\OrPredicateBuilder;
@@ -131,6 +132,15 @@ class PredicateBuilderFactory
     ): OrPredicateBuilder
     {
         return new OrPredicateBuilder($leftPredicateBuilder->build(), $rightPredicateBuilder->build());
+    }
+
+    /**
+     * @param mixed[] $expectedValues
+     * @return InPredicateBuilder
+     */
+    public function getInPredicateBuilder(array $expectedValues): InPredicateBuilder
+    {
+        return new InPredicateBuilder($expectedValues);
     }
 
     /**

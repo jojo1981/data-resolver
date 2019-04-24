@@ -119,4 +119,16 @@ class ExtractorPredicateBuilder
             $this->predicateBuilderFactory->getNonePredicateBuilder($predicateBuilder)
         );
     }
+
+    /**
+     * @param mixed[] $expectedValues
+     * @return ConditionalPredicateBuilder
+     */
+    public function in(array $expectedValues): ConditionalPredicateBuilder
+    {
+        return $this->predicateBuilderFactory->getConditionalPredicateBuilder(
+            $this->extractorBuilder,
+            $this->predicateBuilderFactory->getInPredicateBuilder($expectedValues)
+        );
+    }
 }
