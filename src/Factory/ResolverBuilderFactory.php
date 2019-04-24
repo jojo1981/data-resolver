@@ -9,7 +9,10 @@
  */
 namespace Jojo1981\DataResolver\Factory;
 
+use Jojo1981\DataResolver\Builder\Predicate\AndPredicateBuilder;
 use Jojo1981\DataResolver\Builder\Predicate\ExtractorPredicateBuilder;
+use Jojo1981\DataResolver\Builder\Predicate\NotPredicateBuilder;
+use Jojo1981\DataResolver\Builder\Predicate\OrPredicateBuilder;
 use Jojo1981\DataResolver\Builder\PredicateBuilderInterface;
 use Jojo1981\DataResolver\Builder\ResolverBuilder;
 
@@ -90,5 +93,40 @@ class ResolverBuilderFactory
         return $this->predicateBuilderFactory->getExtractorPredicateBuilder(
             $this->extractorBuilderFactory->getPropertyExtractorBuilder($propertyName)
         );
+    }
+
+    /**
+     * @param PredicateBuilderInterface $predicateBuilder
+     * @return NotPredicateBuilder
+     */
+    public function not(PredicateBuilderInterface $predicateBuilder): NotPredicateBuilder
+    {
+        return $this->predicateBuilderFactory->getNotPredicateBuilder($predicateBuilder);
+    }
+
+    /**
+     * @param PredicateBuilderInterface $leftPredicateBuilder
+     * @param PredicateBuilderInterface $rightPredicateBuilder
+     * @return OrPredicateBuilder
+     */
+    public function or(
+        PredicateBuilderInterface $leftPredicateBuilder,
+        PredicateBuilderInterface $rightPredicateBuilder
+    ): OrPredicateBuilder
+    {
+        return $this->predicateBuilderFactory->getOrPredicateBuilder($leftPredicateBuilder, $rightPredicateBuilder);
+    }
+
+    /**
+     * @param PredicateBuilderInterface $leftPredicateBuilder
+     * @param PredicateBuilderInterface $rightPredicateBuilder
+     * @return AndPredicateBuilder
+     */
+    public function and(
+        PredicateBuilderInterface $leftPredicateBuilder,
+        PredicateBuilderInterface $rightPredicateBuilder
+    ): AndPredicateBuilder
+    {
+        return $this->predicateBuilderFactory->getAndPredicateBuilder($leftPredicateBuilder, $rightPredicateBuilder);
     }
 }
