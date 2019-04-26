@@ -54,7 +54,7 @@ class NonePredicate implements PredicateInterface
         }
 
         foreach ($this->sequenceHandler->getIterator($context->getData()) as $key => $value) {
-            if ($this->predicate->match($context->copy()->pushPathPart($key)->setData($value))) {
+            if (true === $this->predicate->match($context->copy()->pushPathPart($key)->setData($value))) {
                 return false;
             }
         }
