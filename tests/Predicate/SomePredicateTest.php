@@ -13,8 +13,8 @@ use Jojo1981\DataResolver\Extractor\Exception\ExtractorException;
 use Jojo1981\DataResolver\Handler\Exception\HandlerException;
 use Jojo1981\DataResolver\Handler\SequenceHandlerInterface;
 use Jojo1981\DataResolver\Predicate\Exception\PredicateException;
-use Jojo1981\DataResolver\Predicate\NonePredicate;
 use Jojo1981\DataResolver\Predicate\PredicateInterface;
+use Jojo1981\DataResolver\Predicate\SomePredicate;
 use Jojo1981\DataResolver\Resolver\Context;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\TestCase;
@@ -29,7 +29,7 @@ use SebastianBergmann\RecursionContext\InvalidArgumentException;
 /**
  * @package tests\Jojo1981\DataResolver\Predicate
  */
-class NonePredicateTest extends TestCase
+class SomePredicateTest extends TestCase
 {
     /** @var ObjectProphecy|SequenceHandlerInterface */
     private $sequenceHandler;
@@ -70,9 +70,9 @@ class NonePredicateTest extends TestCase
         $this->sequenceHandler->getIterator(Argument::any())->shouldNotBeCalled();
         $this->predicate->match(Argument::any())->shouldNotBeCalled();
 
-        $this->expectExceptionObject(new PredicateException('Could not match data with `' . NonePredicate::class . '` at path: `a-path-value`'));
+        $this->expectExceptionObject(new PredicateException('Could not match data with `' . SomePredicate::class . '` at path: `a-path-value`'));
 
-        $this->getNonePredicate()->match($this->context->reveal());
+        $this->getSomePredicate()->match($this->context->reveal());
     }
 
     /**
@@ -86,7 +86,7 @@ class NonePredicateTest extends TestCase
      * @throws ExpectationFailedException
      * @return void
      */
-    public function matchShouldReturnTrueWhenDataIsAnEmptyArray(): void
+    public function matchShouldReturnFalseWhenDataIsAnEmptyArray(): void
     {
         $this->context->getData()->willReturn('my-data-2')->shouldBeCalledTimes(2);
         $this->context->getPath()->shouldNotBeCalled();
@@ -96,7 +96,7 @@ class NonePredicateTest extends TestCase
 
         $this->predicate->match(Argument::any())->shouldNotBeCalled();
 
-        $this->assertTrue($this->getNonePredicate()->match($this->context->reveal()));
+        $this->assertFalse($this->getSomePredicate()->match($this->context->reveal()));
     }
 
     /**
@@ -110,7 +110,7 @@ class NonePredicateTest extends TestCase
      * @throws ExpectationFailedException
      * @return void
      */
-    public function matchShouldReturnFalseAsSoonAsPossibleThusWhenAnItemIsMatching(): void
+    public function matchShouldReturnTrueAsSoonAsPossibleThusWhenAnItemIsMatching(): void
     {
         $this->context->getData()->willReturn('my-data-2')->shouldBeCalledTimes(2);
         $this->context->getPath()->shouldNotBeCalled();
@@ -126,7 +126,7 @@ class NonePredicateTest extends TestCase
 
         $this->predicate->match($this->context)->willReturn(false, true)->shouldBeCalledTimes(2);
 
-        $this->assertFalse($this->getNonePredicate()->match($this->context->reveal()));
+        $this->assertTrue($this->getSomePredicate()->match($this->context->reveal()));
     }
 
     /**
@@ -140,7 +140,7 @@ class NonePredicateTest extends TestCase
      * @throws ExpectationFailedException
      * @return void
      */
-    public function matchShouldReturnTrueWhenAllItemsAreNotMatching(): void
+    public function matchShouldReturnFalseWhenAllItemsAreNotMatching(): void
     {
         $this->context->getData()->willReturn('my-data-3')->shouldBeCalledTimes(2);
         $this->context->getPath()->shouldNotBeCalled();
@@ -158,15 +158,15 @@ class NonePredicateTest extends TestCase
 
         $this->predicate->match($this->context)->willReturn(false, false, false)->shouldBeCalledTimes(3);
 
-        $this->assertTrue($this->getNonePredicate()->match($this->context->reveal()));
+        $this->assertFalse($this->getSomePredicate()->match($this->context->reveal()));
     }
 
     /**
      * @throws ObjectProphecyException
-     * @return NonePredicate
+     * @return SomePredicate
      */
-    private function getNonePredicate(): NonePredicate
+    private function getSomePredicate(): SomePredicate
     {
-        return new NonePredicate($this->sequenceHandler->reveal(), $this->predicate->reveal());
+        return new SomePredicate($this->sequenceHandler->reveal(), $this->predicate->reveal());
     }
 }
