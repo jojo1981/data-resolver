@@ -28,12 +28,14 @@ final class StringHelper
     {
         if ($capitalizeFirstChar) {
             $text[0] = \strtoupper($text[0]);
+        } else {
+            $text[0] = \strtolower($text[0]);
         }
 
         $text = \str_replace(['-', ' '], '_', $text);
 
         return \preg_replace_callback(
-            '/_([a-z])/',
+            '/_([a-zA-Z])/',
             static function (array $matches): string {
                 return \strtoupper($matches[1]);
             },
