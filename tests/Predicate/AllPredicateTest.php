@@ -38,7 +38,10 @@ class AllPredicateTest extends TestCase
     private $predicate;
 
     /** @var ObjectProphecy|Context */
-    private $context;
+    private $originalContext;
+
+    /** @var ObjectProphecy|Context */
+    private $copiedContext;
 
     /**
      * @throws DoubleException
@@ -50,7 +53,8 @@ class AllPredicateTest extends TestCase
     {
         $this->sequenceHandler = $this->prophesize(SequenceHandlerInterface::class);
         $this->predicate = $this->prophesize(PredicateInterface::class);
-        $this->context = $this->prophesize(Context::class);
+        $this->originalContext = $this->prophesize(Context::class);
+        $this->copiedContext = $this->prophesize(Context::class);
     }
 
     /**
@@ -64,15 +68,15 @@ class AllPredicateTest extends TestCase
      */
     public function matchShouldThrowAnExceptionBecauseSequenceHandlerDoesNotSupportTheDataFromContext(): void
     {
-        $this->context->getData()->willReturn('my-data-1')->shouldBeCalledTimes(1);
-        $this->context->getPath()->willReturn('a-path-value')->shouldBeCalled();
+        $this->originalContext->getData()->willReturn('my-data-1')->shouldBeCalledTimes(1);
+        $this->originalContext->getPath()->willReturn('a-path-value')->shouldBeCalled();
         $this->sequenceHandler->supports(Argument::exact('my-data-1'))->willReturn(false)->shouldBeCalled();
         $this->sequenceHandler->getIterator(Argument::any())->shouldNotBeCalled();
         $this->predicate->match(Argument::any())->shouldNotBeCalled();
 
         $this->expectExceptionObject(new PredicateException('Could not match data with `' . AllPredicate::class . '` at path: `a-path-value`'));
 
-        $this->getAllPredicate()->match($this->context->reveal());
+        $this->getAllPredicate()->match($this->originalContext->reveal());
     }
 
     /**
@@ -88,15 +92,15 @@ class AllPredicateTest extends TestCase
      */
     public function matchShouldReturnTrueWhenDataIsAnEmptyArray(): void
     {
-        $this->context->getData()->willReturn('my-data-2')->shouldBeCalledTimes(2);
-        $this->context->getPath()->shouldNotBeCalled();
+        $this->originalContext->getData()->willReturn('my-data-2')->shouldBeCalledTimes(2);
+        $this->originalContext->getPath()->shouldNotBeCalled();
 
         $this->sequenceHandler->supports(Argument::exact('my-data-2'))->willReturn(true)->shouldBeCalled();
         $this->sequenceHandler->getIterator(Argument::exact('my-data-2'))->willReturn(new \ArrayIterator())->shouldBeCalled();
 
         $this->predicate->match(Argument::any())->shouldNotBeCalled();
 
-        $this->assertTrue($this->getAllPredicate()->match($this->context->reveal()));
+        $this->assertTrue($this->getAllPredicate()->match($this->originalContext->reveal()));
     }
 
     /**
@@ -112,21 +116,21 @@ class AllPredicateTest extends TestCase
      */
     public function matchShouldReturnFalseAsSoonAsPossibleThusWhenAnItemIsNotMatching(): void
     {
-        $this->context->getData()->willReturn('my-data-2')->shouldBeCalledTimes(2);
-        $this->context->getPath()->shouldNotBeCalled();
-        $this->context->copy()->willReturn($this->context)->shouldBeCalledTimes(2);
-        $this->context->pushPathPart('key1')->willReturn($this->context)->shouldBeCalled();
-        $this->context->pushPathPart('key2')->willReturn($this->context)->shouldBeCalled();
-        $this->context->setData('value1')->willReturn($this->context)->shouldBeCalled();
-        $this->context->setData('value2')->willReturn($this->context)->shouldBeCalled();
+        $this->originalContext->getData()->willReturn('my-data-2')->shouldBeCalledTimes(2);
+        $this->originalContext->getPath()->shouldNotBeCalled();
+        $this->originalContext->copy()->willReturn($this->copiedContext)->shouldBeCalledTimes(2);
+        $this->copiedContext->pushPathPart('key1')->willReturn($this->copiedContext)->shouldBeCalled();
+        $this->copiedContext->pushPathPart('key2')->willReturn($this->copiedContext)->shouldBeCalled();
+        $this->copiedContext->setData('value1')->willReturn($this->copiedContext)->shouldBeCalled();
+        $this->copiedContext->setData('value2')->willReturn($this->copiedContext)->shouldBeCalled();
 
         $iterator = new \ArrayIterator(['key1' => 'value1', 'key2' => 'value2', 'key3' => 'value3']);
         $this->sequenceHandler->supports(Argument::exact('my-data-2'))->willReturn(true)->shouldBeCalled();
         $this->sequenceHandler->getIterator(Argument::exact('my-data-2'))->willReturn($iterator)->shouldBeCalled();
 
-        $this->predicate->match($this->context)->willReturn(true, false)->shouldBeCalledTimes(2);
+        $this->predicate->match($this->copiedContext)->willReturn(true, false)->shouldBeCalledTimes(2);
 
-        $this->assertFalse($this->getAllPredicate()->match($this->context->reveal()));
+        $this->assertFalse($this->getAllPredicate()->match($this->originalContext->reveal()));
     }
 
     /**
@@ -142,23 +146,23 @@ class AllPredicateTest extends TestCase
      */
     public function matchShouldReturnTrueWhenAllItemsAreMatching(): void
     {
-        $this->context->getData()->willReturn('my-data-3')->shouldBeCalledTimes(2);
-        $this->context->getPath()->shouldNotBeCalled();
-        $this->context->copy()->willReturn($this->context)->shouldBeCalledTimes(3);
-        $this->context->pushPathPart('key1')->willReturn($this->context)->shouldBeCalled();
-        $this->context->pushPathPart('key2')->willReturn($this->context)->shouldBeCalled();
-        $this->context->pushPathPart('key3')->willReturn($this->context)->shouldBeCalled();
-        $this->context->setData('value1')->willReturn($this->context)->shouldBeCalled();
-        $this->context->setData('value2')->willReturn($this->context)->shouldBeCalled();
-        $this->context->setData('value3')->willReturn($this->context)->shouldBeCalled();
+        $this->originalContext->getData()->willReturn('my-data-3')->shouldBeCalledTimes(2);
+        $this->originalContext->getPath()->shouldNotBeCalled();
+        $this->originalContext->copy()->willReturn($this->copiedContext)->shouldBeCalledTimes(3);
+        $this->copiedContext->pushPathPart('key1')->willReturn($this->copiedContext)->shouldBeCalled();
+        $this->copiedContext->pushPathPart('key2')->willReturn($this->copiedContext)->shouldBeCalled();
+        $this->copiedContext->pushPathPart('key3')->willReturn($this->copiedContext)->shouldBeCalled();
+        $this->copiedContext->setData('value1')->willReturn($this->copiedContext)->shouldBeCalled();
+        $this->copiedContext->setData('value2')->willReturn($this->copiedContext)->shouldBeCalled();
+        $this->copiedContext->setData('value3')->willReturn($this->copiedContext)->shouldBeCalled();
 
         $iterator = new \ArrayIterator(['key1' => 'value1', 'key2' => 'value2', 'key3' => 'value3']);
         $this->sequenceHandler->supports(Argument::exact('my-data-3'))->willReturn(true)->shouldBeCalled();
         $this->sequenceHandler->getIterator(Argument::exact('my-data-3'))->willReturn($iterator)->shouldBeCalled();
 
-        $this->predicate->match($this->context)->willReturn(true, true, true)->shouldBeCalledTimes(3);
+        $this->predicate->match($this->copiedContext)->willReturn(true, true, true)->shouldBeCalledTimes(3);
 
-        $this->assertTrue($this->getAllPredicate()->match($this->context->reveal()));
+        $this->assertTrue($this->getAllPredicate()->match($this->originalContext->reveal()));
     }
 
     /**
