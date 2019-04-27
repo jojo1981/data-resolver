@@ -36,14 +36,6 @@ class PropertyExtractor implements ExtractorInterface
     }
 
     /**
-     * @return string
-     */
-    public function getPropertyName(): string
-    {
-        return $this->propertyName;
-    }
-
-    /**
      * @param Context $context
      * @throws HandlerException
      * @throws ExtractorException
