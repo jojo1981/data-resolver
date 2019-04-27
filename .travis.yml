@@ -9,4 +9,4 @@ before-install:
   - composer self-update
 
 install:
-  - composer install
+  - composer install --dev

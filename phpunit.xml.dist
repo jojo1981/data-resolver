@@ -5,6 +5,7 @@
          colors="true"
          bootstrap="./vendor/autoload.php"
 >
+
     <testsuites>
         <testsuite name="Data Resolver Test Suite">
             <directory>./tests</directory>
@@ -13,7 +14,12 @@
 
     <filter>
         <whitelist>
-            <directory>./src</directory>
+            <directory suffix=".php">./src</directory>
         </whitelist>
     </filter>
+
+    <logging>
+        <log type="coverage-clover" target="./build/reports/clover.xml"/>
+    </logging>
+
 </phpunit>
