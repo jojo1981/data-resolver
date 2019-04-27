@@ -10,3 +10,6 @@ before-install:
 
 install:
   - composer install --dev
+
+after_success:
+  - travis_retry php ./bin/php-coveralls -v
