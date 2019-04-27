@@ -13,13 +13,44 @@ use Jojo1981\DataResolver\Predicate\EqualsPredicate;
 use Jojo1981\DataResolver\Resolver\Context;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\TestCase;
+use Prophecy\Exception\Doubler\ClassNotFoundException;
+use Prophecy\Exception\Doubler\DoubleException;
+use Prophecy\Exception\Doubler\InterfaceNotFoundException;
+use Prophecy\Exception\Prophecy\ObjectProphecyException;
+use Prophecy\Prophecy\ObjectProphecy;
 use SebastianBergmann\RecursionContext\InvalidArgumentException;
+
 
 /**
  * @package tests\Jojo1981\DataResolver\Predicate
  */
 class EqualsPredicateTest extends TestCase
 {
+    /**
+     * @test
+     *
+     * @throws InvalidArgumentException
+     * @throws ClassNotFoundException
+     * @throws DoubleException
+     * @throws InterfaceNotFoundException
+     * @throws ObjectProphecyException
+     * @throws ExpectationFailedException
+     * @return void
+     */
+    public function matchShouldReturnFalseEvenWhenTheUsedIsEqualConstraintThrowsAnException(): void
+    {
+        /** @var ObjectProphecy|\SplObjectStorage $objectStorage1 */
+        $objectStorage1 = $this->prophesize(\SplObjectStorage::class);
+
+        /** @var ObjectProphecy|\SplObjectStorage $objectStorage2 */
+        $objectStorage2 = $this->prophesize(\SplObjectStorage::class);
+        $objectStorage2->rewind()->willThrow(new \Exception('Force the IsEqual constraint to throw an exception'));
+
+        $this->assertFalse(
+            (new EqualsPredicate($objectStorage1->reveal()))->match(new Context($objectStorage2->reveal()))
+        );
+    }
+
     /**
      * @test
      *
