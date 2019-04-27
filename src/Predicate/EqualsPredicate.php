@@ -10,21 +10,22 @@
 namespace Jojo1981\DataResolver\Predicate;
 
 use Jojo1981\DataResolver\Resolver\Context;
+use PHPUnit\Framework\Constraint\IsEqual as IsEqualConstraint;
 
 /**
  * @package Jojo1981\DataResolver\Predicate
  */
 class EqualsPredicate implements PredicateInterface
 {
-    /** @var mixed */
-    private $expectedValue;
+    /** @var IsEqualConstraint */
+    private $isEqualConstraint;
 
     /**
      * @param mixed $expectedValue
      */
     public function __construct($expectedValue)
     {
-        $this->expectedValue = $expectedValue;
+        $this->isEqualConstraint = new IsEqualConstraint($expectedValue, 0.0, 25, true);
     }
 
     /**
@@ -33,6 +34,10 @@ class EqualsPredicate implements PredicateInterface
      */
     public function match(Context $context): bool
     {
-        return $context->getData() === $this->expectedValue;
+        try {
+            return $this->isEqualConstraint->evaluate($context->getData(), '', true);
+        } catch (\Exception $exception) {
+            return false;
+        }
     }
 }

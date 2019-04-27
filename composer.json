@@ -19,11 +19,11 @@
   ],
   "minimum-stability": "dev",
   "require": {
-    "php": "^7.1"
+    "php": "^7.1",
+    "phpunit/phpunit": "^7.5"
   },
   "require-dev": {
-    "php-coveralls/php-coveralls": "2.1.x-dev",
-    "phpunit/phpunit": "^7.5"
+    "php-coveralls/php-coveralls": "2.1.x-dev"
   },
   "autoload": {
     "psr-4": {
