@@ -44,13 +44,14 @@ final class StringHelper
     }
 
     /**
-     * @param string $input
+     * @param string $text
      * @return string
      */
-    public static function camelToSnakeCase(string $input): string
+    public static function toSnakeCase(string $text): string
     {
-        if (0 === \preg_match('/[A-Z]/', $input)) {
-            return $input;
+        $text = \str_replace(['-', ' '], '_', $text);
+        if (0 === \preg_match('/[A-Z]/', $text)) {
+            return $text;
         }
 
         return \strtolower(\preg_replace_callback(
@@ -58,7 +59,7 @@ final class StringHelper
             static function (array $parts): string {
                 return $parts[1] . '_' . \strtolower($parts[2]);
             },
-            $input
+            $text
         ));
     }
 }

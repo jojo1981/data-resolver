@@ -22,14 +22,14 @@ class DefaultNamingStrategy implements NamingStrategyInterface
      */
     public function getPropertyNames(string $propertyName): array
     {
-        $snakeCasePropertyName = StringHelper::camelToSnakeCase($propertyName);
+        $snakeCasePropertyName = StringHelper::toSnakeCase($propertyName);
         $camelCasePropertyName = StringHelper::toCamelCase($propertyName);
         if ($snakeCasePropertyName === $camelCasePropertyName) {
             return [$snakeCasePropertyName];
         }
 
         return [
-            StringHelper::camelToSnakeCase($propertyName),
+            StringHelper::toSnakeCase($propertyName),
             StringHelper::toCamelCase($propertyName)
         ];
     }
