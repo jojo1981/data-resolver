@@ -19,11 +19,11 @@ use Jojo1981\DataResolver\Resolver\Context;
  */
 class FilterExtractor extends AbstractSequenceExtractor
 {
-    /** @var PredicateInterface */
-    private $predicate;
-
     /** @var SequenceHandlerInterface */
     private $sequenceHandler;
+
+    /** @var PredicateInterface */
+    private $predicate;
 
     /**
      * @param SequenceHandlerInterface $sequenceHandler
@@ -31,8 +31,8 @@ class FilterExtractor extends AbstractSequenceExtractor
      */
     public function __construct(SequenceHandlerInterface $sequenceHandler, PredicateInterface $predicate)
     {
-        $this->predicate = $predicate;
         $this->sequenceHandler = $sequenceHandler;
+        $this->predicate = $predicate;
     }
 
     /**

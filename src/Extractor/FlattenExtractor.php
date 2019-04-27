@@ -18,11 +18,11 @@ use Jojo1981\DataResolver\Resolver\Context;
  */
 class FlattenExtractor extends AbstractSequenceExtractor
 {
-    /** @var ExtractorInterface */
-    private $extractor;
-
     /** @var SequenceHandlerInterface */
     private $sequenceHandler;
+
+    /** @var ExtractorInterface */
+    private $extractor;
 
     /**
      * @param SequenceHandlerInterface $sequenceHandler
@@ -30,8 +30,8 @@ class FlattenExtractor extends AbstractSequenceExtractor
      */
     public function __construct(SequenceHandlerInterface $sequenceHandler, ExtractorInterface $extractor)
     {
-        $this->extractor = $extractor;
         $this->sequenceHandler = $sequenceHandler;
+        $this->extractor = $extractor;
     }
 
     /**

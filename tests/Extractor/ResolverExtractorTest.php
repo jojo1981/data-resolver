@@ -60,7 +60,7 @@ class ResolverExtractorTest extends TestCase
      */
     public function extractShouldReturnTheResultFromTheInjectedResolverResolveMethod(): void
     {
-        $this->resolver->resolve($this->context)->willReturn('resolved-data')->shouldBeCalled();
+        $this->resolver->resolve($this->context)->willReturn('resolved-data')->shouldBeCalledOnce();
         $this->assertEquals('resolved-data', $this->getResolverExtractor()->extract($this->context->reveal()));
     }
 

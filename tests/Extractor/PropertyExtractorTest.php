@@ -16,6 +16,7 @@ use Jojo1981\DataResolver\Handler\PropertyHandlerInterface;
 use Jojo1981\DataResolver\Resolver\Context;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\TestCase;
+use Prophecy\Argument;
 use Prophecy\Exception\Doubler\ClassNotFoundException;
 use Prophecy\Exception\Doubler\DoubleException;
 use Prophecy\Exception\Doubler\InterfaceNotFoundException;
@@ -59,7 +60,8 @@ class PropertyExtractorTest extends TestCase
         $propertyName = 'property-name';
         $this->context->getData()->willReturn('my-data')->shouldBeCalledOnce();
         $this->context->getPath()->willReturn('my-path')->shouldBeCalledOnce();
-        $this->propertyHandler->supports($propertyName, 'my-data')->willReturn(false)->shouldBeCalled();
+        $this->propertyHandler->supports($propertyName, 'my-data')->willReturn(false)->shouldBeCalledOnce();
+        $this->propertyHandler->hasValueForPropertyName(Argument::any(), Argument::any())->shouldNotBeCalled();
 
         $this->expectExceptionObject(new ExtractorException('Could not extract data with `' . PropertyExtractor::class . '` for property: `property-name` at path: `my-path`'));
 
@@ -80,7 +82,7 @@ class PropertyExtractorTest extends TestCase
         $this->context->getData()->willReturn('my-data')->shouldBeCalledTimes(2);
         $this->context->getPath()->willReturn('my-path')->shouldBeCalledOnce();
         $this->propertyHandler->supports($propertyName, 'my-data')->willReturn(true)->shouldBeCalled();
-        $this->propertyHandler->hasValueForPropertyName($propertyName, 'my-data')->willReturn(false)->shouldBeCalled();
+        $this->propertyHandler->hasValueForPropertyName($propertyName, 'my-data')->willReturn(false)->shouldBeCalledOnce();
 
         $this->expectExceptionObject(new ExtractorException('Could not extract data with `' . PropertyExtractor::class . '` for property: `property-name` at path: `my-path`'));
 
@@ -104,8 +106,8 @@ class PropertyExtractorTest extends TestCase
         $this->context->getPath()->shouldNotBeCalled();
         $this->context->pushPathPart($propertyName)->shouldBeCalledOnce();
         $this->propertyHandler->supports($propertyName, 'my-data')->willReturn(true)->shouldBeCalled();
-        $this->propertyHandler->hasValueForPropertyName($propertyName, 'my-data')->willReturn(true)->shouldBeCalled();
-        $this->propertyHandler->getValueForPropertyName($propertyName, 'my-data')->willReturn('returned-value')->shouldBeCalled();
+        $this->propertyHandler->hasValueForPropertyName($propertyName, 'my-data')->willReturn(true)->shouldBeCalledOnce();
+        $this->propertyHandler->getValueForPropertyName($propertyName, 'my-data')->willReturn('returned-value')->shouldBeCalledOnce();
 
         $this->assertEquals('returned-value', $this->getPropertyExtractor($propertyName)->extract($this->context->reveal()));
     }
