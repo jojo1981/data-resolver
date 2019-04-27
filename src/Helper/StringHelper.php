@@ -30,6 +30,8 @@ final class StringHelper
             $text[0] = \strtoupper($text[0]);
         }
 
+        $text = \str_replace(['-', ' '], '_', $text);
+
         return \preg_replace_callback(
             '/_([a-z])/',
             static function (array $matches): string {
