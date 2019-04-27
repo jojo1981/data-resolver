@@ -33,7 +33,6 @@ class Resolver
     public function __construct(array $extractors)
     {
         \array_walk($extractors, [$this, 'addExtractor']);
-        $this->context = new Context(null);
     }
 
     /**
@@ -54,6 +53,7 @@ class Resolver
      */
     public function resolve($data)
     {
+        $this->context = new Context(null);
         if ($data instanceof Context) {
             $this->context = $data;
         }
