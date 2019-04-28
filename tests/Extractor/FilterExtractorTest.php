@@ -10,11 +10,11 @@
 namespace tests\Jojo1981\DataResolver\Extractor;
 
 use Jojo1981\DataResolver\Extractor\Exception\ExtractorException;
-use Jojo1981\DataResolver\Extractor\ExtractorInterface;
-use Jojo1981\DataResolver\Extractor\FlattenExtractor;
+use Jojo1981\DataResolver\Extractor\FilterExtractor;
 use Jojo1981\DataResolver\Handler\Exception\HandlerException;
 use Jojo1981\DataResolver\Handler\SequenceHandlerInterface;
 use Jojo1981\DataResolver\Predicate\Exception\PredicateException;
+use Jojo1981\DataResolver\Predicate\PredicateInterface;
 use Jojo1981\DataResolver\Resolver\Context;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\TestCase;
@@ -29,13 +29,13 @@ use SebastianBergmann\RecursionContext\InvalidArgumentException;
 /**
  * @package tests\Jojo1981\DataResolver\Extractor
  */
-class FlattenExtractorTest extends TestCase
+class FilterExtractorTest extends TestCase
 {
     /** @var ObjectProphecy|SequenceHandlerInterface */
     private $sequenceHandler;
 
-    /** @var ObjectProphecy|ExtractorInterface */
-    private $extractor;
+    /** @var ObjectProphecy|PredicateInterface */
+    private $predicate;
 
     /** @var ObjectProphecy|Context */
     private $originalContext;
@@ -51,7 +51,7 @@ class FlattenExtractorTest extends TestCase
      */
     protected function setUp(): void
     {
-        $this->extractor = $this->prophesize(ExtractorInterface::class);
+        $this->predicate = $this->prophesize(PredicateInterface::class);
         $this->sequenceHandler = $this->prophesize(SequenceHandlerInterface::class);
         $this->originalContext = $this->prophesize(Context::class);
         $this->copiedContext = $this->prophesize(Context::class);
@@ -72,9 +72,9 @@ class FlattenExtractorTest extends TestCase
         $this->originalContext->getPath()->willReturn('my-path')->shouldBeCalledOnce();
         $this->sequenceHandler->supports('my-data')->willReturn(false)->shouldBeCalledOnce();
 
-        $this->expectExceptionObject(new ExtractorException('Could not extract data with `' . FlattenExtractor::class . '` at path: `my-path`'));
+        $this->expectExceptionObject(new ExtractorException('Could not extract data with `' . FilterExtractor::class . '` at path: `my-path`'));
 
-        $this->getFlattenExtractor()->extract($this->originalContext->reveal());
+        $this->getFilterExtractor()->extract($this->originalContext->reveal());
     }
 
     /**
@@ -88,21 +88,21 @@ class FlattenExtractorTest extends TestCase
      * @throws ExtractorException
      * @return void
      */
-    public function extractShouldReturnTheResultFromTheSequenceHandlerFlattenMethod(): void
+    public function extractShouldReturnTheResultFromTheSequenceHandlerFilterMethod(): void
     {
         $this->originalContext->getData()->willReturn('my-data')->shouldBeCalledTimes(2);
         $this->originalContext->getPath()->shouldNotBeCalled();
-        $this->originalContext->copy()->willReturn($this->copiedContext)->shouldBeCalledOnce();
-        $this->copiedContext->pushPathPart('my-key-1')->willReturn($this->copiedContext)->shouldBeCalledOnce();
+        $this->originalContext->copy()->willReturn($this->copiedContext)->shouldBeCalledTimes(2);
         $this->copiedContext->setData( 'my-value-1')->willReturn($this->copiedContext)->shouldBeCalledOnce();
+        $this->copiedContext->setData( 'my-value-2')->willReturn($this->copiedContext)->shouldBeCalledOnce();
 
         $this->sequenceHandler->supports('my-data')->willReturn(true)->shouldBeCalledOnce();
-        $this->extractor->extract($this->copiedContext)->willReturn('extracted-value')->shouldBeCalledOnce();
+        $this->predicate->match($this->copiedContext)->willReturn(false, true)->shouldBeCalledTimes(2);
 
-        $this->sequenceHandler->flatten('my-data', Argument::that(function ($arg): bool {
+        $this->sequenceHandler->filter('my-data', Argument::that(function ($arg): bool {
             if (\is_callable($arg)) {
-
-                $this->assertEquals('extracted-value', \call_user_func($arg, 'my-key-1', 'my-value-1'));
+                $this->assertFalse(\call_user_func($arg, 'my-value-1'));
+                $this->assertTrue(\call_user_func($arg, 'my-value-2'));
 
                 return true;
             }
@@ -110,15 +110,15 @@ class FlattenExtractorTest extends TestCase
             return false;
         }))->willReturn('extracted-data')->shouldBeCalledOnce();
 
-        $this->assertEquals('extracted-data', $this->getFlattenExtractor()->extract($this->originalContext->reveal()));
+        $this->assertEquals('extracted-data', $this->getFilterExtractor()->extract($this->originalContext->reveal()));
     }
 
     /**
      * @throws ObjectProphecyException
-     * @return FlattenExtractor
+     * @return FilterExtractor
      */
-    private function getFlattenExtractor(): FlattenExtractor
+    private function getFilterExtractor(): FilterExtractor
     {
-        return new FlattenExtractor($this->sequenceHandler->reveal(), $this->extractor->reveal());
+        return new FilterExtractor($this->sequenceHandler->reveal(), $this->predicate->reveal());
     }
 }
