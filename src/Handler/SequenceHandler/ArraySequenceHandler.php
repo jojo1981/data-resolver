@@ -78,7 +78,6 @@ class ArraySequenceHandler implements SequenceHandlerInterface
         return $result;
     }
 
-
     /**
      * @param mixed $data
      * @return bool
