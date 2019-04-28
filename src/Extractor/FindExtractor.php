@@ -54,9 +54,7 @@ class FindExtractor extends AbstractSequenceExtractor
      */
     protected function performExtract(Context $context)
     {
-        $data = $context->getData();
-
-        foreach ($this->sequenceHandler->getIterator($data) as $key => $value) {
+        foreach ($this->sequenceHandler->getIterator($context->getData()) as $key => $value) {
             $match = $this->predicate->match($context->copy()->pushPathPart($key)->setData($value));
             if ($match) {
                 return $value;
