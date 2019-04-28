@@ -80,7 +80,7 @@ class CompositePropertyHandler implements PropertyHandlerInterface
     /**
      * @param string $methodName
      * @param string $propertyName
-     * @param $data
+     * @param mixed $data
      * @throws HandlerException
      * @return PropertyHandlerInterface
      */
@@ -93,7 +93,7 @@ class CompositePropertyHandler implements PropertyHandlerInterface
         }
 
         throw new HandlerException(\sprintf(
-            'The `%s` can has no supported handler. Illegal invocation of method `%s`. You should invoke the `%s` method first!',
+            'The `%s` has no supported handler. Illegal invocation of method `%s`. You should invoke the `%s` method first!',
             __CLASS__,
             $methodName,
             'supports'
