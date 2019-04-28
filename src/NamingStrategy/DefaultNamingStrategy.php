@@ -22,16 +22,10 @@ class DefaultNamingStrategy implements NamingStrategyInterface
      */
     public function getPropertyNames(string $propertyName): array
     {
-        $snakeCasePropertyName = StringHelper::toSnakeCase($propertyName);
-        $camelCasePropertyName = StringHelper::toCamelCase($propertyName);
-        if ($snakeCasePropertyName === $camelCasePropertyName) {
-            return [$snakeCasePropertyName];
-        }
-
-        return [
-            $snakeCasePropertyName,
-            $camelCasePropertyName
-        ];
+        return \array_values(\array_unique([
+            StringHelper::toSnakeCase($propertyName),
+            StringHelper::toCamelCase($propertyName)
+        ]));
     }
 
     /**
@@ -40,8 +34,6 @@ class DefaultNamingStrategy implements NamingStrategyInterface
      */
     public function getMethodNames(string $propertyName): array
     {
-        return [
-            'get' . StringHelper::toCamelCase($propertyName, true)
-        ];
+        return ['get' . StringHelper::toCamelCase($propertyName, true)];
     }
 }
