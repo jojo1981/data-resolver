@@ -29,8 +29,8 @@ class DefaultNamingStrategy implements NamingStrategyInterface
         }
 
         return [
-            StringHelper::toSnakeCase($propertyName),
-            StringHelper::toCamelCase($propertyName)
+            $snakeCasePropertyName,
+            $camelCasePropertyName
         ];
     }
 
