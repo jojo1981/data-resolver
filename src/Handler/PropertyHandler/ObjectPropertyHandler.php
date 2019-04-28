@@ -158,15 +158,17 @@ class ObjectPropertyHandler implements PropertyHandlerInterface
     /**
      *
      * @param object $data
-     * @return \ReflectionClass
      * @throws HandlerException
+     * @return \ReflectionClass
      */
     private function getReflectionClass($data): \ReflectionClass
     {
         $className = \get_class($data);
         if (!\array_key_exists($className, $this->reflectionClasses)) {
             try {
-                $this->reflectionClasses[$className] = new \ReflectionClass($data);
+                $this->reflectionClasses[$className] = new \ReflectionClass(
+                    \defined('FAKE_REFLECTION_EXCEPTION') ? 'A\Non\Existing\Class' : $data
+                );
             } catch (\ReflectionException $exception) {
                 throw new HandlerException('Can not get reflection', 0, $exception);
             }

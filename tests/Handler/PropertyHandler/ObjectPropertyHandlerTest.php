@@ -94,6 +94,39 @@ class ObjectPropertyHandlerTest extends TestCase
     public function supportShouldReturnTrueForDataWhichIsAnObject(): void
     {
         $this->assertTrue($this->getObjectPropertyHandler()->supports('my-property', new \stdClass()));
+        $this->assertTrue($this->getObjectPropertyHandler()->supports('my-property', new TestEntity()));
+    }
+
+    /**
+     * @test
+     * @runInSeparateProcess
+     *
+     * @throws ObjectProphecyException
+     * @throws HandlerException
+     * @return void
+     */
+    public function getValueForPropertyNameShouldThrowHandlerExceptionBecauseReflectionExceptionOccurs(): void
+    {
+        $this->expectExceptionObject(new HandlerException('Can not get reflection'));
+
+        \define('FAKE_REFLECTION_EXCEPTION', true);
+        $this->getObjectPropertyHandler()->getValueForPropertyName('property-name', new TestEntity());
+    }
+
+    /**
+     * @test
+     * @runInSeparateProcess
+     *
+     * @throws ObjectProphecyException
+     * @throws HandlerException
+     * @return void
+     */
+    public function hasValueForPropertyNameShouldThrowHandlerExceptionBecauseReflectionExceptionOccurs(): void
+    {
+        $this->expectExceptionObject(new HandlerException('Can not get reflection'));
+
+        \define('FAKE_REFLECTION_EXCEPTION', true);
+        $this->getObjectPropertyHandler()->hasValueForPropertyName('property-name', new TestEntity());
     }
 
     /**
