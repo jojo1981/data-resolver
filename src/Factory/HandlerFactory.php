@@ -71,7 +71,7 @@ class HandlerFactory
     private function getPropertyHandlers(): array
     {
         if (empty($this->propertyHandlers)) {
-            $this->propertyHandlers = self::getDefaultPropertyHandlers();
+            $this->propertyHandlers = $this->getDefaultPropertyHandlers();
         }
 
         return $this->propertyHandlers;
@@ -83,7 +83,7 @@ class HandlerFactory
     private function getSequenceHandlers(): array
     {
         if (empty($this->sequenceHandlers)) {
-            $this->sequenceHandlers = self::getDefaultSequenceHandlers();
+            $this->sequenceHandlers = $this->getDefaultSequenceHandlers();
         }
 
         return $this->sequenceHandlers;
@@ -110,7 +110,7 @@ class HandlerFactory
     /**
      * @return PropertyHandlerInterface[]
      */
-    public static function getDefaultPropertyHandlers(): array
+    private function getDefaultPropertyHandlers(): array
     {
         return [new ObjectPropertyHandler(new DefaultNamingStrategy()), new AssociativeArrayPropertyHandler()];
     }
@@ -118,7 +118,7 @@ class HandlerFactory
     /**
      * @return SequenceHandlerInterface[]
      */
-    public static function getDefaultSequenceHandlers(): array
+    private function getDefaultSequenceHandlers(): array
     {
         return [new ArraySequenceHandler()];
     }
