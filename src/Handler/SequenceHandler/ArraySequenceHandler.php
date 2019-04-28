@@ -69,7 +69,7 @@ class ArraySequenceHandler implements SequenceHandlerInterface
 
         $result = [];
         foreach ($data as $key => $value) {
-            $item = (array) $callback($key, $value);
+            $item = (array) $callback($value, $key);
             if (!empty($item)) {
                 \array_push($result, ...$item);
             }
