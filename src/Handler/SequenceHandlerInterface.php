@@ -27,9 +27,9 @@ interface SequenceHandlerInterface
     /**
      * @param mixed $data
      * @throws HandlerException
-     * @return \Iterator
+     * @return \Traversable
      */
-    public function getIterator($data): \Iterator;
+    public function getIterator($data): \Traversable;
 
     /**
      * @param mixed $data

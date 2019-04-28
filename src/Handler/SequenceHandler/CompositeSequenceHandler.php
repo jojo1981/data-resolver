@@ -55,9 +55,9 @@ class CompositeSequenceHandler implements SequenceHandlerInterface
     /**
      * @param mixed $data
      * @throws HandlerException
-     * @return \Iterator
+     * @return \Traversable
      */
-    public function getIterator($data): \Iterator
+    public function getIterator($data): \Traversable
     {
         return $this->getSupportedHandler('getIterator', $data)->getIterator($data);
     }

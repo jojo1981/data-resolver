@@ -29,9 +29,9 @@ class ArraySequenceHandler implements SequenceHandlerInterface
     /**
      * @param mixed $data
      * @throws HandlerException
-     * @return \Iterator
+     * @return \Traversable
      */
-    public function getIterator($data): \Iterator
+    public function getIterator($data): \Traversable
     {
         if (!$this->supports($data)) {
             $this->throwUnsupportedException('getIterator');
