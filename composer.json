@@ -25,6 +25,9 @@
   "require-dev": {
     "php-coveralls/php-coveralls": "2.1.x-dev"
   },
+  "suggest": {
+    "jojo1981/data-resolver-handlers": "Add support to work with 3th party libraries"
+  },
   "autoload": {
     "psr-4": {
       "Jojo1981\\DataResolver\\": "src/"
