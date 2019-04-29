@@ -50,22 +50,21 @@ class AssociativeArrayPropertyHandler implements PropertyHandlerInterface
         if (!$this->supports($propertyName, $data)) {
             $this->throwUnsupportedException('getValueForPropertyName');
         }
-        if (!$this->hasValueForPropertyName($propertyName, $data)) {
-            throw new HandlerException(\sprintf(
-                'The `%s` can not find a value for property name `%s`. Illegal invocation of method `%s`. You should ' .
-                'invoke the `%s` method first!',
-                __CLASS__,
-                $propertyName,
-                'getValueForPropertyName',
-                'hasValueForPropertyName'
-            ));
-        }
 
         foreach ($this->namingStrategy->getPropertyNames($propertyName) as $propName) {
             if (\array_key_exists($propName, $data)) {
                 return $data[$propName];
             }
         }
+
+        throw new HandlerException(\sprintf(
+            'The `%s` can not find a value for property name `%s`. Illegal invocation of method `%s`. You should ' .
+            'invoke the `%s` method first!',
+            __CLASS__,
+            $propertyName,
+            'getValueForPropertyName',
+            'hasValueForPropertyName'
+        ));
     }
 
     /**

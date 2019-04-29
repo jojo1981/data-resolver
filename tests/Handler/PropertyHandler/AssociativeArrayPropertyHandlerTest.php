@@ -136,7 +136,7 @@ class AssociativeArrayPropertyHandlerTest extends TestCase
      */
     public function getValueForPropertyNameShouldReturnTheFoundValue(): void
     {
-        $this->namingStrategy->getPropertyNames('my-prop')->willReturn(['my-prop', 'myProp'])->shouldBeCalledTimes(2);
+        $this->namingStrategy->getPropertyNames('my-prop')->willReturn(['my-prop', 'myProp'])->shouldBeCalledOnce();
 
         $this->assertEquals(
             'value2',
