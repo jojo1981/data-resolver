@@ -17,6 +17,7 @@ use Jojo1981\DataResolver\Handler\SequenceHandler\ArraySequenceHandler;
 use Jojo1981\DataResolver\Handler\SequenceHandler\CompositeSequenceHandler;
 use Jojo1981\DataResolver\Handler\SequenceHandlerInterface;
 use Jojo1981\DataResolver\NamingStrategy\DefaultNamingStrategy;
+use Jojo1981\DataResolver\NamingStrategy\NamingStrategyInterface;
 
 /**
  * @package Jojo1981\DataResolver\Factory
@@ -28,6 +29,9 @@ class HandlerFactory
 
     /** @var SequenceHandlerInterface[] */
     private $sequenceHandlers = [];
+
+    /** @var NamingStrategyInterface */
+    private $namingStrategy;
 
     /**
      * @param PropertyHandlerInterface[] $propertyHandlers
@@ -47,6 +51,15 @@ class HandlerFactory
     {
         $this->sequenceHandlers = [];
         \array_walk($sequenceHandlers, [$this, 'addSequenceHandler']);
+    }
+
+    /**
+     * @param NamingStrategyInterface $namingStrategy
+     * @return void
+     */
+    public function setNamingStrategy(NamingStrategyInterface $namingStrategy): void
+    {
+        $this->namingStrategy = $namingStrategy;
     }
 
     /**
@@ -112,7 +125,10 @@ class HandlerFactory
      */
     private function getDefaultPropertyHandlers(): array
     {
-        return [new ObjectPropertyHandler(new DefaultNamingStrategy()), new AssociativeArrayPropertyHandler()];
+        return [
+            new ObjectPropertyHandler($this->geNamingStrategy()),
+            new AssociativeArrayPropertyHandler($this->geNamingStrategy())
+        ];
     }
 
     /**
@@ -121,5 +137,17 @@ class HandlerFactory
     private function getDefaultSequenceHandlers(): array
     {
         return [new ArraySequenceHandler()];
+    }
+
+    /**
+     * @return NamingStrategyInterface
+     */
+    private function geNamingStrategy(): NamingStrategyInterface
+    {
+        if (null === $this->namingStrategy) {
+            $this->namingStrategy = new DefaultNamingStrategy();
+        }
+
+        return $this->namingStrategy;
     }
 }

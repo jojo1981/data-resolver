@@ -11,12 +11,24 @@ namespace Jojo1981\DataResolver\Handler\PropertyHandler;
 
 use Jojo1981\DataResolver\Handler\Exception\HandlerException;
 use Jojo1981\DataResolver\Handler\PropertyHandlerInterface;
+use Jojo1981\DataResolver\NamingStrategy\NamingStrategyInterface;
 
 /**
  * @package Jojo1981\DataResolver\Handler\PropertyHandler
  */
 class AssociativeArrayPropertyHandler implements PropertyHandlerInterface
 {
+    /** @var NamingStrategyInterface */
+    private $namingStrategy;
+
+    /**
+     * @param NamingStrategyInterface $namingStrategy
+     */
+    public function __construct(NamingStrategyInterface $namingStrategy)
+    {
+        $this->namingStrategy = $namingStrategy;
+    }
+
     /**
      * @param string $propertyName
      * @param mixed $data
@@ -49,8 +61,11 @@ class AssociativeArrayPropertyHandler implements PropertyHandlerInterface
             ));
         }
 
-
-        return $data[$propertyName];
+        foreach ($this->namingStrategy->getPropertyNames($propertyName) as $propName) {
+            if (\array_key_exists($propName, $data)) {
+                return $data[$propName];
+            }
+        }
     }
 
     /**
@@ -65,7 +80,13 @@ class AssociativeArrayPropertyHandler implements PropertyHandlerInterface
             $this->throwUnsupportedException('hasValueForPropertyName');
         }
 
-        return \array_key_exists($propertyName, $data);
+        foreach ($this->namingStrategy->getPropertyNames($propertyName) as $propName) {
+            if (\array_key_exists($propName, $data)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**

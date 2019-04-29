@@ -11,8 +11,15 @@ namespace tests\Jojo1981\DataResolver\Handler\PropertyHandler;
 
 use Jojo1981\DataResolver\Handler\Exception\HandlerException;
 use Jojo1981\DataResolver\Handler\PropertyHandler\AssociativeArrayPropertyHandler;
+use Jojo1981\DataResolver\NamingStrategy\NamingStrategyInterface;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\TestCase;
+use Prophecy\Argument;
+use Prophecy\Exception\Doubler\ClassNotFoundException;
+use Prophecy\Exception\Doubler\DoubleException;
+use Prophecy\Exception\Doubler\InterfaceNotFoundException;
+use Prophecy\Exception\Prophecy\ObjectProphecyException;
+use Prophecy\Prophecy\ObjectProphecy;
 use SebastianBergmann\RecursionContext\InvalidArgumentException;
 
 /**
@@ -20,9 +27,24 @@ use SebastianBergmann\RecursionContext\InvalidArgumentException;
  */
 class AssociativeArrayPropertyHandlerTest extends TestCase
 {
+    /** @var ObjectProphecy|NamingStrategyInterface */
+    private $namingStrategy;
+
+    /**
+     * @throws DoubleException
+     * @throws InterfaceNotFoundException
+     * @throws ClassNotFoundException
+     * @return void
+     */
+    protected function setUp(): void
+    {
+        $this->namingStrategy = $this->prophesize(NamingStrategyInterface::class);
+    }
+
     /**
      * @test
      *
+     * @throws ObjectProphecyException
      * @throws HandlerException
      * @return void
      */
@@ -39,6 +61,7 @@ class AssociativeArrayPropertyHandlerTest extends TestCase
     /**
      * @test
      *
+     * @throws ObjectProphecyException
      * @throws HandlerException
      * @return void
      */
@@ -55,11 +78,14 @@ class AssociativeArrayPropertyHandlerTest extends TestCase
     /**
      * @test
      *
+     * @throws ObjectProphecyException
      * @throws HandlerException
      * @return void
      */
     public function getValueForPropertyNameShouldThrowHandlerExceptionWhenItSupportsButPropertyNameNotFound(): void
     {
+        $this->namingStrategy->getPropertyNames('my-prop')->willReturn(['my-prop', 'myProp'])->shouldBeCalledOnce();
+
         $this->expectExceptionObject(new HandlerException(
             'The `' . AssociativeArrayPropertyHandler::class . '` can not find a value for property name `my-prop`.' .
             ' Illegal invocation of method `getValueForPropertyName`. You should invoke the `hasValueForPropertyName`' .
@@ -72,8 +98,9 @@ class AssociativeArrayPropertyHandlerTest extends TestCase
     /**
      * @test
      *
-     * @throws InvalidArgumentException
      * @throws ExpectationFailedException
+     * @throws ObjectProphecyException
+     * @throws InvalidArgumentException
      * @return void
      */
     public function supportShouldReturnFalseWhenDataIsNotAnAssociativeArray():void
@@ -87,8 +114,9 @@ class AssociativeArrayPropertyHandlerTest extends TestCase
     /**
      * @test
      *
-     * @throws InvalidArgumentException
      * @throws ExpectationFailedException
+     * @throws ObjectProphecyException
+     * @throws InvalidArgumentException
      * @return void
      */
     public function supportShouldReturnTrueWhenDataIsAnAssociativeArray():void
@@ -100,18 +128,21 @@ class AssociativeArrayPropertyHandlerTest extends TestCase
     /**
      * @test
      *
-     * @throws HandlerException
      * @throws InvalidArgumentException
      * @throws ExpectationFailedException
+     * @throws ObjectProphecyException
+     * @throws HandlerException
      * @return void
      */
     public function getValueForPropertyNameShouldReturnTheFoundValue(): void
     {
+        $this->namingStrategy->getPropertyNames('my-prop')->willReturn(['my-prop', 'myProp'])->shouldBeCalledTimes(2);
+
         $this->assertEquals(
             'value2',
             $this->getAssociativeArrayPropertyHandler()->getValueForPropertyName(
                 'my-prop',
-                ['key' => 'value', 'my-prop' => 'value2']
+                ['key' => 'value', 'myProp' => 'value2']
             )
         );
     }
@@ -119,13 +150,16 @@ class AssociativeArrayPropertyHandlerTest extends TestCase
     /**
      * @test
      *
-     * @throws HandlerException
      * @throws InvalidArgumentException
      * @throws ExpectationFailedException
+     * @throws ObjectProphecyException
+     * @throws HandlerException
      * @return void
      */
     public function hasValueForPropertyNameShouldReturnFalseWhenNotFoundValue(): void
     {
+        $this->namingStrategy->getPropertyNames('my-prop')->willReturn(['my-prop', 'myProp'])->shouldBeCalledOnce();
+
         $this->assertFalse(
             $this->getAssociativeArrayPropertyHandler()->hasValueForPropertyName('my-prop', ['key' => 'value'])
         );
@@ -136,21 +170,27 @@ class AssociativeArrayPropertyHandlerTest extends TestCase
      *
      * @throws HandlerException
      * @throws InvalidArgumentException
+     * @throws ObjectProphecyException
      * @throws ExpectationFailedException
      * @return void
      */
     public function hasValueForPropertyNameShouldReturnTrueWhenFoundValue(): void
     {
+        $this->namingStrategy->getPropertyNames('key')->willReturn(['key'])->shouldBeCalledOnce();
+
         $this->assertTrue(
             $this->getAssociativeArrayPropertyHandler()->hasValueForPropertyName('key', ['key' => 'value'])
         );
     }
 
     /**
+     * @throws ObjectProphecyException
      * @return AssociativeArrayPropertyHandler
      */
     private function getAssociativeArrayPropertyHandler(): AssociativeArrayPropertyHandler
     {
-        return new AssociativeArrayPropertyHandler();
+        $this->namingStrategy->getMethodNames(Argument::any())->shouldNotBeCalled();
+
+        return new AssociativeArrayPropertyHandler($this->namingStrategy->reveal());
     }
 }
