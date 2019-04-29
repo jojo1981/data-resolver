@@ -38,6 +38,17 @@ class AssociativeArrayPropertyHandler implements PropertyHandlerInterface
         if (!$this->supports($propertyName, $data)) {
             $this->throwUnsupportedException('getValueForPropertyName');
         }
+        if (!$this->hasValueForPropertyName($propertyName, $data)) {
+            throw new HandlerException(\sprintf(
+                'The `%s` can not find a value for property name `%s`. Illegal invocation of method `%s`. You should ' .
+                'invoke the `%s` method first!',
+                __CLASS__,
+                $propertyName,
+                'getValueForPropertyName',
+                'hasValueForPropertyName'
+            ));
+        }
+
 
         return $data[$propertyName];
     }
@@ -84,7 +95,8 @@ class AssociativeArrayPropertyHandler implements PropertyHandlerInterface
     private function throwUnsupportedException(string $methodName): void
     {
         throw new HandlerException(\sprintf(
-            'The `%s` can only handle associative arrays. Illegal invocation of method `%s`. You should invoke the `%s` method first!',
+            'The `%s` can only handle associative arrays. Illegal invocation of method `%s`. You should invoke the ' .
+            '`%s` method first!',
             __CLASS__,
             $methodName,
             'supports'
