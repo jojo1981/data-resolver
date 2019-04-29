@@ -99,7 +99,7 @@ class CompositeSequenceHandler implements SequenceHandlerInterface
         }
 
         throw new HandlerException(\sprintf(
-            'The `%s` can has no supported handler. Illegal invocation of method `%s`. You should invoke the `%s` method first!',
+            'The `%s` has no supported handler. Illegal invocation of method `%s`. You should invoke the `%s` method first!',
             __CLASS__,
             $methodName,
             'supports'

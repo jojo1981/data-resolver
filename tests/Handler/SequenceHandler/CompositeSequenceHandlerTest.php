@@ -59,7 +59,7 @@ class CompositeSequenceHandlerTest extends TestCase
         $this->sequenceHandler2->supports($data)->willReturn(false)->shouldBeCalledOnce();
 
         $this->expectExceptionObject(new HandlerException(
-            'The `' . CompositeSequenceHandler::class . '` can has no supported handler. Illegal invocation of method' .
+            'The `' . CompositeSequenceHandler::class . '` has no supported handler. Illegal invocation of method' .
             ' `getIterator`. You should invoke the `supports` method first!'
         ));
 
@@ -80,7 +80,7 @@ class CompositeSequenceHandlerTest extends TestCase
         $this->sequenceHandler2->supports($data)->willReturn(false)->shouldBeCalledOnce();
 
         $this->expectExceptionObject(new HandlerException(
-            'The `' . CompositeSequenceHandler::class . '` can has no supported handler. Illegal invocation of method' .
+            'The `' . CompositeSequenceHandler::class . '` has no supported handler. Illegal invocation of method' .
             ' `filter`. You should invoke the `supports` method first!'
         ));
 
@@ -101,7 +101,7 @@ class CompositeSequenceHandlerTest extends TestCase
         $this->sequenceHandler2->supports($data)->willReturn(false)->shouldBeCalledOnce();
 
         $this->expectExceptionObject(new HandlerException(
-            'The `' . CompositeSequenceHandler::class . '` can has no supported handler. Illegal invocation of method' .
+            'The `' . CompositeSequenceHandler::class . '` has no supported handler. Illegal invocation of method' .
             ' `flatten`. You should invoke the `supports` method first!'
         ));
 
