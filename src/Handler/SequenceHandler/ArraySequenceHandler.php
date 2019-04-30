@@ -23,7 +23,7 @@ class ArraySequenceHandler implements SequenceHandlerInterface
      */
     public function supports($data): bool
     {
-        return $this->isSequenceArray($data);
+        return $this->isIndexedArray($data);
     }
 
     /**
@@ -82,7 +82,7 @@ class ArraySequenceHandler implements SequenceHandlerInterface
      * @param mixed $data
      * @return bool
      */
-    private function isSequenceArray($data): bool
+    private function isIndexedArray($data): bool
     {
         if (!\is_array($data)) {
             return false;
