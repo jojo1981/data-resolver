@@ -14,6 +14,7 @@ use Jojo1981\DataResolver\Factory\ExtractorBuilderFactory;
 use Jojo1981\DataResolver\Resolver;
 
 /**
+ * @api
  * @package Jojo1981\DataResolver\Builder
  */
 class ResolverBuilder

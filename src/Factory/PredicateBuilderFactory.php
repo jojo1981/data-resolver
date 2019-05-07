@@ -26,6 +26,7 @@ use Jojo1981\DataResolver\Builder\PredicateBuilderInterface;
 use Jojo1981\DataResolver\Handler\SequenceHandlerInterface;
 
 /**
+ * @internal
  * @package Jojo1981\DataResolver\Factory
  */
 class PredicateBuilderFactory

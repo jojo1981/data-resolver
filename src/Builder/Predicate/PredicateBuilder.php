@@ -13,6 +13,7 @@ use Jojo1981\DataResolver\Builder\PredicateBuilderInterface;
 use Jojo1981\DataResolver\Predicate\PredicateInterface;
 
 /**
+ * @api
  * @package Jojo1981\DataResolver\Builder\Predicate
  */
 class PredicateBuilder implements PredicateBuilderInterface

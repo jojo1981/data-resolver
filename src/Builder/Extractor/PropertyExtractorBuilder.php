@@ -15,6 +15,7 @@ use Jojo1981\DataResolver\Extractor\PropertyExtractor;
 use Jojo1981\DataResolver\Handler\PropertyHandlerInterface;
 
 /**
+ * @internal
  * @package Jojo1981\DataResolver\Builder\Extractor
  */
 class PropertyExtractorBuilder implements ExtractorBuilderInterface

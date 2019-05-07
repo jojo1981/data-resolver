@@ -15,8 +15,9 @@ use Jojo1981\DataResolver\Extractor\ExtractorInterface;
 use Jojo1981\DataResolver\Factory\PredicateBuilderFactory;
 
 /**
- * Not a predicate build but a man in the middle to force a correctly build predicate
+ * Not a predicate builder but a man in the middle to force correctly building the predicate
  *
+ * @api
  * @package Jojo1981\DataResolver\Builder\Predicate
  */
 class ExtractorPredicateBuilder

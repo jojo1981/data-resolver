@@ -14,6 +14,7 @@ use Jojo1981\DataResolver\Predicate\AndPredicate;
 use Jojo1981\DataResolver\Predicate\PredicateInterface;
 
 /**
+ * @api
  * @package Jojo1981\DataResolver\Builder\Predicate
  */
 class AndPredicateBuilder implements PredicateBuilderInterface

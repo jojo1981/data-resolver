@@ -9,7 +9,6 @@
  */
 namespace Jojo1981\DataResolver\Builder\Predicate;
 
-use Jojo1981\DataResolver\Builder\ExtractorBuilderInterface;
 use Jojo1981\DataResolver\Builder\PredicateBuilderInterface;
 use Jojo1981\DataResolver\Extractor\ExtractorInterface;
 use Jojo1981\DataResolver\Factory\PredicateBuilderFactory;
@@ -17,6 +16,7 @@ use Jojo1981\DataResolver\Predicate\ExtractorPredicate;
 use Jojo1981\DataResolver\Predicate\PredicateInterface;
 
 /**
+ * @api
  * @package Jojo1981\DataResolver\Builder\Predicate
  */
 class ConditionalPredicateBuilder implements PredicateBuilderInterface

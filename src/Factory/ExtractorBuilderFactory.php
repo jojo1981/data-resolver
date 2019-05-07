@@ -21,6 +21,7 @@ use Jojo1981\DataResolver\Handler\PropertyHandlerInterface;
 use Jojo1981\DataResolver\Handler\SequenceHandlerInterface;
 
 /**
+ * @internal
  * @package Jojo1981\DataResolver\Factory
  */
 class ExtractorBuilderFactory
