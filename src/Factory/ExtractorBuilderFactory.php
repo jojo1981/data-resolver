@@ -19,6 +19,7 @@ use Jojo1981\DataResolver\Builder\PredicateBuilderInterface;
 use Jojo1981\DataResolver\Builder\ResolverBuilder;
 use Jojo1981\DataResolver\Handler\PropertyHandlerInterface;
 use Jojo1981\DataResolver\Handler\SequenceHandlerInterface;
+use Jojo1981\DataResolver\NamingStrategy\NamingStrategyInterface;
 
 /**
  * @internal
@@ -26,6 +27,9 @@ use Jojo1981\DataResolver\Handler\SequenceHandlerInterface;
  */
 class ExtractorBuilderFactory
 {
+    /** @var NamingStrategyInterface */
+    private $namingStrategy;
+
     /** @var PropertyHandlerInterface */
     private $propertyHandler;
 
@@ -33,11 +37,16 @@ class ExtractorBuilderFactory
     private $sequenceHandler;
 
     /**
+     * @param NamingStrategyInterface $namingStrategy
      * @param PropertyHandlerInterface $propertyHandler
      * @param SequenceHandlerInterface $sequenceHandler
      */
-    public function __construct(PropertyHandlerInterface $propertyHandler, SequenceHandlerInterface $sequenceHandler)
-    {
+    public function __construct(
+        NamingStrategyInterface $namingStrategy,
+        PropertyHandlerInterface $propertyHandler,
+        SequenceHandlerInterface $sequenceHandler
+    ) {
+        $this->namingStrategy = $namingStrategy;
         $this->propertyHandler = $propertyHandler;
         $this->sequenceHandler = $sequenceHandler;
     }
@@ -75,7 +84,7 @@ class ExtractorBuilderFactory
      */
     public function getPropertyExtractorBuilder(string $propertyName): PropertyExtractorBuilder
     {
-        return new PropertyExtractorBuilder($this->propertyHandler, $propertyName);
+        return new PropertyExtractorBuilder($this->namingStrategy, $this->propertyHandler, $propertyName);
     }
 
     /**

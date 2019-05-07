@@ -12,6 +12,7 @@ namespace Jojo1981\DataResolver\Extractor;
 use Jojo1981\DataResolver\Extractor\Exception\ExtractorException;
 use Jojo1981\DataResolver\Handler\Exception\HandlerException;
 use Jojo1981\DataResolver\Handler\PropertyHandlerInterface;
+use Jojo1981\DataResolver\NamingStrategy\NamingStrategyInterface;
 use Jojo1981\DataResolver\Resolver\Context;
 
 /**
@@ -19,6 +20,9 @@ use Jojo1981\DataResolver\Resolver\Context;
  */
 class PropertyExtractor implements ExtractorInterface
 {
+    /** @var NamingStrategyInterface */
+    private $namingStrategy;
+
     /** @var PropertyHandlerInterface */
     private $propertyHandler;
 
@@ -26,11 +30,17 @@ class PropertyExtractor implements ExtractorInterface
     private $propertyName;
 
     /**
+     * @param NamingStrategyInterface $namingStrategy
      * @param PropertyHandlerInterface $propertyHandler
      * @param string $propertyName
      */
-    public function __construct(PropertyHandlerInterface $propertyHandler, string $propertyName)
+    public function __construct(
+        NamingStrategyInterface $namingStrategy,
+        PropertyHandlerInterface $propertyHandler,
+        string $propertyName
+    )
     {
+        $this->namingStrategy = $namingStrategy;
         $this->propertyHandler = $propertyHandler;
         $this->propertyName = $propertyName;
     }
@@ -43,10 +53,7 @@ class PropertyExtractor implements ExtractorInterface
      */
     public function extract(Context $context)
     {
-        if (
-            !$this->propertyHandler->supports($this->propertyName, $context->getData()) ||
-            !$this->propertyHandler->hasValueForPropertyName($this->propertyName, $context->getData())
-        ) {
+        if (false === $this->canExtract($context->getData())) {
             throw new ExtractorException(\sprintf(
                 'Could not extract data with `%s` for property: `%s` at path: `%s`',
                 \get_class($this),
@@ -56,6 +63,17 @@ class PropertyExtractor implements ExtractorInterface
         }
         $context->pushPathPart($this->propertyName);
 
-        return $this->propertyHandler->getValueForPropertyName($this->propertyName, $context->getData());
+        return $this->propertyHandler->getValueForPropertyName($this->namingStrategy, $this->propertyName, $context->getData());
+    }
+
+    /**
+     * @param mixed $data
+     * @throws HandlerException
+     * @return bool
+     */
+    private function canExtract($data): bool
+    {
+        return $this->propertyHandler->supports($this->propertyName, $data)
+            && $this->propertyHandler->hasValueForPropertyName($this->namingStrategy, $this->propertyName, $data);
     }
 }

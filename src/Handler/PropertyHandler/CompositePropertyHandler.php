@@ -11,6 +11,7 @@ namespace Jojo1981\DataResolver\Handler\PropertyHandler;
 
 use Jojo1981\DataResolver\Handler\Exception\HandlerException;
 use Jojo1981\DataResolver\Handler\PropertyHandlerInterface;
+use Jojo1981\DataResolver\NamingStrategy\NamingStrategyInterface;
 
 /**
  * @package Jojo1981\DataResolver\Handler\PropertyHandler
@@ -54,27 +55,29 @@ class CompositePropertyHandler implements PropertyHandlerInterface
     }
 
     /**
+     * @param NamingStrategyInterface $namingStrategy
      * @param string $propertyName
      * @param mixed $data
      * @throws HandlerException
      * @return mixed
      */
-    public function getValueForPropertyName(string $propertyName, $data)
+    public function getValueForPropertyName(NamingStrategyInterface $namingStrategy, string $propertyName, $data)
     {
         return $this->getSupportedHandler('getValueForPropertyName', $propertyName, $data)
-            ->getValueForPropertyName($propertyName, $data);
+            ->getValueForPropertyName($namingStrategy, $propertyName, $data);
     }
 
     /**
+     * @param NamingStrategyInterface $namingStrategy
      * @param string $propertyName
      * @param mixed $data
      * @throws HandlerException
      * @return bool
      */
-    public function hasValueForPropertyName(string $propertyName, $data): bool
+    public function hasValueForPropertyName(NamingStrategyInterface $namingStrategy, string $propertyName, $data): bool
     {
         return $this->getSupportedHandler('hasValueForPropertyName', $propertyName, $data)
-            ->hasValueForPropertyName($propertyName, $data);
+            ->hasValueForPropertyName($namingStrategy,$propertyName, $data);
     }
 
     /**

@@ -10,6 +10,7 @@
 namespace Jojo1981\DataResolver\Handler;
 
 use Jojo1981\DataResolver\Handler\Exception\HandlerException;
+use Jojo1981\DataResolver\NamingStrategy\NamingStrategyInterface;
 
 /**
  * Property handlers can get data by the property name for the data it supports
@@ -26,18 +27,20 @@ interface PropertyHandlerInterface
     public function supports(string $propertyName, $data): bool;
 
     /**
+     * @param NamingStrategyInterface $namingStrategy
      * @param string $propertyName
      * @param mixed $data
      * @throws HandlerException
      * @return mixed
      */
-    public function getValueForPropertyName(string $propertyName, $data);
+    public function getValueForPropertyName(NamingStrategyInterface $namingStrategy, string $propertyName, $data);
 
     /**
+     * @param NamingStrategyInterface $namingStrategy
      * @param string $propertyName
      * @param mixed $data
      * @throws HandlerException
      * @return bool
      */
-    public function hasValueForPropertyName(string $propertyName, $data): bool;
+    public function hasValueForPropertyName(NamingStrategyInterface $namingStrategy, string $propertyName, $data): bool;
 }

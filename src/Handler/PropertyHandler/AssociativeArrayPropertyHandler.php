@@ -18,17 +18,6 @@ use Jojo1981\DataResolver\NamingStrategy\NamingStrategyInterface;
  */
 class AssociativeArrayPropertyHandler implements PropertyHandlerInterface
 {
-    /** @var NamingStrategyInterface */
-    private $namingStrategy;
-
-    /**
-     * @param NamingStrategyInterface $namingStrategy
-     */
-    public function __construct(NamingStrategyInterface $namingStrategy)
-    {
-        $this->namingStrategy = $namingStrategy;
-    }
-
     /**
      * @param string $propertyName
      * @param mixed $data
@@ -40,18 +29,19 @@ class AssociativeArrayPropertyHandler implements PropertyHandlerInterface
     }
 
     /**
+     * @param NamingStrategyInterface $namingStrategy
      * @param string $propertyName
      * @param mixed $data
      * @throws HandlerException
      * @return mixed
      */
-    public function getValueForPropertyName(string $propertyName, $data)
+    public function getValueForPropertyName(NamingStrategyInterface $namingStrategy, string $propertyName, $data)
     {
         if (!$this->supports($propertyName, $data)) {
             $this->throwUnsupportedException('getValueForPropertyName');
         }
 
-        foreach ($this->namingStrategy->getPropertyNames($propertyName) as $propName) {
+        foreach ($namingStrategy->getPropertyNames($propertyName) as $propName) {
             if (\array_key_exists($propName, $data)) {
                 return $data[$propName];
             }
@@ -66,18 +56,19 @@ class AssociativeArrayPropertyHandler implements PropertyHandlerInterface
     }
 
     /**
+     * @param NamingStrategyInterface $namingStrategy
      * @param string $propertyName
      * @param mixed $data
      * @throws HandlerException
      * @return bool
      */
-    public function hasValueForPropertyName(string $propertyName, $data): bool
+    public function hasValueForPropertyName(NamingStrategyInterface $namingStrategy, string $propertyName, $data): bool
     {
         if (!$this->supports($propertyName, $data)) {
             $this->throwUnsupportedException('hasValueForPropertyName');
         }
 
-        foreach ($this->namingStrategy->getPropertyNames($propertyName) as $propName) {
+        foreach ($namingStrategy->getPropertyNames($propertyName) as $propName) {
             if (\array_key_exists($propName, $data)) {
                 return true;
             }

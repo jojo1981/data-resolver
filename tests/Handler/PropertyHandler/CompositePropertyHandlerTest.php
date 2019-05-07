@@ -12,6 +12,7 @@ namespace tests\Jojo1981\DataResolver\Handler\PropertyHandler;
 use Jojo1981\DataResolver\Handler\Exception\HandlerException;
 use Jojo1981\DataResolver\Handler\PropertyHandler\CompositePropertyHandler;
 use Jojo1981\DataResolver\Handler\PropertyHandlerInterface;
+use Jojo1981\DataResolver\NamingStrategy\NamingStrategyInterface;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
@@ -27,6 +28,9 @@ use SebastianBergmann\RecursionContext\InvalidArgumentException;
  */
 class CompositePropertyHandlerTest extends TestCase
 {
+    /** @var ObjectProphecy|NamingStrategyInterface */
+    private $namingStrategy;
+
     /** @var ObjectProphecy|PropertyHandlerInterface */
     private $propertyHandler1;
 
@@ -41,6 +45,7 @@ class CompositePropertyHandlerTest extends TestCase
      */
     protected function setUp(): void
     {
+        $this->namingStrategy = $this->prophesize(NamingStrategyInterface::class);
         $this->propertyHandler1 = $this->prophesize(PropertyHandlerInterface::class);
         $this->propertyHandler2 = $this->prophesize(PropertyHandlerInterface::class);
     }
@@ -64,7 +69,7 @@ class CompositePropertyHandlerTest extends TestCase
             '`getValueForPropertyName`. You should invoke the `supports` method first!'
         ));
 
-        $this->getCompositePropertyHandler()->getValueForPropertyName($propertyName, $data);
+        $this->getCompositePropertyHandler()->getValueForPropertyName($this->namingStrategy->reveal(), $propertyName, $data);
     }
 
     /**
@@ -86,7 +91,7 @@ class CompositePropertyHandlerTest extends TestCase
             '`hasValueForPropertyName`. You should invoke the `supports` method first!'
         ));
 
-        $this->getCompositePropertyHandler()->hasValueForPropertyName($propertyName, $data);
+        $this->getCompositePropertyHandler()->hasValueForPropertyName($this->namingStrategy->reveal(), $propertyName, $data);
     }
 
     /**
@@ -139,11 +144,11 @@ class CompositePropertyHandlerTest extends TestCase
         $propertyName = 'my-prop';
         $data = [];
         $this->propertyHandler1->supports($propertyName, $data)->willReturn(true)->shouldBeCalledOnce();
-        $this->propertyHandler1->getValueForPropertyName($propertyName, $data)->willReturn('FoundData')->shouldBeCalledOnce();
+        $this->propertyHandler1->getValueForPropertyName($this->namingStrategy, $propertyName, $data)->willReturn('FoundData')->shouldBeCalledOnce();
         $this->propertyHandler2->supports(Argument::any(), Argument::any())->shouldNotBeCalled();
 
 
-        $this->assertEquals('FoundData', $this->getCompositePropertyHandler()->getValueForPropertyName($propertyName, $data));
+        $this->assertEquals('FoundData', $this->getCompositePropertyHandler()->getValueForPropertyName($this->namingStrategy->reveal(), $propertyName, $data));
     }
 
     /**
@@ -160,11 +165,11 @@ class CompositePropertyHandlerTest extends TestCase
         $propertyName = 'my-prop';
         $data = [];
         $this->propertyHandler1->supports($propertyName, $data)->willReturn(true)->shouldBeCalledOnce();
-        $this->propertyHandler1->hasValueForPropertyName($propertyName, $data)->willReturn(false)->shouldBeCalledOnce();
+        $this->propertyHandler1->hasValueForPropertyName($this->namingStrategy, $propertyName, $data)->willReturn(false)->shouldBeCalledOnce();
         $this->propertyHandler2->supports(Argument::any(), Argument::any())->shouldNotBeCalled();
-        $this->propertyHandler2->hasValueForPropertyName(Argument::any(), Argument::any())->shouldNotBeCalled();
+        $this->propertyHandler2->hasValueForPropertyName(Argument::any(), Argument::any(), Argument::any())->shouldNotBeCalled();
 
-        $this->assertFalse($this->getCompositePropertyHandler()->hasValueForPropertyName($propertyName, $data));
+        $this->assertFalse($this->getCompositePropertyHandler()->hasValueForPropertyName($this->namingStrategy->reveal(), $propertyName, $data));
     }
 
     /**
@@ -181,11 +186,11 @@ class CompositePropertyHandlerTest extends TestCase
         $propertyName = 'my-prop';
         $data = [];
         $this->propertyHandler1->supports($propertyName, $data)->willReturn(false)->shouldBeCalledOnce();
-        $this->propertyHandler1->hasValueForPropertyName(Argument::any(), Argument::any())->shouldNotBeCalled();
+        $this->propertyHandler1->hasValueForPropertyName(Argument::any(), Argument::any(), Argument::any())->shouldNotBeCalled();
         $this->propertyHandler2->supports($propertyName, $data)->willReturn(true)->shouldBeCalledOnce();
-        $this->propertyHandler2->hasValueForPropertyName($propertyName, $data)->willReturn(true)->shouldBeCalledOnce();
+        $this->propertyHandler2->hasValueForPropertyName($this->namingStrategy, $propertyName, $data)->willReturn(true)->shouldBeCalledOnce();
 
-        $this->assertTrue($this->getCompositePropertyHandler()->hasValueForPropertyName($propertyName, $data));
+        $this->assertTrue($this->getCompositePropertyHandler()->hasValueForPropertyName($this->namingStrategy->reveal(), $propertyName, $data));
     }
 
     /**

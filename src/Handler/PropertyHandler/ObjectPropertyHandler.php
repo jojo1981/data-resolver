@@ -18,19 +18,8 @@ use Jojo1981\DataResolver\NamingStrategy\NamingStrategyInterface;
  */
 class ObjectPropertyHandler implements PropertyHandlerInterface
 {
-    /** @var NamingStrategyInterface */
-    private $namingStrategy;
-
     /** @var \ReflectionClass[] */
     private $reflectionClasses = [];
-
-    /**
-     * @param NamingStrategyInterface $namingStrategy
-     */
-    public function __construct(NamingStrategyInterface $namingStrategy)
-    {
-        $this->namingStrategy = $namingStrategy;
-    }
 
     /**
      * @param string $propertyName
@@ -43,12 +32,13 @@ class ObjectPropertyHandler implements PropertyHandlerInterface
     }
 
     /**
+     * @param NamingStrategyInterface $namingStrategy
      * @param string $propertyName
      * @param mixed $data
      * @throws HandlerException
      * @return mixed
      */
-    public function getValueForPropertyName(string $propertyName, $data)
+    public function getValueForPropertyName(NamingStrategyInterface $namingStrategy, string $propertyName, $data)
     {
         if (!$this->supports($propertyName, $data)) {
             $this->throwUnsupportedException('getValueForPropertyName');
@@ -56,7 +46,7 @@ class ObjectPropertyHandler implements PropertyHandlerInterface
 
         if ($data instanceof \stdClass) {
             $objectVars = \get_object_vars($data);
-            foreach ($this->namingStrategy->getPropertyNames($propertyName) as $propName) {
+            foreach ($namingStrategy->getPropertyNames($propertyName) as $propName) {
                 if (\array_key_exists($propName, $objectVars)) {
                     return $objectVars[$propName];
                 }
@@ -64,13 +54,13 @@ class ObjectPropertyHandler implements PropertyHandlerInterface
         } else {
             $reflectionClass = $this->getReflectionClass($data);
 
-            foreach ($this->namingStrategy->getMethodNames($propertyName) as $methodName) {
+            foreach ($namingStrategy->getMethodNames($propertyName) as $methodName) {
                 if (null !== $method = $this->getPublicMethod($methodName, $reflectionClass)) {
                     return $method->invoke($data);
                 }
             }
 
-            foreach ($this->namingStrategy->getPropertyNames($propertyName) as $propName) {
+            foreach ($namingStrategy->getPropertyNames($propertyName) as $propName) {
                 if (null !== $property = $this->getPublicProperty($propName, $reflectionClass)) {
                     return $property->getValue($data);
                 }
@@ -81,12 +71,13 @@ class ObjectPropertyHandler implements PropertyHandlerInterface
     }
 
     /**
+     * @param NamingStrategyInterface $namingStrategy
      * @param string $propertyName
      * @param mixed $data
      * @throws HandlerException
      * @return bool
      */
-    public function hasValueForPropertyName(string $propertyName, $data): bool
+    public function hasValueForPropertyName(NamingStrategyInterface $namingStrategy, string $propertyName, $data): bool
     {
         if (!$this->supports($propertyName, $data)) {
             $this->throwUnsupportedException('hasValueForPropertyName');
@@ -94,20 +85,20 @@ class ObjectPropertyHandler implements PropertyHandlerInterface
 
         if ($data instanceof \stdClass) {
             $objectVars = \get_object_vars($data);
-            foreach ($this->namingStrategy->getPropertyNames($propertyName) as $propName) {
+            foreach ($namingStrategy->getPropertyNames($propertyName) as $propName) {
                 if (\array_key_exists($propName, $objectVars)) {
                     return true;
                 }
             }
         } else {
             $reflectionClass = $this->getReflectionClass($data);
-            foreach ($this->namingStrategy->getMethodNames($propertyName) as $methodName) {
+            foreach ($namingStrategy->getMethodNames($propertyName) as $methodName) {
                 if (null !== $this->getPublicMethod($methodName, $reflectionClass)) {
                     return true;
                 }
             }
 
-            foreach ($this->namingStrategy->getPropertyNames($propertyName) as $propName) {
+            foreach ($namingStrategy->getPropertyNames($propertyName) as $propName) {
                 if (null !== $this->getPublicProperty($propName, $reflectionClass)) {
                     return true;
                 }

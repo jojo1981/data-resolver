@@ -13,6 +13,7 @@ use Jojo1981\DataResolver\Extractor\Exception\ExtractorException;
 use Jojo1981\DataResolver\Extractor\PropertyExtractor;
 use Jojo1981\DataResolver\Handler\Exception\HandlerException;
 use Jojo1981\DataResolver\Handler\PropertyHandlerInterface;
+use Jojo1981\DataResolver\NamingStrategy\NamingStrategyInterface;
 use Jojo1981\DataResolver\Resolver\Context;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\TestCase;
@@ -29,6 +30,9 @@ use SebastianBergmann\RecursionContext\InvalidArgumentException;
  */
 class PropertyExtractorTest extends TestCase
 {
+    /** @var ObjectProphecy|NamingStrategyInterface */
+    private $namingStrategy;
+
     /** @var ObjectProphecy|PropertyHandlerInterface */
     private $propertyHandler;
 
@@ -43,6 +47,9 @@ class PropertyExtractorTest extends TestCase
      */
     protected function setUp(): void
     {
+        $this->namingStrategy = $this->prophesize(NamingStrategyInterface::class);
+        $this->namingStrategy->getMethodNames(Argument::any())->shouldNotBeCalled();
+        $this->namingStrategy->getPropertyNames(Argument::any())->shouldNotBeCalled();
         $this->propertyHandler = $this->prophesize(PropertyHandlerInterface::class);
         $this->context = $this->prophesize(Context::class);
     }
@@ -61,7 +68,7 @@ class PropertyExtractorTest extends TestCase
         $this->context->getData()->willReturn('my-data')->shouldBeCalledOnce();
         $this->context->getPath()->willReturn('my-path')->shouldBeCalledOnce();
         $this->propertyHandler->supports($propertyName, 'my-data')->willReturn(false)->shouldBeCalledOnce();
-        $this->propertyHandler->hasValueForPropertyName(Argument::any(), Argument::any())->shouldNotBeCalled();
+        $this->propertyHandler->hasValueForPropertyName(Argument::any(), Argument::any(), Argument::any())->shouldNotBeCalled();
 
         $this->expectExceptionObject(new ExtractorException('Could not extract data with `' . PropertyExtractor::class . '` for property: `property-name` at path: `my-path`'));
 
@@ -79,10 +86,10 @@ class PropertyExtractorTest extends TestCase
     public function extractShouldThrowAnExceptionBecausePropertyHandlerSupportThePropertyAndDataFromContextButHasNoValueForThePropertyName(): void
     {
         $propertyName = 'property-name';
-        $this->context->getData()->willReturn('my-data')->shouldBeCalledTimes(2);
+        $this->context->getData()->willReturn('my-data')->shouldBeCalledOnce();
         $this->context->getPath()->willReturn('my-path')->shouldBeCalledOnce();
         $this->propertyHandler->supports($propertyName, 'my-data')->willReturn(true)->shouldBeCalled();
-        $this->propertyHandler->hasValueForPropertyName($propertyName, 'my-data')->willReturn(false)->shouldBeCalledOnce();
+        $this->propertyHandler->hasValueForPropertyName($this->namingStrategy, $propertyName, 'my-data')->willReturn(false)->shouldBeCalledOnce();
 
         $this->expectExceptionObject(new ExtractorException('Could not extract data with `' . PropertyExtractor::class . '` for property: `property-name` at path: `my-path`'));
 
@@ -102,12 +109,12 @@ class PropertyExtractorTest extends TestCase
     public function extractShouldReturnTheResultFromThePropertyHandlerGetValueForPropertyNameMethod(): void
     {
         $propertyName = 'the-prop';
-        $this->context->getData()->willReturn('my-data')->shouldBeCalledTimes(3);
+        $this->context->getData()->willReturn('my-data')->shouldBeCalledTimes(2);
         $this->context->getPath()->shouldNotBeCalled();
         $this->context->pushPathPart($propertyName)->shouldBeCalledOnce();
         $this->propertyHandler->supports($propertyName, 'my-data')->willReturn(true)->shouldBeCalled();
-        $this->propertyHandler->hasValueForPropertyName($propertyName, 'my-data')->willReturn(true)->shouldBeCalledOnce();
-        $this->propertyHandler->getValueForPropertyName($propertyName, 'my-data')->willReturn('returned-value')->shouldBeCalledOnce();
+        $this->propertyHandler->hasValueForPropertyName($this->namingStrategy, $propertyName, 'my-data')->willReturn(true)->shouldBeCalledOnce();
+        $this->propertyHandler->getValueForPropertyName($this->namingStrategy, $propertyName, 'my-data')->willReturn('returned-value')->shouldBeCalledOnce();
 
         $this->assertEquals('returned-value', $this->getPropertyExtractor($propertyName)->extract($this->context->reveal()));
     }
@@ -119,6 +126,6 @@ class PropertyExtractorTest extends TestCase
      */
     private function getPropertyExtractor(string $propertyName): PropertyExtractor
     {
-        return new PropertyExtractor($this->propertyHandler->reveal(), $propertyName);
+        return new PropertyExtractor($this->namingStrategy->reveal(), $this->propertyHandler->reveal(), $propertyName);
     }
 }

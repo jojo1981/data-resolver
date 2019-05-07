@@ -39,6 +39,7 @@ class AssociativeArrayPropertyHandlerTest extends TestCase
     protected function setUp(): void
     {
         $this->namingStrategy = $this->prophesize(NamingStrategyInterface::class);
+        $this->namingStrategy->getMethodNames(Argument::any())->shouldNotBeCalled();
     }
 
     /**
@@ -55,7 +56,7 @@ class AssociativeArrayPropertyHandlerTest extends TestCase
             '`getValueForPropertyName`. You should invoke the `supports` method first!'
         ));
 
-        $this->getAssociativeArrayPropertyHandler()->getValueForPropertyName('my-prop', null);
+        $this->getAssociativeArrayPropertyHandler()->getValueForPropertyName($this->namingStrategy->reveal(), 'my-prop', null);
     }
 
     /**
@@ -72,7 +73,7 @@ class AssociativeArrayPropertyHandlerTest extends TestCase
             'invocation of method `hasValueForPropertyName`. You should invoke the `supports` method first!'
         ));
 
-        $this->getAssociativeArrayPropertyHandler()->hasValueForPropertyName('my-prop', null);
+        $this->getAssociativeArrayPropertyHandler()->hasValueForPropertyName($this->namingStrategy->reveal(), 'my-prop', null);
     }
 
     /**
@@ -92,14 +93,13 @@ class AssociativeArrayPropertyHandlerTest extends TestCase
             ' method first!'
         ));
 
-        $this->getAssociativeArrayPropertyHandler()->getValueForPropertyName('my-prop', ['key' => 'value']);
+        $this->getAssociativeArrayPropertyHandler()->getValueForPropertyName($this->namingStrategy->reveal(), 'my-prop', ['key' => 'value']);
     }
 
     /**
      * @test
      *
      * @throws ExpectationFailedException
-     * @throws ObjectProphecyException
      * @throws InvalidArgumentException
      * @return void
      */
@@ -115,7 +115,6 @@ class AssociativeArrayPropertyHandlerTest extends TestCase
      * @test
      *
      * @throws ExpectationFailedException
-     * @throws ObjectProphecyException
      * @throws InvalidArgumentException
      * @return void
      */
@@ -141,6 +140,7 @@ class AssociativeArrayPropertyHandlerTest extends TestCase
         $this->assertEquals(
             'value2',
             $this->getAssociativeArrayPropertyHandler()->getValueForPropertyName(
+                $this->namingStrategy->reveal(),
                 'my-prop',
                 ['key' => 'value', 'myProp' => 'value2']
             )
@@ -161,7 +161,11 @@ class AssociativeArrayPropertyHandlerTest extends TestCase
         $this->namingStrategy->getPropertyNames('my-prop')->willReturn(['my-prop', 'myProp'])->shouldBeCalledOnce();
 
         $this->assertFalse(
-            $this->getAssociativeArrayPropertyHandler()->hasValueForPropertyName('my-prop', ['key' => 'value'])
+            $this->getAssociativeArrayPropertyHandler()->hasValueForPropertyName(
+                $this->namingStrategy->reveal(),
+                'my-prop',
+                ['key' => 'value']
+            )
         );
     }
 
@@ -179,18 +183,19 @@ class AssociativeArrayPropertyHandlerTest extends TestCase
         $this->namingStrategy->getPropertyNames('key')->willReturn(['key'])->shouldBeCalledOnce();
 
         $this->assertTrue(
-            $this->getAssociativeArrayPropertyHandler()->hasValueForPropertyName('key', ['key' => 'value'])
+            $this->getAssociativeArrayPropertyHandler()->hasValueForPropertyName(
+                $this->namingStrategy->reveal(),
+                'key',
+                ['key' => 'value']
+            )
         );
     }
 
     /**
-     * @throws ObjectProphecyException
      * @return AssociativeArrayPropertyHandler
      */
     private function getAssociativeArrayPropertyHandler(): AssociativeArrayPropertyHandler
     {
-        $this->namingStrategy->getMethodNames(Argument::any())->shouldNotBeCalled();
-
-        return new AssociativeArrayPropertyHandler($this->namingStrategy->reveal());
+        return new AssociativeArrayPropertyHandler();
     }
 }

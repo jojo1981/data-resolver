@@ -13,6 +13,7 @@ use Jojo1981\DataResolver\Builder\ExtractorBuilderInterface;
 use Jojo1981\DataResolver\Extractor\ExtractorInterface;
 use Jojo1981\DataResolver\Extractor\PropertyExtractor;
 use Jojo1981\DataResolver\Handler\PropertyHandlerInterface;
+use Jojo1981\DataResolver\NamingStrategy\NamingStrategyInterface;
 
 /**
  * @internal
@@ -20,6 +21,9 @@ use Jojo1981\DataResolver\Handler\PropertyHandlerInterface;
  */
 class PropertyExtractorBuilder implements ExtractorBuilderInterface
 {
+    /** @var NamingStrategyInterface */
+    private $namingStrategy;
+
     /** @var PropertyHandlerInterface */
     private $propertyHandler;
 
@@ -27,11 +31,16 @@ class PropertyExtractorBuilder implements ExtractorBuilderInterface
     private $propertyName;
 
     /**
+     * @param NamingStrategyInterface $namingStrategy
      * @param PropertyHandlerInterface $propertyHandler
      * @param string $propertyName
      */
-    public function __construct(PropertyHandlerInterface $propertyHandler, string $propertyName)
-    {
+    public function __construct(
+        NamingStrategyInterface $namingStrategy,
+        PropertyHandlerInterface $propertyHandler,
+        string $propertyName
+    ) {
+        $this->namingStrategy = $namingStrategy;
         $this->propertyHandler = $propertyHandler;
         $this->propertyName = $propertyName;
     }
@@ -41,6 +50,6 @@ class PropertyExtractorBuilder implements ExtractorBuilderInterface
      */
     public function build(): ExtractorInterface
     {
-        return new PropertyExtractor($this->propertyHandler, $this->propertyName);
+        return new PropertyExtractor($this->namingStrategy, $this->propertyHandler, $this->propertyName);
     }
 }

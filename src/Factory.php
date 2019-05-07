@@ -9,14 +9,16 @@
  */
 namespace Jojo1981\DataResolver;
 
+use Jojo1981\DataResolver\Exception\ResolverException;
 use Jojo1981\DataResolver\Factory\ExtractorBuilderFactory;
-use Jojo1981\DataResolver\Factory\HandlerFactory;
 use Jojo1981\DataResolver\Factory\PredicateBuilderFactory;
 use Jojo1981\DataResolver\Factory\ResolverBuilderFactory;
 use Jojo1981\DataResolver\Handler\PropertyHandler\AssociativeArrayPropertyHandler;
+use Jojo1981\DataResolver\Handler\PropertyHandler\CompositePropertyHandler;
 use Jojo1981\DataResolver\Handler\PropertyHandler\ObjectPropertyHandler;
 use Jojo1981\DataResolver\Handler\PropertyHandlerInterface;
 use Jojo1981\DataResolver\Handler\SequenceHandler\ArraySequenceHandler;
+use Jojo1981\DataResolver\Handler\SequenceHandler\CompositeSequenceHandler;
 use Jojo1981\DataResolver\Handler\SequenceHandlerInterface;
 use Jojo1981\DataResolver\NamingStrategy\DefaultNamingStrategy;
 use Jojo1981\DataResolver\NamingStrategy\NamingStrategyInterface;
@@ -27,23 +29,26 @@ use Jojo1981\DataResolver\NamingStrategy\NamingStrategyInterface;
  */
 class Factory
 {
-    /** @var null|HandlerFactory */
-    private $handlerFactory;
-
     /** @var ExtractorBuilderFactory */
     private $extractorBuilderFactory;
 
     /** @var PredicateBuilderFactory */
     private $predicateBuilderFactory;
 
-    /** @var NamingStrategyInterface */
-    private $namingStrategy;
+    /** @var ResolverBuilderFactory */
+    private $resolverBuilderFactory;
 
-    /** @var bool  */
-    private $useDefaultPropertyHandlers = false;
+    /** @var PropertyHandlerInterface */
+    private $propertyHandler;
+
+    /** @var SequenceHandlerInterface */
+    private $sequenceHandler;
 
     /** @var bool */
-    private $useDefaultSequenceHandlers = false;
+    private $isFrozen = false;
+
+    /** @var NamingStrategyInterface */
+    private $namingStrategy;
 
     /** @var PropertyHandlerInterface[] */
     private $propertyHandlers = [];
@@ -52,42 +57,41 @@ class Factory
     private $sequenceHandlers = [];
 
     /**
-     * @deprecated
-     *
-     * @param HandlerFactory $handlerFactory
-     * @return void
-     */
-    public function setHandlerFactory(HandlerFactory $handlerFactory): void
-    {
-        $this->handlerFactory = $handlerFactory;
-    }
-
-    /**
+     * @throws ResolverException
      * @return $this
      */
     public function useDefaultPropertyHandlers(): self
     {
-        $this->useDefaultPropertyHandlers = true;
+        $this->assertNotFrozen();
+        foreach ($this->getDefaultPropertyHandlers() as $propertyHandler) {
+            $this->registerPropertyHandler($propertyHandler);
+        }
 
         return $this;
     }
 
     /**
+     * @throws ResolverException
      * @return $this
      */
     public function useDefaultSequenceHandlers(): self
     {
-        $this->useDefaultSequenceHandlers = true;
+        $this->assertNotFrozen();
+        foreach ($this->getDefaultSequenceHandlers() as $sequenceHandler) {
+            $this->registerSequenceHandler($sequenceHandler);
+        }
 
         return $this;
     }
 
     /**
      * @param PropertyHandlerInterface $propertyHandler
+     * @throws ResolverException
      * @return $this
      */
     public function registerPropertyHandler(PropertyHandlerInterface $propertyHandler): self
     {
+        $this->assertNotFrozen();
         if (!\in_array($propertyHandler, $this->propertyHandlers, true)) {
             $this->propertyHandlers[] = $propertyHandler;
         }
@@ -97,10 +101,12 @@ class Factory
 
     /**
      * @param SequenceHandlerInterface $sequenceHandler
+     * @throws ResolverException
      * @return $this
      */
     public function registerSequenceHandler(SequenceHandlerInterface $sequenceHandler): self
     {
+        $this->assertNotFrozen();
         if (!\in_array($sequenceHandler, $this->sequenceHandlers, true)) {
             $this->sequenceHandlers[] = $sequenceHandler;
         }
@@ -110,10 +116,12 @@ class Factory
 
     /**
      * @param NamingStrategyInterface $namingStrategy
+     * @throws ResolverException
      * @return $this
      */
     public function setNamingStrategy(NamingStrategyInterface $namingStrategy): self
     {
+        $this->assertNotFrozen();
         $this->namingStrategy = $namingStrategy;
 
         return $this;
@@ -124,10 +132,15 @@ class Factory
      */
     public function getResolverBuilderFactory(): ResolverBuilderFactory
     {
-        return new ResolverBuilderFactory(
-            $this->getExtractorBuilderFactory(),
-            $this->getPredicateBuilderFactory()
-        );
+        if (null === $this->resolverBuilderFactory) {
+            $this->isFrozen = true;
+            $this->resolverBuilderFactory = new ResolverBuilderFactory(
+                $this->getExtractorBuilderFactory(),
+                $this->getPredicateBuilderFactory()
+            );
+        }
+
+        return $this->resolverBuilderFactory;
     }
 
     /**
@@ -137,8 +150,9 @@ class Factory
     {
         if (null === $this->extractorBuilderFactory) {
             $this->extractorBuilderFactory = new ExtractorBuilderFactory(
-                $this->getHandlerFactory()->getPropertyHandler(),
-                $this->getHandlerFactory()->getSequenceHandler()
+                $this->getNamingStrategy(),
+                $this->getPropertyHandler(),
+                $this->getSequenceHandler()
             );
         }
 
@@ -151,36 +165,42 @@ class Factory
     private function getPredicateBuilderFactory(): PredicateBuilderFactory
     {
         if (null === $this->predicateBuilderFactory) {
-            $this->predicateBuilderFactory = new PredicateBuilderFactory(
-                $this->getHandlerFactory()->getSequenceHandler()
-            );
+            $this->predicateBuilderFactory = new PredicateBuilderFactory($this->getSequenceHandler());
         }
 
         return $this->predicateBuilderFactory;
     }
 
     /**
-     * @return HandlerFactory
+     * @return PropertyHandlerInterface
      */
-    private function getHandlerFactory(): HandlerFactory
+    private function getPropertyHandler(): PropertyHandlerInterface
     {
-        if (null !== $this->handlerFactory) {
-
-            if (empty($this->propertyHandlers) || $this->useDefaultPropertyHandlers) {
+        if (null === $this->propertyHandler) {
+            if (empty($this->propertyHandlers)) {
                 \array_push($this->propertyHandlers, ...$this->getDefaultPropertyHandlers());
             }
-
-            if (empty($this->sequenceHandlers || $this->useDefaultSequenceHandlers)) {
-                \array_push($this->sequenceHandlers, ...$this->getDefaultSequenceHandlers());
-            }
-
-            $this->handlerFactory = new HandlerFactory();
-            $this->handlerFactory->setNamingStrategy($this->getNamingStrategy());
-            $this->handlerFactory->setPropertyHandlers($this->propertyHandlers);
-            $this->handlerFactory->setSequenceHandlers($this->sequenceHandlers);
+            $this->propertyHandler = new CompositePropertyHandler($this->propertyHandlers);
         }
 
-        return $this->handlerFactory;
+        return $this->propertyHandler;
+
+
+    }
+
+    /**
+     * @return SequenceHandlerInterface
+     */
+    private function getSequenceHandler(): SequenceHandlerInterface
+    {
+        if (null === $this->sequenceHandler) {
+            if (empty($this->sequenceHandlers)) {
+                \array_push($this->sequenceHandlers, ...$this->getDefaultSequenceHandlers());
+            }
+            $this->sequenceHandler = new CompositeSequenceHandler($this->sequenceHandlers);
+        }
+
+        return $this->sequenceHandler;
     }
 
     /**
@@ -188,10 +208,7 @@ class Factory
      */
     private function getDefaultPropertyHandlers(): array
     {
-        return [
-            new ObjectPropertyHandler($this->getNamingStrategy()),
-            new AssociativeArrayPropertyHandler($this->getNamingStrategy())
-        ];
+        return [new ObjectPropertyHandler(), new AssociativeArrayPropertyHandler()];
     }
 
     /**
@@ -208,5 +225,19 @@ class Factory
     private function getNamingStrategy(): NamingStrategyInterface
     {
         return $this->namingStrategy ?? new DefaultNamingStrategy();
+    }
+
+    /**
+     * @throws ResolverException
+     * @return void
+     */
+    private function assertNotFrozen(): void
+    {
+        if ($this->isFrozen) {
+            throw new ResolverException(
+                'Can not modify the factory while it\'s frozen. The factory gets frozen when the factory has already ' .
+                'build a resolver builder factory'
+            );
+        }
     }
 }
