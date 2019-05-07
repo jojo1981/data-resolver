@@ -104,11 +104,11 @@ class ArraySequenceHandler implements SequenceHandlerInterface
      */
     private function throwUnsupportedException(string $methodName): void
     {
-        throw new HandlerException(\sprintf(
-            'The `%s` can only handle indexed arrays. Illegal invocation of method `%s`. You should invoke the `%s` method first!',
+        throw HandlerException::IllegalMethodInvocation(
             __CLASS__,
             $methodName,
-            'supports'
-        ));
+            'supports',
+            'can only handle indexed arrays'
+        );
     }
 }

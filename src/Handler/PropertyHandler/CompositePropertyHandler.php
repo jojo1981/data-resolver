@@ -92,11 +92,6 @@ class CompositePropertyHandler implements PropertyHandlerInterface
             }
         }
 
-        throw new HandlerException(\sprintf(
-            'The `%s` has no supported handler. Illegal invocation of method `%s`. You should invoke the `%s` method first!',
-            __CLASS__,
-            $methodName,
-            'supports'
-        ));
+        throw HandlerException::IllegalMethodInvocation(__CLASS__, $methodName, 'supports', 'has no supported handler');
     }
 }

@@ -18,4 +18,35 @@ use Jojo1981\DataResolver\Exception\ResolverException;
  */
 class HandlerException extends ResolverException
 {
+    /**
+     * @param string $className
+     * @param string $invokedMethodName
+     * @param string $assertMethodName
+     * @param null|string $extraMessage
+     * @return HandlerException
+     */
+    public static function IllegalMethodInvocation(
+        string $className,
+        string $invokedMethodName,
+        string $assertMethodName,
+        ?string $extraMessage = null
+    ): HandlerException
+    {
+        return new static(\sprintf(
+            'The `%s`%s. Illegal invocation of method `%s`. You should invoke the `%s` method first!',
+            $className,
+            null !== $extraMessage ? ' ' . $extraMessage : '',
+            $invokedMethodName,
+            $assertMethodName
+        ));
+    }
+
+    /**
+     * @param \ReflectionException $reflectionException
+     * @return HandlerException
+     */
+    public static function couldNotGetReflection(\ReflectionException $reflectionException): HandlerException
+    {
+        return new static('Can not get reflection', 0, $reflectionException);
+    }
 }

@@ -170,7 +170,7 @@ class ObjectPropertyHandler implements PropertyHandlerInterface
                     \defined('FAKE_REFLECTION_EXCEPTION') ? 'A\Non\Existing\Class' : $data
                 );
             } catch (\ReflectionException $exception) {
-                throw new HandlerException('Can not get reflection', 0, $exception);
+                throw HandlerException::couldNotGetReflection($exception);
             }
         }
 
@@ -184,11 +184,6 @@ class ObjectPropertyHandler implements PropertyHandlerInterface
      */
     private function throwUnsupportedException(string $methodName): void
     {
-        throw new HandlerException(\sprintf(
-            'The `%s` can only handle objects. Illegal invocation of method `%s`. You should invoke the `%s` method first!',
-            __CLASS__,
-            $methodName,
-            'supports'
-        ));
+        throw HandlerException::IllegalMethodInvocation(__CLASS__, $methodName, 'supports', 'can only handle objects');
     }
 }

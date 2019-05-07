@@ -57,14 +57,12 @@ class AssociativeArrayPropertyHandler implements PropertyHandlerInterface
             }
         }
 
-        throw new HandlerException(\sprintf(
-            'The `%s` can not find a value for property name `%s`. Illegal invocation of method `%s`. You should ' .
-            'invoke the `%s` method first!',
+        throw HandlerException::IllegalMethodInvocation(
             __CLASS__,
-            $propertyName,
             'getValueForPropertyName',
-            'hasValueForPropertyName'
-        ));
+            'hasValueForPropertyName',
+            \sprintf('can not find a value for property name `%s`', $propertyName)
+        );
     }
 
     /**
@@ -114,12 +112,11 @@ class AssociativeArrayPropertyHandler implements PropertyHandlerInterface
      */
     private function throwUnsupportedException(string $methodName): void
     {
-        throw new HandlerException(\sprintf(
-            'The `%s` can only handle associative arrays. Illegal invocation of method `%s`. You should invoke the ' .
-            '`%s` method first!',
+        throw HandlerException::IllegalMethodInvocation(
             __CLASS__,
             $methodName,
-            'supports'
-        ));
+            'supports',
+            'can only handle associative arrays'
+        );
     }
 }
