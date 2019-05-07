@@ -20,6 +20,7 @@ use Jojo1981\DataResolver\NamingStrategy\DefaultNamingStrategy;
 use Jojo1981\DataResolver\NamingStrategy\NamingStrategyInterface;
 
 /**
+ * @deprecated
  * @package Jojo1981\DataResolver\Factory
  */
 class HandlerFactory
@@ -126,8 +127,8 @@ class HandlerFactory
     private function getDefaultPropertyHandlers(): array
     {
         return [
-            new ObjectPropertyHandler($this->geNamingStrategy()),
-            new AssociativeArrayPropertyHandler($this->geNamingStrategy())
+            new ObjectPropertyHandler($this->getNamingStrategy()),
+            new AssociativeArrayPropertyHandler($this->getNamingStrategy())
         ];
     }
 
@@ -142,7 +143,7 @@ class HandlerFactory
     /**
      * @return NamingStrategyInterface
      */
-    private function geNamingStrategy(): NamingStrategyInterface
+    private function getNamingStrategy(): NamingStrategyInterface
     {
         if (null === $this->namingStrategy) {
             $this->namingStrategy = new DefaultNamingStrategy();
