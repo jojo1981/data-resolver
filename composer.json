@@ -17,13 +17,14 @@
       "email": "jnijhuis81@gmail.com"
     }
   ],
+  "prefer-stable": true,
   "minimum-stability": "dev",
   "require": {
     "php": "^7.1",
     "phpunit/phpunit": "^7.5"
   },
   "require-dev": {
-    "php-coveralls/php-coveralls": "2.1.x-dev"
+    "php-coveralls/php-coveralls": "^2.1"
   },
   "suggest": {
     "jojo1981/data-resolver-handlers": "Add support to work with 3th party libraries"
