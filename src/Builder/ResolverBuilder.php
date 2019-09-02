@@ -39,11 +39,14 @@ class ResolverBuilder
 
     /**
      * @param string $propertyName
+     * @param string ...$propertyNames
      * @return $this
      */
-    public function get(string $propertyName): self
+    public function get(string $propertyName, ...$propertyNames): self
     {
-        $this->extractors[] = $this->extractorBuilderFactory->getPropertyExtractorBuilder($propertyName)->build();
+        $this->extractors[] = $this->extractorBuilderFactory
+            ->getPropertyExtractorBuilder($propertyName, ...$propertyNames)
+            ->build();
 
         return $this;
     }

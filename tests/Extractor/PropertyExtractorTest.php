@@ -12,6 +12,7 @@ namespace tests\Jojo1981\DataResolver\Extractor;
 use Jojo1981\DataResolver\Extractor\Exception\ExtractorException;
 use Jojo1981\DataResolver\Extractor\PropertyExtractor;
 use Jojo1981\DataResolver\Handler\Exception\HandlerException;
+use Jojo1981\DataResolver\Handler\MergeHandlerInterface;
 use Jojo1981\DataResolver\Handler\PropertyHandlerInterface;
 use Jojo1981\DataResolver\NamingStrategy\NamingStrategyInterface;
 use Jojo1981\DataResolver\Resolver\Context;
@@ -36,6 +37,9 @@ class PropertyExtractorTest extends TestCase
     /** @var ObjectProphecy|PropertyHandlerInterface */
     private $propertyHandler;
 
+    /** @var ObjectProphecy|MergeHandlerInterface  */
+    private $mergeHandler;
+
     /** @var ObjectProphecy|Context */
     private $context;
 
@@ -51,6 +55,7 @@ class PropertyExtractorTest extends TestCase
         $this->namingStrategy->getMethodNames(Argument::any())->shouldNotBeCalled();
         $this->namingStrategy->getPropertyNames(Argument::any())->shouldNotBeCalled();
         $this->propertyHandler = $this->prophesize(PropertyHandlerInterface::class);
+        $this->mergeHandler = $this->prophesize(MergeHandlerInterface::class);
         $this->context = $this->prophesize(Context::class);
     }
 
@@ -65,6 +70,7 @@ class PropertyExtractorTest extends TestCase
     public function extractShouldThrowAnExceptionBecausePropertyHandlerDoesNotSupportThePropertyAndDataFromContext(): void
     {
         $propertyName = 'property-name';
+        $this->mergeHandler->merge(Argument::any(), Argument::any())->shouldNotBeCalled();
         $this->context->getData()->willReturn('my-data')->shouldBeCalledOnce();
         $this->context->getPath()->willReturn('my-path')->shouldBeCalledOnce();
         $this->propertyHandler->supports($propertyName, 'my-data')->willReturn(false)->shouldBeCalledOnce();
@@ -86,9 +92,10 @@ class PropertyExtractorTest extends TestCase
     public function extractShouldThrowAnExceptionBecausePropertyHandlerSupportThePropertyAndDataFromContextButHasNoValueForThePropertyName(): void
     {
         $propertyName = 'property-name';
+        $this->mergeHandler->merge(Argument::any(), Argument::any())->shouldNotBeCalled();
         $this->context->getData()->willReturn('my-data')->shouldBeCalledOnce();
         $this->context->getPath()->willReturn('my-path')->shouldBeCalledOnce();
-        $this->propertyHandler->supports($propertyName, 'my-data')->willReturn(true)->shouldBeCalled();
+        $this->propertyHandler->supports($propertyName, 'my-data')->willReturn(true)->shouldBeCalledOnce();
         $this->propertyHandler->hasValueForPropertyName($this->namingStrategy, $propertyName, 'my-data')->willReturn(false)->shouldBeCalledOnce();
 
         $this->expectExceptionObject(new ExtractorException('Could not extract data with `' . PropertyExtractor::class . '` for property: `property-name` at path: `my-path`'));
@@ -109,10 +116,12 @@ class PropertyExtractorTest extends TestCase
     public function extractShouldReturnTheResultFromThePropertyHandlerGetValueForPropertyNameMethod(): void
     {
         $propertyName = 'the-prop';
+        $this->mergeHandler->merge(Argument::any(), Argument::any())->shouldNotBeCalled();
         $this->context->getData()->willReturn('my-data')->shouldBeCalledTimes(2);
         $this->context->getPath()->shouldNotBeCalled();
         $this->context->pushPathPart($propertyName)->shouldBeCalledOnce();
-        $this->propertyHandler->supports($propertyName, 'my-data')->willReturn(true)->shouldBeCalled();
+        $this->context->popPathPart()->shouldBeCalledOnce();
+        $this->propertyHandler->supports($propertyName, 'my-data')->willReturn(true)->shouldBeCalledOnce();
         $this->propertyHandler->hasValueForPropertyName($this->namingStrategy, $propertyName, 'my-data')->willReturn(true)->shouldBeCalledOnce();
         $this->propertyHandler->getValueForPropertyName($this->namingStrategy, $propertyName, 'my-data')->willReturn('returned-value')->shouldBeCalledOnce();
 
@@ -120,12 +129,50 @@ class PropertyExtractorTest extends TestCase
     }
 
     /**
+     * @test
+     *
+     * @throws ExtractorException
+     * @throws HandlerException
+     * @throws InvalidArgumentException
+     * @throws ObjectProphecyException
+     * @throws ExpectationFailedException
+     * @return void
+     */
+    public function extractWithMultiplePropertiesShouldReturnTheResultFromTheMergeHandler(): void
+    {
+        $propertyNames = ['prop1', 'prop2'];
+        $resolvedValues = ['value1', 'value2'];
+
+        $this->context->popPathPart()->shouldBeCalledTimes(2);
+        $this->context->getData()->willReturn('my-data')->shouldBeCalledTimes(4);
+
+        $this->context->getPath()->shouldNotBeCalled();
+        foreach ($propertyNames as $index => $propertyName) {
+            $this->context->pushPathPart($propertyName)->shouldBeCalledOnce();
+            $this->propertyHandler->supports($propertyName, 'my-data')->willReturn(true)->shouldBeCalledOnce();
+            $this->propertyHandler->hasValueForPropertyName($this->namingStrategy, $propertyName, 'my-data')->willReturn(true)->shouldBeCalledOnce();
+            $this->propertyHandler->getValueForPropertyName($this->namingStrategy, $propertyName, 'my-data')->willReturn($resolvedValues[$index])->shouldBeCalledOnce();
+        }
+
+        $result = new \stdClass();
+        $this->mergeHandler->merge($this->context, ['prop1' => 'value1', 'prop2' => 'value2'] )->shouldBeCalled()->willReturn($result);
+
+        $this->assertSame($result, $this->getPropertyExtractor(...$propertyNames)->extract($this->context->reveal()));
+    }
+
+    /**
      * @param string $propertyName
+     * @param string ...$propertyNames
      * @throws ObjectProphecyException
      * @return PropertyExtractor
      */
-    private function getPropertyExtractor(string $propertyName): PropertyExtractor
+    private function getPropertyExtractor(string $propertyName, ...$propertyNames): PropertyExtractor
     {
-        return new PropertyExtractor($this->namingStrategy->reveal(), $this->propertyHandler->reveal(), $propertyName);
+        return new PropertyExtractor(
+            $this->namingStrategy->reveal(),
+            $this->propertyHandler->reveal(),
+            $this->mergeHandler->reveal(),
+            \array_merge($propertyNames, [$propertyName])
+        );
     }
 }

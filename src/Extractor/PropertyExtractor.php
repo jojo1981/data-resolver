@@ -11,6 +11,7 @@ namespace Jojo1981\DataResolver\Extractor;
 
 use Jojo1981\DataResolver\Extractor\Exception\ExtractorException;
 use Jojo1981\DataResolver\Handler\Exception\HandlerException;
+use Jojo1981\DataResolver\Handler\MergeHandlerInterface;
 use Jojo1981\DataResolver\Handler\PropertyHandlerInterface;
 use Jojo1981\DataResolver\NamingStrategy\NamingStrategyInterface;
 use Jojo1981\DataResolver\Resolver\Context;
@@ -26,23 +27,28 @@ class PropertyExtractor implements ExtractorInterface
     /** @var PropertyHandlerInterface */
     private $propertyHandler;
 
-    /** @var string */
-    private $propertyName;
+    /** @var MergeHandlerInterface */
+    private $mergeHandlerInterface;
+
+    /** @var string[] */
+    private $propertyNames;
 
     /**
      * @param NamingStrategyInterface $namingStrategy
      * @param PropertyHandlerInterface $propertyHandler
-     * @param string $propertyName
+     * @param MergeHandlerInterface $mergeHandlerInterface
+     * @param string[] $propertyNames
      */
     public function __construct(
         NamingStrategyInterface $namingStrategy,
         PropertyHandlerInterface $propertyHandler,
-        string $propertyName
-    )
-    {
+        MergeHandlerInterface $mergeHandlerInterface,
+        array $propertyNames
+    ) {
         $this->namingStrategy = $namingStrategy;
         $this->propertyHandler = $propertyHandler;
-        $this->propertyName = $propertyName;
+        $this->mergeHandlerInterface = $mergeHandlerInterface;
+        $this->propertyNames = $propertyNames;
     }
 
     /**
@@ -53,27 +59,42 @@ class PropertyExtractor implements ExtractorInterface
      */
     public function extract(Context $context)
     {
-        if (false === $this->canExtract($context->getData())) {
-            throw new ExtractorException(\sprintf(
-                'Could not extract data with `%s` for property: `%s` at path: `%s`',
-                \get_class($this),
-                $this->propertyName,
-                $context->getPath()
-            ));
-        }
-        $context->pushPathPart($this->propertyName);
+        $elements = [];
+        foreach ($this->propertyNames as $propertyName) {
+            if (false === $this->canExtract($context->getData(), $propertyName)) {
+                throw new ExtractorException(\sprintf(
+                    'Could not extract data with `%s` for property: `%s` at path: `%s`',
+                    \get_class($this),
+                    $propertyName,
+                    $context->getPath()
+                ));
+            }
 
-        return $this->propertyHandler->getValueForPropertyName($this->namingStrategy, $this->propertyName, $context->getData());
+            $context->pushPathPart($propertyName);
+            $elements[$propertyName] = $this->propertyHandler->getValueForPropertyName(
+                $this->namingStrategy,
+                $propertyName,
+                $context->getData()
+            );
+            $context->popPathPart();
+        }
+
+        if (1 === \count($elements)) {
+            return \array_shift($elements);
+        }
+
+        return $this->mergeHandlerInterface->merge($context, $elements);
     }
 
     /**
      * @param mixed $data
+     * @param string $propertyName
      * @throws HandlerException
      * @return bool
      */
-    private function canExtract($data): bool
+    private function canExtract($data, string $propertyName): bool
     {
-        return $this->propertyHandler->supports($this->propertyName, $data)
-            && $this->propertyHandler->hasValueForPropertyName($this->namingStrategy, $this->propertyName, $data);
+        return $this->propertyHandler->supports($propertyName, $data)
+            && $this->propertyHandler->hasValueForPropertyName($this->namingStrategy, $propertyName, $data);
     }
 }

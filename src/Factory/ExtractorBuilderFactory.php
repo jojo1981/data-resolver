@@ -17,6 +17,7 @@ use Jojo1981\DataResolver\Builder\Extractor\PropertyExtractorBuilder;
 use Jojo1981\DataResolver\Builder\Extractor\ResolverExtractorBuilder;
 use Jojo1981\DataResolver\Builder\PredicateBuilderInterface;
 use Jojo1981\DataResolver\Builder\ResolverBuilder;
+use Jojo1981\DataResolver\Handler\MergeHandlerInterface;
 use Jojo1981\DataResolver\Handler\PropertyHandlerInterface;
 use Jojo1981\DataResolver\Handler\SequenceHandlerInterface;
 use Jojo1981\DataResolver\NamingStrategy\NamingStrategyInterface;
@@ -36,19 +37,25 @@ class ExtractorBuilderFactory
     /** @var SequenceHandlerInterface */
     private $sequenceHandler;
 
+    /** @var MergeHandlerInterface */
+    private $mergeHandler;
+
     /**
      * @param NamingStrategyInterface $namingStrategy
      * @param PropertyHandlerInterface $propertyHandler
      * @param SequenceHandlerInterface $sequenceHandler
+     * @param MergeHandlerInterface $mergeHandler
      */
     public function __construct(
         NamingStrategyInterface $namingStrategy,
         PropertyHandlerInterface $propertyHandler,
-        SequenceHandlerInterface $sequenceHandler
+        SequenceHandlerInterface $sequenceHandler,
+        MergeHandlerInterface $mergeHandler
     ) {
         $this->namingStrategy = $namingStrategy;
         $this->propertyHandler = $propertyHandler;
         $this->sequenceHandler = $sequenceHandler;
+        $this->mergeHandler = $mergeHandler;
     }
 
     /**
@@ -80,11 +87,17 @@ class ExtractorBuilderFactory
 
     /**
      * @param string $propertyName
+     * @param string ...$propertyNames
      * @return PropertyExtractorBuilder
      */
-    public function getPropertyExtractorBuilder(string $propertyName): PropertyExtractorBuilder
+    public function getPropertyExtractorBuilder(string $propertyName, ...$propertyNames): PropertyExtractorBuilder
     {
-        return new PropertyExtractorBuilder($this->namingStrategy, $this->propertyHandler, $propertyName);
+        return new PropertyExtractorBuilder(
+            $this->namingStrategy,
+            $this->propertyHandler,
+            $this->mergeHandler,
+            \array_merge($propertyNames, [$propertyName])
+        );
     }
 
     /**

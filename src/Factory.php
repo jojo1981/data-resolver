@@ -13,6 +13,8 @@ use Jojo1981\DataResolver\Exception\ResolverException;
 use Jojo1981\DataResolver\Factory\ExtractorBuilderFactory;
 use Jojo1981\DataResolver\Factory\PredicateBuilderFactory;
 use Jojo1981\DataResolver\Factory\ResolverBuilderFactory;
+use Jojo1981\DataResolver\Handler\MergeHandler\DefaultMergeHandler;
+use Jojo1981\DataResolver\Handler\MergeHandlerInterface;
 use Jojo1981\DataResolver\Handler\PropertyHandler\AssociativeArrayPropertyHandler;
 use Jojo1981\DataResolver\Handler\PropertyHandler\CompositePropertyHandler;
 use Jojo1981\DataResolver\Handler\PropertyHandler\ObjectPropertyHandler;
@@ -43,6 +45,9 @@ class Factory
 
     /** @var SequenceHandlerInterface */
     private $sequenceHandler;
+
+    /** @var MergeHandlerInterface */
+    private $mergeHandler;
 
     /** @var bool */
     private $isFrozen = false;
@@ -128,6 +133,19 @@ class Factory
     }
 
     /**
+     * @param MergeHandlerInterface $mergeHandler
+     * @throws ResolverException
+     * @return $this
+     */
+    public function setMergeHandler(MergeHandlerInterface $mergeHandler): self
+    {
+        $this->assertNotFrozen();
+        $this->mergeHandler = $mergeHandler;
+
+        return $this;
+    }
+
+    /**
      * @return ResolverBuilderFactory
      */
     public function getResolverBuilderFactory(): ResolverBuilderFactory
@@ -152,7 +170,8 @@ class Factory
             $this->extractorBuilderFactory = new ExtractorBuilderFactory(
                 $this->getNamingStrategy(),
                 $this->getPropertyHandler(),
-                $this->getSequenceHandler()
+                $this->getSequenceHandler(),
+                $this->getMergeHandler()
             );
         }
 
@@ -184,8 +203,6 @@ class Factory
         }
 
         return $this->propertyHandler;
-
-
     }
 
     /**
@@ -225,6 +242,14 @@ class Factory
     private function getNamingStrategy(): NamingStrategyInterface
     {
         return $this->namingStrategy ?? new DefaultNamingStrategy();
+    }
+
+    /**
+     * @return MergeHandlerInterface
+     */
+    private function getMergeHandler(): MergeHandlerInterface
+    {
+        return $this->mergeHandler ?? new DefaultMergeHandler();
     }
 
     /**

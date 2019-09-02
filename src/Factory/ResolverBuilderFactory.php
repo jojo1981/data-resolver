@@ -59,11 +59,12 @@ class ResolverBuilderFactory
 
     /**
      * @param string $propertyName
+     * @param string ...$propertyNames
      * @return ResolverBuilder
      */
-    public function get(string $propertyName): ResolverBuilder
+    public function get(string $propertyName, ...$propertyNames): ResolverBuilder
     {
-        return $this->create()->get($propertyName);
+        return $this->create()->get($propertyName, ...$propertyNames);
     }
 
     /**
