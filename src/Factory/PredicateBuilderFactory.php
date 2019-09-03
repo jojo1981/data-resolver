@@ -23,6 +23,7 @@ use Jojo1981\DataResolver\Builder\Predicate\OrPredicateBuilder;
 use Jojo1981\DataResolver\Builder\Predicate\PredicateBuilder;
 use Jojo1981\DataResolver\Builder\Predicate\SomePredicateBuilder;
 use Jojo1981\DataResolver\Builder\PredicateBuilderInterface;
+use Jojo1981\DataResolver\Comparator\ComparatorInterface;
 use Jojo1981\DataResolver\Handler\SequenceHandlerInterface;
 
 /**
@@ -34,12 +35,17 @@ class PredicateBuilderFactory
     /** @var SequenceHandlerInterface */
     private $sequenceHandler;
 
+    /** @var ComparatorInterface */
+    private $comparator;
+
     /**
      * @param SequenceHandlerInterface $sequenceHandler
+     * @param ComparatorInterface $comparator
      */
-    public function __construct(SequenceHandlerInterface $sequenceHandler)
+    public function __construct(SequenceHandlerInterface $sequenceHandler, ComparatorInterface $comparator)
     {
         $this->sequenceHandler = $sequenceHandler;
+        $this->comparator = $comparator;
     }
 
     /**
@@ -83,7 +89,7 @@ class PredicateBuilderFactory
      */
     public function getEqualsPredicateBuilder($expectedValue): EqualsPredicateBuilder
     {
-        return new EqualsPredicateBuilder($expectedValue);
+        return new EqualsPredicateBuilder($expectedValue, $this->comparator);
     }
 
     /**
@@ -141,7 +147,7 @@ class PredicateBuilderFactory
      */
     public function getInPredicateBuilder(array $expectedValues): InPredicateBuilder
     {
-        return new InPredicateBuilder($expectedValues);
+        return new InPredicateBuilder($expectedValues, $this->comparator);
     }
 
     /**

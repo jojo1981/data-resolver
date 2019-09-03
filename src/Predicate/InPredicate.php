@@ -10,6 +10,7 @@
 
 namespace Jojo1981\DataResolver\Predicate;
 
+use Jojo1981\DataResolver\Comparator\ComparatorInterface;
 use Jojo1981\DataResolver\Resolver\Context;
 
 /**
@@ -20,12 +21,17 @@ class InPredicate implements PredicateInterface
     /** @var mixed[] */
     private $expectedValues;
 
+    /** @var ComparatorInterface */
+    private $comparator;
+
     /**
      * @param mixed[] $expectedValues
+     * @param ComparatorInterface $comparator
      */
-    public function __construct(array $expectedValues)
+    public function __construct(array $expectedValues, ComparatorInterface $comparator)
     {
         $this->expectedValues = $expectedValues;
+        $this->comparator = $comparator;
     }
 
     /**
@@ -34,6 +40,12 @@ class InPredicate implements PredicateInterface
      */
     public function match(Context $context): bool
     {
-        return \in_array($context->getData(), $this->expectedValues, true);
+        foreach ($this->expectedValues as $expectedValue) {
+            if ($this->comparator->isEqual($expectedValue, $context->getData())) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

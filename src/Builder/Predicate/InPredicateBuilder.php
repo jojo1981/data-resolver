@@ -10,6 +10,7 @@
 namespace Jojo1981\DataResolver\Builder\Predicate;
 
 use Jojo1981\DataResolver\Builder\PredicateBuilderInterface;
+use Jojo1981\DataResolver\Comparator\ComparatorInterface;
 use Jojo1981\DataResolver\Predicate\InPredicate;
 use Jojo1981\DataResolver\Predicate\PredicateInterface;
 
@@ -21,12 +22,17 @@ class InPredicateBuilder implements PredicateBuilderInterface
     /** @var mixed[] */
     private $expectedValues;
 
+    /** @var ComparatorInterface */
+    private $comparator;
+
     /**
      * @param mixed[] $expectedValues
+     * @param ComparatorInterface $comparator
      */
-    public function __construct(array $expectedValues)
+    public function __construct(array $expectedValues, ComparatorInterface $comparator)
     {
         $this->expectedValues = $expectedValues;
+        $this->comparator = $comparator;
     }
 
     /**
@@ -34,6 +40,6 @@ class InPredicateBuilder implements PredicateBuilderInterface
      */
     public function build(): PredicateInterface
     {
-        return new InPredicate($this->expectedValues);
+        return new InPredicate($this->expectedValues, $this->comparator);
     }
 }

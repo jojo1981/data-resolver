@@ -9,6 +9,8 @@
  */
 namespace Jojo1981\DataResolver;
 
+use Jojo1981\DataResolver\Comparator\ComparatorInterface;
+use Jojo1981\DataResolver\Comparator\DefaultComparator;
 use Jojo1981\DataResolver\Exception\ResolverException;
 use Jojo1981\DataResolver\Factory\ExtractorBuilderFactory;
 use Jojo1981\DataResolver\Factory\PredicateBuilderFactory;
@@ -48,6 +50,9 @@ class Factory
 
     /** @var MergeHandlerInterface */
     private $mergeHandler;
+
+    /** @var ComparatorInterface */
+    private $comparator;
 
     /** @var bool */
     private $isFrozen = false;
@@ -146,6 +151,19 @@ class Factory
     }
 
     /**
+     * @param ComparatorInterface $comparator
+     * @throws ResolverException
+     * @return $this
+     */
+    public function setComparator(ComparatorInterface $comparator): self
+    {
+        $this->assertNotFrozen();
+        $this->comparator = $comparator;
+
+        return $this;
+    }
+
+    /**
      * @return ResolverBuilderFactory
      */
     public function getResolverBuilderFactory(): ResolverBuilderFactory
@@ -184,7 +202,10 @@ class Factory
     private function getPredicateBuilderFactory(): PredicateBuilderFactory
     {
         if (null === $this->predicateBuilderFactory) {
-            $this->predicateBuilderFactory = new PredicateBuilderFactory($this->getSequenceHandler());
+            $this->predicateBuilderFactory = new PredicateBuilderFactory(
+                $this->getSequenceHandler(),
+                $this->getComparator()
+            );
         }
 
         return $this->predicateBuilderFactory;
@@ -250,6 +271,14 @@ class Factory
     private function getMergeHandler(): MergeHandlerInterface
     {
         return $this->mergeHandler ?? new DefaultMergeHandler();
+    }
+
+    /**
+     * @return ComparatorInterface
+     */
+    private function getComparator(): ComparatorInterface
+    {
+        return $this->comparator ?? new DefaultComparator();
     }
 
     /**

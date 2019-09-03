@@ -9,6 +9,7 @@
  */
 namespace tests\Jojo1981\DataResolver\Predicate;
 
+use Jojo1981\DataResolver\Comparator\ComparatorInterface;
 use Jojo1981\DataResolver\Predicate\EqualsPredicate;
 use Jojo1981\DataResolver\Resolver\Context;
 use PHPUnit\Framework\ExpectationFailedException;
@@ -20,71 +21,64 @@ use Prophecy\Exception\Prophecy\ObjectProphecyException;
 use Prophecy\Prophecy\ObjectProphecy;
 use SebastianBergmann\RecursionContext\InvalidArgumentException;
 
-
 /**
  * @package tests\Jojo1981\DataResolver\Predicate
  */
 class EqualsPredicateTest extends TestCase
 {
+    /** @var ObjectProphecy|ComparatorInterface */
+    private $comparator;
+
+    /**
+     * @throws DoubleException
+     * @throws InterfaceNotFoundException
+     * @throws ClassNotFoundException
+     * @return void
+     */
+    protected function setUp(): void
+    {
+        $this->comparator = $this->prophesize(ComparatorInterface::class);
+    }
+
     /**
      * @test
      *
      * @throws InvalidArgumentException
-     * @throws ClassNotFoundException
-     * @throws DoubleException
-     * @throws InterfaceNotFoundException
      * @throws ObjectProphecyException
      * @throws ExpectationFailedException
      * @return void
      */
-    public function matchShouldReturnFalseEvenWhenTheUsedIsEqualConstraintThrowsAnException(): void
+    public function matchShouldReturnTrueFromComparator(): void
     {
-        /** @var ObjectProphecy|\SplObjectStorage $objectStorage1 */
-        $objectStorage1 = $this->prophesize(\SplObjectStorage::class);
-
-        /** @var ObjectProphecy|\SplObjectStorage $objectStorage2 */
-        $objectStorage2 = $this->prophesize(\SplObjectStorage::class);
-        $objectStorage2->rewind()->willThrow(new \Exception('Force the IsEqual constraint to throw an exception'));
-
-        $this->assertFalse(
-            (new EqualsPredicate($objectStorage1->reveal()))->match(new Context($objectStorage2->reveal()))
-        );
+        $expectedValue = new \stdClass();
+        $actualValue = [];
+        $this->comparator->isEqual($expectedValue, $actualValue)->willReturn(true)->shouldBeCalledOnce();
+        $this->assertTrue($this->getEqualsPredicate($expectedValue)->match(new Context($actualValue)));
     }
 
     /**
      * @test
      *
      * @throws InvalidArgumentException
+     * @throws ObjectProphecyException
      * @throws ExpectationFailedException
      * @return void
      */
-    public function matchShouldReturnFalseWhenValueDoesNotExistsInExpectedValues(): void
+    public function matchShouldReturnFalseFromComparator(): void
     {
-        $this->assertFalse((new EqualsPredicate('value1'))->match(new Context('value2')));
-        $this->assertFalse((new EqualsPredicate('Value1'))->match(new Context('value1')));
-        $this->assertFalse((new EqualsPredicate(true))->match(new Context(false)));
-        $this->assertFalse((new EqualsPredicate(false))->match(new Context(true)));
-        $this->assertFalse((new EqualsPredicate(['name' => 'Tester']))->match(new Context(['name' => 'tester'])));
+        $expectedValue = 'text1';
+        $actualValue = new \stdClass();
+        $this->comparator->isEqual($expectedValue, $actualValue)->willReturn(false)->shouldBeCalledOnce();
+        $this->assertFalse($this->getEqualsPredicate($expectedValue)->match(new Context($actualValue)));
     }
 
     /**
-     * @test
-     *
-     * @throws InvalidArgumentException
-     * @throws ExpectationFailedException
-     * @return void
+     * @param mixed $expectedValue
+     * @throws ObjectProphecyException
+     * @return EqualsPredicate
      */
-    public function matchShouldReturnTrueWhenValueDoesExistsInExpectedValues(): void
+    private function getEqualsPredicate($expectedValue): EqualsPredicate
     {
-        $this->assertTrue((new EqualsPredicate('value1'))->match(new Context('value1')));
-        $this->assertTrue((new EqualsPredicate(['value1']))->match(new Context(['value1'])));
-        $this->assertTrue((new EqualsPredicate(new \stdClass()))->match(new Context(new \stdClass())));
-        $this->assertTrue((new EqualsPredicate(['name' => 'Tester']))->match(new Context(['name' => 'Tester'])));
-        $this->assertTrue((new EqualsPredicate(true))->match(new Context(true)));
-        $this->assertTrue((new EqualsPredicate(false))->match(new Context(false)));
-        $this->assertTrue(
-            (new EqualsPredicate(['name' => 'my-name', 'age' => 'my-age']))
-                ->match(new Context(['age' => 'my-age', 'name' => 'my-name']))
-        );
+        return new EqualsPredicate($expectedValue, $this->comparator->reveal());
     }
 }

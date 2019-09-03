@@ -10,6 +10,7 @@
 namespace Jojo1981\DataResolver\Builder\Predicate;
 
 use Jojo1981\DataResolver\Builder\PredicateBuilderInterface;
+use Jojo1981\DataResolver\Comparator\ComparatorInterface;
 use Jojo1981\DataResolver\Predicate\EqualsPredicate;
 use Jojo1981\DataResolver\Predicate\PredicateInterface;
 
@@ -21,12 +22,17 @@ class EqualsPredicateBuilder implements PredicateBuilderInterface
     /** @var mixed */
     private $expectedValue;
 
+    /** @var ComparatorInterface */
+    private $comparator;
+
     /**
      * @param mixed $expectedValue
+     * @param ComparatorInterface $comparator
      */
-    public function __construct($expectedValue)
+    public function __construct($expectedValue, ComparatorInterface $comparator)
     {
         $this->expectedValue = $expectedValue;
+        $this->comparator = $comparator;
     }
 
     /**
@@ -34,6 +40,6 @@ class EqualsPredicateBuilder implements PredicateBuilderInterface
      */
     public function build(): PredicateInterface
     {
-        return new EqualsPredicate($this->expectedValue);
+        return new EqualsPredicate($this->expectedValue, $this->comparator);
     }
 }
