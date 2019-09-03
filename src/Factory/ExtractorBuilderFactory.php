@@ -90,7 +90,7 @@ class ExtractorBuilderFactory
      * @param string ...$propertyNames
      * @return PropertyExtractorBuilder
      */
-    public function getPropertyExtractorBuilder(string $propertyName, ...$propertyNames): PropertyExtractorBuilder
+    public function getPropertyExtractorBuilder(string $propertyName, string ...$propertyNames): PropertyExtractorBuilder
     {
         return new PropertyExtractorBuilder(
             $this->namingStrategy,

@@ -42,7 +42,7 @@ class ResolverBuilder
      * @param string ...$propertyNames
      * @return $this
      */
-    public function get(string $propertyName, ...$propertyNames): self
+    public function get(string $propertyName, string ...$propertyNames): self
     {
         $this->extractors[] = $this->extractorBuilderFactory
             ->getPropertyExtractorBuilder($propertyName, ...$propertyNames)
