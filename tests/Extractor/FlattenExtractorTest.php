@@ -54,6 +54,8 @@ class FlattenExtractorTest extends TestCase
         $this->extractor = $this->prophesize(ExtractorInterface::class);
         $this->sequenceHandler = $this->prophesize(SequenceHandlerInterface::class);
         $this->originalContext = $this->prophesize(Context::class);
+        $this->originalContext->setData(Argument::any())->shouldNotBeCalled();
+        $this->originalContext->setPath(Argument::any())->shouldNotBeCalled();
         $this->copiedContext = $this->prophesize(Context::class);
     }
 

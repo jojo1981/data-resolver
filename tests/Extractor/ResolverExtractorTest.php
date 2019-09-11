@@ -17,6 +17,7 @@ use Jojo1981\DataResolver\Resolver;
 use Jojo1981\DataResolver\Resolver\Context;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\TestCase;
+use Prophecy\Argument;
 use Prophecy\Exception\Doubler\ClassNotFoundException;
 use Prophecy\Exception\Doubler\DoubleException;
 use Prophecy\Exception\Doubler\InterfaceNotFoundException;
@@ -45,6 +46,8 @@ class ResolverExtractorTest extends TestCase
     {
         $this->resolver = $this->prophesize(Resolver::class);
         $this->context = $this->prophesize(Context::class);
+        $this->context->setData(Argument::any())->shouldNotBeCalled();
+        $this->context->setPath(Argument::any())->shouldNotBeCalled();
     }
 
     /**

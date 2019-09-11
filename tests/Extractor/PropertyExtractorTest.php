@@ -57,6 +57,8 @@ class PropertyExtractorTest extends TestCase
         $this->propertyHandler = $this->prophesize(PropertyHandlerInterface::class);
         $this->mergeHandler = $this->prophesize(MergeHandlerInterface::class);
         $this->context = $this->prophesize(Context::class);
+        $this->context->setData(Argument::any())->shouldNotBeCalled();
+        $this->context->setPath(Argument::any())->shouldNotBeCalled();
     }
 
     /**

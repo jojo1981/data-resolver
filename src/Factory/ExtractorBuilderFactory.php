@@ -9,6 +9,9 @@
  */
 namespace Jojo1981\DataResolver\Factory;
 
+use Jojo1981\DataResolver\Builder\Extractor\AllExtractorBuilder;
+use Jojo1981\DataResolver\Builder\Extractor\NoneExtractorBuilder;
+use Jojo1981\DataResolver\Builder\Extractor\SomeExtractorBuilder;
 use Jojo1981\DataResolver\Builder\ExtractorBuilderInterface;
 use Jojo1981\DataResolver\Builder\Extractor\FilterExtractorBuilder;
 use Jojo1981\DataResolver\Builder\Extractor\FindExtractorBuilder;
@@ -83,6 +86,33 @@ class ExtractorBuilderFactory
     public function getFlattenExtractorBuilder(ExtractorBuilderInterface $extractorBuilder): FlattenExtractorBuilder
     {
         return new FlattenExtractorBuilder($this->sequenceHandler, $extractorBuilder->build());
+    }
+
+    /**
+     * @param PredicateBuilderInterface $predicateBuilder
+     * @return AllExtractorBuilder
+     */
+    public function getAllExtractorBuilder(PredicateBuilderInterface $predicateBuilder): AllExtractorBuilder
+    {
+        return new AllExtractorBuilder($this->sequenceHandler,  $predicateBuilder->build());
+    }
+
+    /**
+     * @param PredicateBuilderInterface $predicateBuilder
+     * @return NoneExtractorBuilder
+     */
+    public function getNoneExtractorBuilder(PredicateBuilderInterface $predicateBuilder): NoneExtractorBuilder
+    {
+        return new NoneExtractorBuilder($this->sequenceHandler,  $predicateBuilder->build());
+    }
+
+    /**
+     * @param PredicateBuilderInterface $predicateBuilder
+     * @return SomeExtractorBuilder
+     */
+    public function getSomeExtractorBuilder(PredicateBuilderInterface $predicateBuilder): SomeExtractorBuilder
+    {
+        return new SomeExtractorBuilder($this->sequenceHandler,  $predicateBuilder->build());
     }
 
     /**

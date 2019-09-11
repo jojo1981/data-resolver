@@ -86,6 +86,42 @@ class ResolverBuilderFactory
     }
 
     /**
+     * @param PredicateBuilderInterface $predicateBuilder
+     * @return ResolverBuilder
+     */
+    public function find(PredicateBuilderInterface $predicateBuilder): ResolverBuilder
+    {
+        return $this->create()->find($predicateBuilder);
+    }
+
+    /**
+     * @param PredicateBuilderInterface $predicateBuilder
+     * @return ResolverBuilder
+     */
+    public function all(PredicateBuilderInterface $predicateBuilder): ResolverBuilder
+    {
+        return $this->create()->all($predicateBuilder);
+    }
+
+    /**
+     * @param PredicateBuilderInterface $predicateBuilder
+     * @return ResolverBuilder
+     */
+    public function none(PredicateBuilderInterface $predicateBuilder): ResolverBuilder
+    {
+        return $this->create()->none($predicateBuilder);
+    }
+
+    /**
+     * @param PredicateBuilderInterface $predicateBuilder
+     * @return ResolverBuilder
+     */
+    public function some(PredicateBuilderInterface $predicateBuilder): ResolverBuilder
+    {
+        return $this->create()->some($predicateBuilder);
+    }
+
+    /**
      * @param string $propertyName
      * @return ExtractorPredicateBuilder
      */

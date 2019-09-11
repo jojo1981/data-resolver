@@ -87,6 +87,39 @@ class ResolverBuilder
     }
 
     /**
+     * @param PredicateBuilderInterface $predicateBuilder
+     * @return $this
+     */
+    public function all(PredicateBuilderInterface $predicateBuilder): self
+    {
+        $this->extractors[] = $this->extractorBuilderFactory->getAllExtractorBuilder($predicateBuilder)->build();
+
+        return $this;
+    }
+
+    /**
+     * @param PredicateBuilderInterface $predicateBuilder
+     * @return $this
+     */
+    public function none(PredicateBuilderInterface $predicateBuilder): self
+    {
+        $this->extractors[] = $this->extractorBuilderFactory->getNoneExtractorBuilder($predicateBuilder)->build();
+
+        return $this;
+    }
+
+    /**
+     * @param PredicateBuilderInterface $predicateBuilder
+     * @return $this
+     */
+    public function some(PredicateBuilderInterface $predicateBuilder): self
+    {
+        $this->extractors[] = $this->extractorBuilderFactory->getSomeExtractorBuilder($predicateBuilder)->build();
+
+        return $this;
+    }
+
+    /**
      * @return Resolver
      */
     public function build(): Resolver

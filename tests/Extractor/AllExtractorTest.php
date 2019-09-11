@@ -9,8 +9,8 @@
  */
 namespace tests\Jojo1981\DataResolver\Extractor;
 
+use Jojo1981\DataResolver\Extractor\AllExtractor;
 use Jojo1981\DataResolver\Extractor\Exception\ExtractorException;
-use Jojo1981\DataResolver\Extractor\FindExtractor;
 use Jojo1981\DataResolver\Handler\Exception\HandlerException;
 use Jojo1981\DataResolver\Handler\SequenceHandlerInterface;
 use Jojo1981\DataResolver\Predicate\Exception\PredicateException;
@@ -29,7 +29,7 @@ use SebastianBergmann\RecursionContext\InvalidArgumentException;
 /**
  * @package tests\Jojo1981\DataResolver\Extractor
  */
-class FindExtractorTest extends TestCase
+class AllExtractorTest extends TestCase
 {
     /** @var ObjectProphecy|SequenceHandlerInterface */
     private $sequenceHandler;
@@ -54,6 +54,8 @@ class FindExtractorTest extends TestCase
         $this->predicate = $this->prophesize(PredicateInterface::class);
         $this->sequenceHandler = $this->prophesize(SequenceHandlerInterface::class);
         $this->originalContext = $this->prophesize(Context::class);
+        $this->originalContext->setData(Argument::any())->shouldNotBeCalled();
+        $this->originalContext->setPath(Argument::any())->shouldNotBeCalled();
         $this->copiedContext = $this->prophesize(Context::class);
     }
 
@@ -70,12 +72,13 @@ class FindExtractorTest extends TestCase
     {
         $this->originalContext->getData()->willReturn('my-data')->shouldBeCalledOnce();
         $this->originalContext->getPath()->willReturn('my-path')->shouldBeCalledOnce();
-        $this->originalContext->setData(Argument::any())->shouldNotBeCalled();
         $this->sequenceHandler->supports('my-data')->willReturn(false)->shouldBeCalledOnce();
 
-        $this->expectExceptionObject(new ExtractorException('Could not extract data with `' . FindExtractor::class . '` at path: `my-path`'));
+        $this->expectExceptionObject(
+            new ExtractorException('Could not extract data with `' . AllExtractor::class . '` at path: `my-path`')
+        );
 
-        $this->getFindExtractor()->extract($this->originalContext->reveal());
+        $this->getAllExtractor()->extract($this->originalContext->reveal());
     }
 
     /**
@@ -89,16 +92,16 @@ class FindExtractorTest extends TestCase
      * @throws ExpectationFailedException
      * @return void
      */
-    public function extractShouldReturnNullWhenSequenceHandlerGetIteratorReturnAnEmptyIterator(): void
+    public function extractShouldReturnTrueWhenSequenceHandlerGetIteratorReturnAnEmptyIterator(): void
     {
         $this->originalContext->getData()->willReturn('my-data')->shouldBeCalledTimes(2);
         $this->originalContext->getPath()->shouldNotBeCalled();
-        $this->originalContext->setData(Argument::any())->shouldNotBeCalled();
+        $this->copiedContext->setData(Argument::any())->shouldNotBeCalled();
         $this->sequenceHandler->supports('my-data')->willReturn(true)->shouldBeCalledOnce();
         $this->sequenceHandler->getIterator('my-data')->willReturn(new \ArrayIterator())->shouldBeCalledOnce();
         $this->originalContext->copy()->shouldNotBeCalled();
 
-        $this->assertNull($this->getFindExtractor()->extract($this->originalContext->reveal()));
+        $this->assertTrue($this->getAllExtractor()->extract($this->originalContext->reveal()));
     }
 
     /**
@@ -112,12 +115,40 @@ class FindExtractorTest extends TestCase
      * @throws ExpectationFailedException
      * @return void
      */
-    public function extractShouldReturnNullWhenNoItemIsMatchedByThePredicate(): void
+    public function extractShouldReturnFalseWhenAnItemIsNotMatchedByThePredicate(): void
     {
-        $iterator = new \ArrayIterator(['key1' => 'value1', 'key2' => 'value2', 'key3' => 'value3']);
         $this->originalContext->getData()->willReturn('my-data')->shouldBeCalledTimes(2);
         $this->originalContext->getPath()->shouldNotBeCalled();
-        $this->originalContext->setData(Argument::any())->shouldNotBeCalled();
+        $this->originalContext->copy()->willReturn($this->copiedContext)->shouldBeCalledTimes(2);
+
+        $this->copiedContext->pushPathPart('key1')->willReturn($this->copiedContext)->shouldBeCalledOnce();
+        $this->copiedContext->pushPathPart('key2')->willReturn($this->copiedContext)->shouldBeCalledOnce();
+        $this->copiedContext->setData('value1')->willReturn($this->copiedContext)->shouldBeCalledOnce();
+        $this->copiedContext->setData('value2')->willReturn($this->copiedContext)->shouldBeCalledOnce();
+
+        $this->sequenceHandler->supports('my-data')->willReturn(true)->shouldBeCalledOnce();
+        $this->sequenceHandler->getIterator('my-data')->willReturn($this->getTestIterator())->shouldBeCalledOnce();
+
+        $this->predicate->match($this->copiedContext)->willReturn(true, false)->shouldBeCalledTimes(2);
+
+        $this->assertFalse($this->getAllExtractor()->extract($this->originalContext->reveal()));
+    }
+
+    /**
+     * @test
+     *
+     * @throws ExtractorException
+     * @throws HandlerException
+     * @throws InvalidArgumentException
+     * @throws ObjectProphecyException
+     * @throws PredicateException
+     * @throws ExpectationFailedException
+     * @return void
+     */
+    public function extractShouldReturnTrueWhenAllItemsAreMatchedByThePredicate(): void
+    {
+        $this->originalContext->getData()->willReturn('my-data')->shouldBeCalledTimes(2);
+        $this->originalContext->getPath()->shouldNotBeCalled();
         $this->originalContext->copy()->willReturn($this->copiedContext)->shouldBeCalledTimes(3);
 
         $this->copiedContext->pushPathPart('key1')->willReturn($this->copiedContext)->shouldBeCalledOnce();
@@ -128,53 +159,27 @@ class FindExtractorTest extends TestCase
         $this->copiedContext->setData('value3')->willReturn($this->copiedContext)->shouldBeCalledOnce();
 
         $this->sequenceHandler->supports('my-data')->willReturn(true)->shouldBeCalledOnce();
-        $this->sequenceHandler->getIterator('my-data')->willReturn($iterator)->shouldBeCalledOnce();
+        $this->sequenceHandler->getIterator('my-data')->willReturn($this->getTestIterator())->shouldBeCalledOnce();
 
-        $this->predicate->match($this->copiedContext)->willReturn(false, false, false)->shouldBeCalledTimes(3);
+        $this->predicate->match($this->copiedContext)->willReturn(true, true, true)->shouldBeCalledTimes(3);
 
-        $this->assertNull($this->getFindExtractor()->extract($this->originalContext->reveal()));
-    }
-
-    /**
-     * @test
-     *
-     * @throws ExtractorException
-     * @throws HandlerException
-     * @throws InvalidArgumentException
-     * @throws ObjectProphecyException
-     * @throws PredicateException
-     * @throws ExpectationFailedException
-     * @return void
-     */
-    public function extractShouldReturnTheFirstItemWhichIsMatchedByThePredicate(): void
-    {
-        $iterator = new \ArrayIterator(['key1' => 'value1', 'key2' => 'value2', 'key3' => 'value3']);
-        $this->originalContext->getData()->willReturn('my-data')->shouldBeCalledTimes(2);
-        $this->originalContext->getPath()->shouldNotBeCalled();
-        $this->originalContext->setData(Argument::any())->shouldNotBeCalled();
-        $this->originalContext->copy()->willReturn($this->copiedContext)->shouldBeCalledTimes(2);
-
-        $this->copiedContext->pushPathPart('key1')->willReturn($this->copiedContext)->shouldBeCalledOnce();
-        $this->copiedContext->pushPathPart('key2')->willReturn($this->copiedContext)->shouldBeCalledOnce();
-        $this->copiedContext->pushPathPart('key3')->shouldNotBeCalled();
-        $this->copiedContext->setData('value1')->willReturn($this->copiedContext)->shouldBeCalledOnce();
-        $this->copiedContext->setData('value2')->willReturn($this->copiedContext)->shouldBeCalledOnce();
-        $this->copiedContext->setData('value3')->shouldNotBeCalled();
-
-        $this->sequenceHandler->supports('my-data')->willReturn(true)->shouldBeCalledOnce();
-        $this->sequenceHandler->getIterator('my-data')->willReturn($iterator)->shouldBeCalledOnce();
-
-        $this->predicate->match($this->copiedContext)->willReturn(false, true)->shouldBeCalledTimes(2);
-
-        $this->assertEquals('value2', $this->getFindExtractor()->extract($this->originalContext->reveal()));
+        $this->assertTrue($this->getAllExtractor()->extract($this->originalContext->reveal()));
     }
 
     /**
      * @throws ObjectProphecyException
-     * @return FindExtractor
+     * @return AllExtractor
      */
-    private function getFindExtractor(): FindExtractor
+    private function getAllExtractor(): AllExtractor
     {
-        return new FindExtractor($this->sequenceHandler->reveal(), $this->predicate->reveal());
+        return new AllExtractor($this->sequenceHandler->reveal(), $this->predicate->reveal());
+    }
+
+    /**
+     * @return \ArrayIterator
+     */
+    private function getTestIterator(): \ArrayIterator
+    {
+        return new \ArrayIterator(['key1' => 'value1', 'key2' => 'value2', 'key3' => 'value3']);
     }
 }
