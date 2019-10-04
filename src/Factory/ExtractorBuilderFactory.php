@@ -126,7 +126,7 @@ class ExtractorBuilderFactory
             $this->namingStrategy,
             $this->propertyHandler,
             $this->mergeHandler,
-            \array_merge($propertyNames, [$propertyName])
+            \array_merge([$propertyName], $propertyNames)
         );
     }
 
