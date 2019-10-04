@@ -52,7 +52,7 @@ class ArraySequenceHandler implements SequenceHandlerInterface
             $this->throwUnsupportedException('filter');
         }
 
-        return \array_values(\array_filter($data, $callback, ARRAY_FILTER_USE_BOTH));
+        return \array_filter($data, $callback, ARRAY_FILTER_USE_BOTH);
     }
 
     /**

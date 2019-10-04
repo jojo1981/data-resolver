@@ -49,7 +49,7 @@ class ArraySequenceHandlerTest extends TestCase
             'of method `filter`. You should invoke the `supports` method first!'
         ));
 
-        $this->getArraySequenceHandler()->filter(null, function () {});
+        $this->getArraySequenceHandler()->filter(null, static function () {});
     }
 
     /**
@@ -65,7 +65,7 @@ class ArraySequenceHandlerTest extends TestCase
             'of method `flatten`. You should invoke the `supports` method first!'
         ));
 
-        $this->getArraySequenceHandler()->flatten(null, function () {});
+        $this->getArraySequenceHandler()->flatten(null, static function () {});
     }
 
     /**
@@ -131,7 +131,6 @@ class ArraySequenceHandlerTest extends TestCase
     public function filterShouldReturnTheFilteredResultWhenDataIsSupported(): void
     {
         $data = [['name' => 'item1'], ['name' => 'item2'], ['name' => 'item3']];
-        $filteredData = [['name' => 'item1'], ['name' => 'item3']];
 
         $calledTimes = 0;
         $expectedCallArguments = [
@@ -147,7 +146,8 @@ class ArraySequenceHandlerTest extends TestCase
             return 'item2' !== $value['name'];
         };
 
-        $this->assertEquals($filteredData, $this->getArraySequenceHandler()->filter($data, $callback));
+        $expected = [0 => ['name' => 'item1'], 2 => ['name' => 'item3']];
+        $this->assertEquals($expected, $this->getArraySequenceHandler()->filter($data, $callback));
         $this->assertEquals(3, $calledTimes);
     }
 
