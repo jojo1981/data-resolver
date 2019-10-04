@@ -103,8 +103,7 @@ class FlattenExtractorTest extends TestCase
 
         $this->sequenceHandler->flatten('my-data', Argument::that(function ($arg): bool {
             if (\is_callable($arg)) {
-
-                $this->assertEquals('extracted-value', \call_user_func($arg, 'my-key-1', 'my-value-1'));
+                $this->assertEquals('extracted-value', \call_user_func($arg, 'my-value-1', 'my-key-1'));
 
                 return true;
             }

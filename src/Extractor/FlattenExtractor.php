@@ -51,8 +51,8 @@ class FlattenExtractor extends AbstractSequenceExtractor
     {
         return $this->sequenceHandler->flatten(
             $context->getData(),
-            function ($key, $item) use ($context) {
-                return $this->extractor->extract($context->copy()->pushPathPart($key)->setData($item));
+            function ($value, $key) use ($context) {
+                return $this->extractor->extract($context->copy()->pushPathPart($key)->setData($value));
             }
         );
     }
