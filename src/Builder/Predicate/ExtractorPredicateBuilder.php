@@ -62,6 +62,22 @@ class ExtractorPredicateBuilder
     }
 
     /**
+     * @return ConditionalPredicateBuilder
+     */
+    public function isTrue(): ConditionalPredicateBuilder
+    {
+        return $this->equals(true);
+    }
+
+    /**
+     * @return ConditionalPredicateBuilder
+     */
+    public function isFalse(): ConditionalPredicateBuilder
+    {
+        return $this->equals(false);
+    }
+
+    /**
      * @param callable $callback
      * @return ConditionalPredicateBuilder
      */
