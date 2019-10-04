@@ -69,9 +69,14 @@ class ArraySequenceHandler implements SequenceHandlerInterface
 
         $result = [];
         foreach ($data as $key => $value) {
-            $item = (array) $callback($value, $key);
-            if (!empty($item)) {
-                \array_push($result, ...$item);
+            $items = $callback($value, $key);
+            if (null === $items) {
+                continue;
+            }
+
+            $items = !\is_array($items) ? [$items] : \array_values($items);
+            if (!empty($items)) {
+                \array_push($result, ...$items);
             }
         }
 

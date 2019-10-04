@@ -183,6 +183,43 @@ class ArraySequenceHandlerTest extends TestCase
     }
 
     /**
+     * @test
+     *
+     * @throws HandlerException
+     * @throws InvalidArgumentException
+     * @throws ExpectationFailedException
+     * @return void
+     */
+    public function flattenShouldIgnoreNullAnEmptyArrayValueAndHandleAssociativeArrayValueFromCallback(): void
+    {
+        $data = ['item1', 'item2', 'item3', 'item4', 'item5', 'item6', 'item7', 'item8'];
+        $flattenData = ['item2', 'item3.1', 'item3.2', 'item5', 'item6.1', 'item6.2', false, true];
+
+        $calledTimes = 0;
+        $expectedCallArguments = [
+            ['item1', 0, null],
+            ['item2', 1, 'item2'],
+            ['item3', 2, []],
+            ['item4', 3, ['item3.1', 'item3.2']],
+            ['item5', 4, 'item5'],
+            ['item6', 5, ['key1' => 'item6.1', 'key2' => 'item6.2']],
+            ['item7', 6, false],
+            ['item8', 7, true]
+        ];
+        $callback = function ($value, $key) use (&$calledTimes, $expectedCallArguments) {
+            $this->assertEquals($value, $expectedCallArguments[$calledTimes][0]);
+            $this->assertEquals($key, $expectedCallArguments[$calledTimes][1]);
+            $result = $expectedCallArguments[$calledTimes][2];
+            $calledTimes++;
+
+            return $result;
+        };
+
+        $this->assertEquals($flattenData, $this->getArraySequenceHandler()->flatten($data, $callback));
+        $this->assertEquals(8, $calledTimes);
+    }
+
+    /**
      * @return ArraySequenceHandler
      */
     private function getArraySequenceHandler(): ArraySequenceHandler
