@@ -27,10 +27,10 @@ class DefaultMergeHandlerTest extends TestCase
      * @throws ExpectationFailedException
      * @return void
      */
-    public function mergeWithContextDataNullWithEmptyElementShouldReturnEmptyStdClass(): void
+    public function mergeWithContextDataNullWithEmptyElementShouldReturnEmptyArray(): void
     {
         $result = $this->getDefaultMergeHandler()->merge(new Context(null, ''), []);
-        $this->assertEquals(new \stdClass(), $result);
+        $this->assertEquals([], $result);
     }
 
     /**
@@ -80,6 +80,48 @@ class DefaultMergeHandlerTest extends TestCase
         ];
 
         $result = $this->getDefaultMergeHandler()->merge(new Context([], ''), $this->getElementsTestData());
+        $this->assertEquals($expected, $result);
+    }
+
+    /**
+     * @test
+     *
+     * @throws InvalidArgumentException
+     * @throws ExpectationFailedException
+     * @return void
+     */
+    public function mergeWithContextDataIndexedArrayWithElementsShouldReturnMergedIndexedArray(): void
+    {
+        $elements = [
+            'primaryAddresses' => [
+                [
+                    'address1'
+                ],
+                [
+                    'address2'
+                ],
+                [],
+                [
+                    'address3'
+                ]
+            ],
+            'secondaryAddresses' => [
+                [
+                    'address4',
+                ],
+                [],
+                [
+                    'address5'
+                ],
+                [
+                    'address6'
+                ]
+            ]
+        ];
+
+        $expected = [['address1'], ['address2'], ['address3'], ['address4'], ['address5'], ['address6']];
+
+        $result = $this->getDefaultMergeHandler()->merge(new Context([], ''), $elements);
         $this->assertEquals($expected, $result);
     }
 

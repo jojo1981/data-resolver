@@ -20,10 +20,14 @@ class DefaultMergeHandler implements MergeHandlerInterface
     /**
      * @param Context $context
      * @param array $elements
-     * @return \stdClass|array
+     * @return mixed
      */
     public function merge(Context $context, array $elements)
     {
+        if ($this->areAllElementsIndexedArrays($elements)) {
+            return $this->flattenElements($elements);
+        }
+
         if (\is_array($context->getData())) {
             return $elements;
         }
@@ -34,5 +38,58 @@ class DefaultMergeHandler implements MergeHandlerInterface
         }
 
         return $result;
+    }
+
+    /**
+     * @param array $elements
+     * @return array
+     */
+    private function flattenElements(array $elements): array
+    {
+        return \array_reduce(
+            $elements,
+            static function (array $result, array $element): array {
+                if (!empty($element)) {
+                    \array_push($result, ...\array_filter($element));
+                }
+
+                return $result;
+            },
+            []
+        );
+    }
+
+    /**
+     * @param array $elements
+     * @return bool
+     */
+    private function areAllElementsIndexedArrays(array $elements): bool
+    {
+        foreach ($elements as $element) {
+            if (!$this->isIndexedArray($element)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * @param mixed $array
+     * @return bool
+     */
+    private function isIndexedArray($array): bool
+    {
+        if (!\is_array($array)) {
+            return false;
+        }
+
+        foreach (\array_keys($array) as $key) {
+            if (!\is_numeric($key)) {
+                return false;
+            }
+        }
+
+        return true;
     }
 }
