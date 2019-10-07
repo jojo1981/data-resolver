@@ -32,6 +32,9 @@ use Jojo1981\DataResolver\Handler\SequenceHandlerInterface;
  */
 class PredicateBuilderFactory
 {
+    /** @var ExtractorBuilderFactory */
+    private $extractorBuilderFactory;
+
     /** @var SequenceHandlerInterface */
     private $sequenceHandler;
 
@@ -39,11 +42,16 @@ class PredicateBuilderFactory
     private $comparator;
 
     /**
+     * @param ExtractorBuilderFactory $extractorBuilderFactory
      * @param SequenceHandlerInterface $sequenceHandler
      * @param ComparatorInterface $comparator
      */
-    public function __construct(SequenceHandlerInterface $sequenceHandler, ComparatorInterface $comparator)
-    {
+    public function __construct(
+        ExtractorBuilderFactory $extractorBuilderFactory,
+        SequenceHandlerInterface $sequenceHandler,
+        ComparatorInterface $comparator
+    ) {
+        $this->extractorBuilderFactory = $extractorBuilderFactory;
         $this->sequenceHandler = $sequenceHandler;
         $this->comparator = $comparator;
     }
@@ -116,7 +124,7 @@ class PredicateBuilderFactory
      */
     public function getExtractorPredicateBuilder(ExtractorBuilderInterface $extractorBuilder): ExtractorPredicateBuilder
     {
-        return new ExtractorPredicateBuilder($this, $extractorBuilder);
+        return new ExtractorPredicateBuilder($this, $this->extractorBuilderFactory, $extractorBuilder);
     }
 
     /**

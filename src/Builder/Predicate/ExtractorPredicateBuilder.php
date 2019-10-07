@@ -11,7 +11,7 @@ namespace Jojo1981\DataResolver\Builder\Predicate;
 
 use Jojo1981\DataResolver\Builder\ExtractorBuilderInterface;
 use Jojo1981\DataResolver\Builder\PredicateBuilderInterface;
-use Jojo1981\DataResolver\Extractor\ExtractorInterface;
+use Jojo1981\DataResolver\Factory\ExtractorBuilderFactory;
 use Jojo1981\DataResolver\Factory\PredicateBuilderFactory;
 
 /**
@@ -25,18 +25,24 @@ class ExtractorPredicateBuilder
     /** @var PredicateBuilderFactory */
     private $predicateBuilderFactory;
 
-    /** @var ExtractorInterface */
+    /** @var ExtractorBuilderFactory */
+    private $extractorBuilderFactory;
+
+    /** @var ExtractorBuilderInterface */
     private $extractorBuilder;
 
     /**
      * @param PredicateBuilderFactory $predicateBuilderFactory
+     * @param ExtractorBuilderFactory $extractorBuilderFactory
      * @param ExtractorBuilderInterface $extractorBuilder
      */
     public function __construct(
         PredicateBuilderFactory $predicateBuilderFactory,
+        ExtractorBuilderFactory $extractorBuilderFactory,
         ExtractorBuilderInterface $extractorBuilder
     ) {
         $this->predicateBuilderFactory = $predicateBuilderFactory;
+        $this->extractorBuilderFactory = $extractorBuilderFactory;
         $this->extractorBuilder = $extractorBuilder;
     }
 
@@ -49,6 +55,20 @@ class ExtractorPredicateBuilder
         return $this->predicateBuilderFactory->getConditionalPredicateBuilder(
             $this->extractorBuilder,
             $this->predicateBuilderFactory->getEqualsPredicateBuilder($expectedValue)
+        );
+    }
+
+    /**
+     * @param string $propertyName
+     * @return ExtractorPredicateBuilder
+     */
+    public function get(string $propertyName): ExtractorPredicateBuilder
+    {
+        return $this->predicateBuilderFactory->getExtractorPredicateBuilder(
+            $this->extractorBuilderFactory->getCompositeExtractorBuilder(
+                $this->extractorBuilder,
+                $this->extractorBuilderFactory->getPropertyExtractorBuilder($propertyName)
+            )
         );
     }
 

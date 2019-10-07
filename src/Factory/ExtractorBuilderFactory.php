@@ -10,6 +10,7 @@
 namespace Jojo1981\DataResolver\Factory;
 
 use Jojo1981\DataResolver\Builder\Extractor\AllExtractorBuilder;
+use Jojo1981\DataResolver\Builder\Extractor\CompositeExtractorBuilder;
 use Jojo1981\DataResolver\Builder\Extractor\NoneExtractorBuilder;
 use Jojo1981\DataResolver\Builder\Extractor\SomeExtractorBuilder;
 use Jojo1981\DataResolver\Builder\ExtractorBuilderInterface;
@@ -137,5 +138,18 @@ class ExtractorBuilderFactory
     public function getResolverExtractorBuilder(ResolverBuilder $resolverBuilder): ResolverExtractorBuilder
     {
         return new ResolverExtractorBuilder($resolverBuilder->build());
+    }
+
+    /**
+     * @param ExtractorBuilderInterface $extractorBuilder1
+     * @param ExtractorBuilderInterface $extractorBuilder2
+     * @return CompositeExtractorBuilder
+     */
+    public function getCompositeExtractorBuilder(
+        ExtractorBuilderInterface $extractorBuilder1,
+        ExtractorBuilderInterface $extractorBuilder2
+    ): CompositeExtractorBuilder
+    {
+        return new CompositeExtractorBuilder($extractorBuilder1->build(), $extractorBuilder2->build());
     }
 }

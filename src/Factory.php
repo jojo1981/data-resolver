@@ -203,6 +203,7 @@ class Factory
     {
         if (null === $this->predicateBuilderFactory) {
             $this->predicateBuilderFactory = new PredicateBuilderFactory(
+                $this->getExtractorBuilderFactory(),
                 $this->getSequenceHandler(),
                 $this->getComparator()
             );
