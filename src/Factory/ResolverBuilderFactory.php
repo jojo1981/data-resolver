@@ -136,9 +136,7 @@ class ResolverBuilderFactory
         }
 
         if (\is_string($arg)) {
-            return $this->predicateBuilderFactory->getExtractorPredicateBuilder(
-                $this->extractorBuilderFactory->getPropertyExtractorBuilder($arg)
-            );
+            return $this->getExtractorPredicateBuilderForPropertyName($arg);
         }
 
         if ($arg instanceof ResolverBuilder) {
@@ -186,5 +184,42 @@ class ResolverBuilderFactory
     ): AndPredicateBuilder
     {
         return $this->predicateBuilderFactory->getAndPredicateBuilder($leftPredicateBuilder, $rightPredicateBuilder);
+    }
+
+    /**
+     * @param string $propertyName
+     * @return ExtractorPredicateBuilder
+     */
+    private function getExtractorPredicateBuilderForPropertyName(string $propertyName): ExtractorPredicateBuilder
+    {
+        $propertyName = \trim($propertyName, '.');
+        if (false === \strpos($propertyName, '.')) {
+            return $this->predicateBuilderFactory->getExtractorPredicateBuilder(
+                $this->extractorBuilderFactory->getPropertyExtractorBuilder($propertyName)
+            );
+        }
+
+        return $this->getExtractorPredicateBuilderForPropertyNames(\explode('.', $propertyName));
+    }
+
+    /**
+     * @param string[] $propertyNames
+     * @return ExtractorPredicateBuilder
+     */
+    private function getExtractorPredicateBuilderForPropertyNames(array $propertyNames): ExtractorPredicateBuilder
+    {
+        $extractorBuilder = $this->extractorBuilderFactory->getCompositeExtractorBuilder(
+            $this->extractorBuilderFactory->getPropertyExtractorBuilder(\array_shift($propertyNames)),
+            $this->extractorBuilderFactory->getPropertyExtractorBuilder(\array_shift($propertyNames))
+        );
+
+        foreach ($propertyNames as $propertyName) {
+            $extractorBuilder = $this->extractorBuilderFactory->getCompositeExtractorBuilder(
+                $extractorBuilder,
+                $this->extractorBuilderFactory->getPropertyExtractorBuilder($propertyName)
+            );
+        }
+
+        return $this->predicateBuilderFactory->getExtractorPredicateBuilder($extractorBuilder);
     }
 }
