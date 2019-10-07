@@ -15,6 +15,7 @@ use Jojo1981\DataResolver\Builder\Predicate\NotPredicateBuilder;
 use Jojo1981\DataResolver\Builder\Predicate\OrPredicateBuilder;
 use Jojo1981\DataResolver\Builder\PredicateBuilderInterface;
 use Jojo1981\DataResolver\Builder\ResolverBuilder;
+use Jojo1981\DataResolver\Exception\ResolverException;
 
 /**
  * @api
@@ -122,14 +123,34 @@ class ResolverBuilderFactory
     }
 
     /**
-     * @param string $propertyName
+     * @param null|string|ResolverBuilder $arg
+     * @throws ResolverException
      * @return ExtractorPredicateBuilder
      */
-    public function where(string $propertyName): ExtractorPredicateBuilder
+    public function where($arg = null): ExtractorPredicateBuilder
     {
-        return $this->predicateBuilderFactory->getExtractorPredicateBuilder(
-            $this->extractorBuilderFactory->getPropertyExtractorBuilder($propertyName)
-        );
+        if (null === $arg) {
+            return $this->predicateBuilderFactory->getExtractorPredicateBuilder(
+                $this->extractorBuilderFactory->getResolverExtractorBuilder($this->create())
+            );
+        }
+
+        if (\is_string($arg)) {
+            return $this->predicateBuilderFactory->getExtractorPredicateBuilder(
+                $this->extractorBuilderFactory->getPropertyExtractorBuilder($arg)
+            );
+        }
+
+        if ($arg instanceof ResolverBuilder) {
+            $this->predicateBuilderFactory->getExtractorPredicateBuilder(
+                $this->extractorBuilderFactory->getResolverExtractorBuilder($arg)
+            );
+        }
+
+        throw new ResolverException(\sprintf(
+            'Invalid argument given for method `where`, should be of type string or an instance of %s',
+            ResolverBuilder::class
+        ));
     }
 
     /**
