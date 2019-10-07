@@ -90,6 +90,40 @@ class FilterExtractorTest extends TestCase
      * @throws ExtractorException
      * @return void
      */
+    public function extractShouldCatchExceptionThrownByPredicateAndConsiderThePredicateAsFalse(): void
+    {
+        $this->originalContext->getData()->willReturn('my-data')->shouldBeCalledTimes(2);
+        $this->originalContext->getPath()->shouldNotBeCalled();
+        $this->originalContext->copy()->willReturn($this->copiedContext)->shouldBeCalledOnce();
+        $this->copiedContext->setData( 'my-value-1')->willReturn($this->copiedContext)->shouldBeCalledOnce();
+
+        $this->sequenceHandler->supports('my-data')->willReturn(true)->shouldBeCalledOnce();
+        $this->predicate->match($this->copiedContext)->willThrow(\Exception::class)->shouldBeCalledOnce();
+
+        $this->sequenceHandler->filter('my-data', Argument::that(function ($arg): bool {
+            if (\is_callable($arg)) {
+                $this->assertFalse(\call_user_func($arg, 'my-value-1'));
+
+                return true;
+            }
+
+            return false;
+        }))->willReturn('extracted-data')->shouldBeCalledOnce();
+
+        $this->assertEquals('extracted-data', $this->getFilterExtractor()->extract($this->originalContext->reveal()));
+    }
+
+    /**
+     * @test
+     *
+     * @throws HandlerException
+     * @throws ObjectProphecyException
+     * @throws PredicateException
+     * @throws ExpectationFailedException
+     * @throws InvalidArgumentException
+     * @throws ExtractorException
+     * @return void
+     */
     public function extractShouldReturnTheResultFromTheSequenceHandlerFilterMethod(): void
     {
         $this->originalContext->getData()->willReturn('my-data')->shouldBeCalledTimes(2);

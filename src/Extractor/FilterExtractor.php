@@ -53,7 +53,11 @@ class FilterExtractor extends AbstractSequenceExtractor
         return $this->sequenceHandler->filter(
             $context->getData(),
             function ($value) use ($context): bool {
-                return $this->predicate->match($context->copy()->setData($value));
+                try {
+                    return $this->predicate->match($context->copy()->setData($value));
+                } catch (\Exception $exception) {
+                    return false;
+                }
             }
         );
     }
