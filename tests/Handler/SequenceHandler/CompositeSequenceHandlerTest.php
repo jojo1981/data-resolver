@@ -84,7 +84,7 @@ class CompositeSequenceHandlerTest extends TestCase
             ' `filter`. You should invoke the `supports` method first!'
         ));
 
-        $this->getCompositeSequenceHandler()->filter($data, function () {});
+        $this->getCompositeSequenceHandler()->filter($data, static function () {});
     }
 
     /**
@@ -105,7 +105,28 @@ class CompositeSequenceHandlerTest extends TestCase
             ' `flatten`. You should invoke the `supports` method first!'
         ));
 
-        $this->getCompositeSequenceHandler()->flatten($data, function () {});
+        $this->getCompositeSequenceHandler()->flatten($data, static function () {});
+    }
+
+    /**
+     * @test
+     *
+     * @throws ObjectProphecyException
+     * @throws HandlerException
+     * @return void
+     */
+    public function countShouldThrowHandlerExceptionBecauseNoHandlerSupportsTheData(): void
+    {
+        $data = new \stdClass();
+        $this->sequenceHandler1->supports($data)->willReturn(false)->shouldBeCalledOnce();
+        $this->sequenceHandler2->supports($data)->willReturn(false)->shouldBeCalledOnce();
+
+        $this->expectExceptionObject(new HandlerException(
+            'The `' . CompositeSequenceHandler::class . '` has no supported handler. Illegal invocation of method' .
+            ' `count`. You should invoke the `supports` method first!'
+        ));
+
+        $this->getCompositeSequenceHandler()->count($data);
     }
 
     /**
@@ -116,7 +137,7 @@ class CompositeSequenceHandlerTest extends TestCase
      * @throws ObjectProphecyException
      * @return void
      */
-    public function supportShouldReturnFalseWhenThereIsNoHandlerWhichSupportsThePropertyName(): void
+    public function supportShouldReturnFalseWhenThereIsNoHandlerWhichSupportsTheData(): void
     {
         $data = new \stdClass();
         $this->sequenceHandler1->supports($data)->willReturn(false)->shouldBeCalledOnce();
@@ -175,7 +196,7 @@ class CompositeSequenceHandlerTest extends TestCase
     public function filterShouldReturnTheFilteredResultFromTheSupportedHandler(): void
     {
         $data = ['key' => 'value'];
-        $callback = function () {};
+        $callback = static function () {};
         $filteredResult = ['filtered-result'];
         $this->sequenceHandler1->supports($data)->willReturn(true)->shouldBeCalledOnce();
         $this->sequenceHandler1->filter($data, $callback)->willReturn($filteredResult)->shouldBeCalledOnce();
@@ -197,7 +218,7 @@ class CompositeSequenceHandlerTest extends TestCase
     public function flattenShouldReturnTheFlattenResultFromTheSupportedHandler(): void
     {
         $data = ['key' => 'value'];
-        $callback = function () {};
+        $callback = static function () {};
         $filteredResult = ['filtered-result'];
         $this->sequenceHandler1->supports($data)->willReturn(true)->shouldBeCalledOnce();
         $this->sequenceHandler1->flatten($data, $callback)->willReturn($filteredResult)->shouldBeCalledOnce();
@@ -205,6 +226,27 @@ class CompositeSequenceHandlerTest extends TestCase
         $this->sequenceHandler2->getIterator(Argument::any())->shouldNotBeCalled();
 
         $this->assertEquals($filteredResult, $this->getCompositeSequenceHandler()->flatten($data, $callback));
+    }
+
+    /**
+     * @test
+     *
+     * @throws HandlerException
+     * @throws InvalidArgumentException
+     * @throws ObjectProphecyException
+     * @throws ExpectationFailedException
+     * @return void
+     */
+    public function countShouldReturnTheFlattenResultFromTheSupportedHandler(): void
+    {
+        $data = ['key' => 'value'];
+        $countResult = 3;
+        $this->sequenceHandler1->supports($data)->willReturn(true)->shouldBeCalledOnce();
+        $this->sequenceHandler1->count($data)->willReturn($countResult)->shouldBeCalledOnce();
+        $this->sequenceHandler2->supports(Argument::any())->shouldNotBeCalled();
+        $this->sequenceHandler2->getIterator(Argument::any())->shouldNotBeCalled();
+
+        $this->assertEquals($countResult, $this->getCompositeSequenceHandler()->count($data));
     }
 
     /**

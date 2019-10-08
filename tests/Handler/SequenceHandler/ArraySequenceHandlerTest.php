@@ -71,6 +71,22 @@ class ArraySequenceHandlerTest extends TestCase
     /**
      * @test
      *
+     * @throws HandlerException
+     * @return void
+     */
+    public function countShouldThrowHandlerExceptionWhenCalledWithUnsupportedData(): void
+    {
+        $this->expectExceptionObject(new HandlerException(
+            'The `' . ArraySequenceHandler::class . '` can only handle indexed arrays. Illegal invocation ' .
+            'of method `count`. You should invoke the `supports` method first!'
+        ));
+
+        $this->getArraySequenceHandler()->count(null);
+    }
+
+    /**
+     * @test
+     *
      * @throws InvalidArgumentException
      * @throws ExpectationFailedException
      * @return void
@@ -217,6 +233,21 @@ class ArraySequenceHandlerTest extends TestCase
 
         $this->assertEquals($flattenData, $this->getArraySequenceHandler()->flatten($data, $callback));
         $this->assertEquals(8, $calledTimes);
+    }
+
+    /**
+     * @test
+     *
+     * @throws HandlerException
+     * @throws InvalidArgumentException
+     * @throws ExpectationFailedException
+     * @return void
+     */
+    public function countShouldReturnTheCountResultWhenDataIsSupported(): void
+    {
+        $data = [['name' => ['item1']], ['name' => ['item2.1', 'item2.2']], ['name' => ['item3']]];
+        $this->assertEquals(0, $this->getArraySequenceHandler()->count([]));
+        $this->assertEquals(3, $this->getArraySequenceHandler()->count($data));
     }
 
     /**

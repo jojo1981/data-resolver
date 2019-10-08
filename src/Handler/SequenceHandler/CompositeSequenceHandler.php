@@ -75,6 +75,16 @@ class CompositeSequenceHandler implements SequenceHandlerInterface
 
     /**
      * @param mixed $data
+     * @throws HandlerException
+     * @return int
+     */
+    public function count($data): int
+    {
+        return $this->getSupportedHandler('count', $data)->count($data);
+    }
+
+    /**
+     * @param mixed $data
      * @param callable $callback
      * @throws HandlerException
      * @return mixed

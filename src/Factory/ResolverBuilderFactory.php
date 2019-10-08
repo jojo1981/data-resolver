@@ -123,6 +123,14 @@ class ResolverBuilderFactory
     }
 
     /**
+     * @return ResolverBuilder
+     */
+    public function count(): ResolverBuilder
+    {
+        return $this->create()->count();
+    }
+
+    /**
      * @param null|string|ResolverBuilder $arg
      * @throws ResolverException
      * @return ExtractorPredicateBuilder

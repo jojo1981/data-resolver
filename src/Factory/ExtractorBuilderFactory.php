@@ -11,6 +11,7 @@ namespace Jojo1981\DataResolver\Factory;
 
 use Jojo1981\DataResolver\Builder\Extractor\AllExtractorBuilder;
 use Jojo1981\DataResolver\Builder\Extractor\CompositeExtractorBuilder;
+use Jojo1981\DataResolver\Builder\Extractor\CountExtractorBuilder;
 use Jojo1981\DataResolver\Builder\Extractor\NoneExtractorBuilder;
 use Jojo1981\DataResolver\Builder\Extractor\SomeExtractorBuilder;
 use Jojo1981\DataResolver\Builder\ExtractorBuilderInterface;
@@ -114,6 +115,14 @@ class ExtractorBuilderFactory
     public function getSomeExtractorBuilder(PredicateBuilderInterface $predicateBuilder): SomeExtractorBuilder
     {
         return new SomeExtractorBuilder($this->sequenceHandler,  $predicateBuilder->build());
+    }
+
+    /**
+     * @return CountExtractorBuilder
+     */
+    public function getCountExtractorBuilder(): CountExtractorBuilder
+    {
+        return new CountExtractorBuilder($this->sequenceHandler);
     }
 
     /**

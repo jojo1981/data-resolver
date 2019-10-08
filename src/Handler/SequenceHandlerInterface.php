@@ -41,6 +41,13 @@ interface SequenceHandlerInterface
 
     /**
      * @param mixed $data
+     * @throws HandlerException
+     * @return int
+     */
+    public function count($data): int;
+
+    /**
+     * @param mixed $data
      * @param callable $callback
      * @throws HandlerException
      * @return mixed

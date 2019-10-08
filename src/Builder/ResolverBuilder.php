@@ -120,6 +120,16 @@ class ResolverBuilder
     }
 
     /**
+     * @return $this
+     */
+    public function count(): self
+    {
+        $this->extractors[] = $this->extractorBuilderFactory->getCountExtractorBuilder()->build();
+
+        return $this;
+    }
+
+    /**
      * @return Resolver
      */
     public function build(): Resolver
