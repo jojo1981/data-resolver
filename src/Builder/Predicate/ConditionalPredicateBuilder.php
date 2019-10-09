@@ -52,10 +52,7 @@ class ConditionalPredicateBuilder implements PredicateBuilderInterface
     public function and(PredicateBuilderInterface $predicateBuilder): PredicateBuilder
     {
         return $this->predicateBuilderFactory->getPredicateBuilder(
-            $this->predicateBuilderFactory->getAndPredicateBuilder(
-                $this,
-                $predicateBuilder
-            )
+            $this->predicateBuilderFactory->getAndPredicateBuilder($this, $predicateBuilder)
         );
     }
 
@@ -66,10 +63,7 @@ class ConditionalPredicateBuilder implements PredicateBuilderInterface
     public function or(PredicateBuilderInterface $predicateBuilder): PredicateBuilder
     {
         return $this->predicateBuilderFactory->getPredicateBuilder(
-            $this->predicateBuilderFactory->getOrPredicateBuilder(
-                $this,
-                $predicateBuilder
-            )
+            $this->predicateBuilderFactory->getOrPredicateBuilder($this, $predicateBuilder)
         );
     }
 

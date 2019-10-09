@@ -78,7 +78,7 @@ class ExtractorPredicateBuilder
      */
     public function notEquals($expectedValue): ConditionalPredicateBuilder
     {
-        return $this->not($this->predicateBuilderFactory->getEqualsPredicateBuilder($expectedValue));
+        return $this->not($this->equals($expectedValue));
     }
 
     /**
@@ -95,6 +95,22 @@ class ExtractorPredicateBuilder
     public function isFalse(): ConditionalPredicateBuilder
     {
         return $this->equals(false);
+    }
+
+    /**
+     * @return ConditionalPredicateBuilder
+     */
+    public function isNull(): ConditionalPredicateBuilder
+    {
+        return $this->equals(null);
+    }
+
+    /**
+     * @return ConditionalPredicateBuilder
+     */
+    public function isNotNull(): ConditionalPredicateBuilder
+    {
+        return $this->not($this->isNull());
     }
 
     /**
