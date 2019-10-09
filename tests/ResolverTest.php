@@ -64,10 +64,8 @@ class ResolverTest extends TestCase
      */
     public function resolverWithoutExtractorsShouldSimplyReturnTheDataWhichIsGivenToTheResolveMethod(): void
     {
-        $resolver = new Resolver([]);
         $data = ['key' => 'value'];
-
-        $this->assertEquals($data, $resolver->resolve($data));
+        $this->assertSame($data, ( new Resolver([]))->resolve($data));
     }
 
     /**
@@ -81,12 +79,11 @@ class ResolverTest extends TestCase
      * @throws ExpectationFailedException
      * @return void
      */
-    public function resolverWithoutExtractorsShouldSimplyReturnTheContextWhichIsGivenToTheResolveMethod(): void
+    public function resolverWithoutExtractorsShouldSimplyReturnTheDataFromThePassedContext(): void
     {
-        $resolver = new Resolver([]);
-        $this->context->setData(Argument::any())->shouldNotBeCalled();
-
-        $this->assertSame($this->context->reveal(), $resolver->resolve($this->context->reveal()));
+        $data = ['key' => 'value'];
+        $this->context->getData()->willReturn($data)->shouldBeCalledOnce();
+        $this->assertSame($data, (new Resolver([]))->resolve($this->context->reveal()));
     }
 
     /**

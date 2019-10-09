@@ -53,11 +53,7 @@ class Resolver
      */
     public function resolve($data)
     {
-        $this->context = new Context(null);
-        if ($data instanceof Context) {
-            $this->context = $data;
-        }
-
+        $this->context = $data instanceof Context ? $data : new Context(null);
         foreach ($this->extractors as $extractor) {
             if (!$data instanceof Context) {
                 $this->context->setData($data);
@@ -65,6 +61,6 @@ class Resolver
             $data = $extractor->extract($this->context);
         }
 
-        return $data;
+        return $data instanceof Context ? $data->getData() : $data;
     }
 }
