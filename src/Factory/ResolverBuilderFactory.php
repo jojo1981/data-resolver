@@ -156,7 +156,7 @@ class ResolverBuilderFactory
         }
 
         if ($arg instanceof ResolverBuilder) {
-            $this->predicateBuilderFactory->getExtractorPredicateBuilder(
+            return $this->predicateBuilderFactory->getExtractorPredicateBuilder(
                 $this->extractorBuilderFactory->getResolverExtractorBuilder($arg)
             );
         }
