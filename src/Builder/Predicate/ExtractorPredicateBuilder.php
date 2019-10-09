@@ -289,4 +289,16 @@ class ExtractorPredicateBuilder
             $this->predicateBuilderFactory->getStringRegexPredicateBuilder($pattern)
         );
     }
+
+    /**
+     * @param string $propertyName
+     * @return ConditionalPredicateBuilder
+     */
+    public function hasProperty(string $propertyName): ConditionalPredicateBuilder
+    {
+        return $this->predicateBuilderFactory->getConditionalPredicateBuilder(
+            $this->extractorBuilder,
+            $this->predicateBuilderFactory->getHasPropertyPredicateBuilder($propertyName)
+        );
+    }
 }

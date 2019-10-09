@@ -204,6 +204,8 @@ class Factory
         if (null === $this->predicateBuilderFactory) {
             $this->predicateBuilderFactory = new PredicateBuilderFactory(
                 $this->getExtractorBuilderFactory(),
+                $this->getNamingStrategy(),
+                $this->getPropertyHandler(),
                 $this->getSequenceHandler(),
                 $this->getComparator()
             );
