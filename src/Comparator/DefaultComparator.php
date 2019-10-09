@@ -9,13 +9,25 @@
  */
 namespace Jojo1981\DataResolver\Comparator;
 
-use PHPUnit\Framework\Constraint\IsEqual;
+use SebastianBergmann\Comparator\ComparisonFailure;
+use SebastianBergmann\Comparator\Factory as ComparatorFactory;
 
 /**
  * @package Jojo1981\DataResolver\Comparator
  */
 class DefaultComparator implements ComparatorInterface
 {
+    /** @var ComparatorFactory */
+    private $comparatorFactory;
+
+    /**
+     * @param null|ComparatorFactory $comparatorFactory
+     */
+    public function __construct(?ComparatorFactory $comparatorFactory = null)
+    {
+        $this->comparatorFactory = $comparatorFactory ?? ComparatorFactory::getInstance();
+    }
+
     /**
      * @param mixed $referenceValue
      * @param mixed $toCompareValue
@@ -23,11 +35,18 @@ class DefaultComparator implements ComparatorInterface
      */
     public function isEqual($referenceValue, $toCompareValue): bool
     {
-        try {
-            return (new IsEqual($referenceValue, 0.0, 25, true))->evaluate($toCompareValue, '', true);
-        } catch (\Exception $exception) {
+        $comparator = $this->comparatorFactory->getComparatorFor($referenceValue, $toCompareValue);
+        if (null === $comparator) {
             return false;
         }
+
+        try {
+            $comparator->assertEquals($referenceValue, $toCompareValue);
+        } catch (ComparisonFailure $f) {
+            return false;
+        }
+
+        return true;
     }
 
     /**

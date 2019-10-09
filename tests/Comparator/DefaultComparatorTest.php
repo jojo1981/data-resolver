@@ -17,6 +17,9 @@ use Prophecy\Exception\Doubler\DoubleException;
 use Prophecy\Exception\Doubler\InterfaceNotFoundException;
 use Prophecy\Exception\Prophecy\ObjectProphecyException;
 use Prophecy\Prophecy\ObjectProphecy;
+use SebastianBergmann\Comparator\Comparator;
+use SebastianBergmann\Comparator\ComparisonFailure;
+use SebastianBergmann\Comparator\Factory as ComparatorFactory;
 use SebastianBergmann\RecursionContext\InvalidArgumentException;
 
 /**
@@ -24,27 +27,68 @@ use SebastianBergmann\RecursionContext\InvalidArgumentException;
  */
 class DefaultComparatorTest extends TestCase
 {
+    /** @var ComparatorFactory|ObjectProphecy */
+    private $comparatorFactory;
+
+    /** @var Comparator|ObjectProphecy */
+    private $comparator;
+
+    /**
+     * @throws DoubleException
+     * @throws InterfaceNotFoundException
+     * @throws ClassNotFoundException
+     * @return void
+     */
+    protected function setUp(): void
+    {
+        $this->comparatorFactory = $this->prophesize(ComparatorFactory::class);
+        $this->comparator = $this->prophesize(Comparator::class);
+    }
+
     /**
      * @test
      *
      * @throws InvalidArgumentException
-     * @throws ClassNotFoundException
-     * @throws DoubleException
-     * @throws InterfaceNotFoundException
      * @throws ObjectProphecyException
      * @throws ExpectationFailedException
      * @return void
      */
-    public function isEqualShouldReturnFalseWhenTheUsedIsEqualConstraintThrowsAnException(): void
+    public function isEqualShouldReturnFalseWhenComparatorFactoryHasNoComparatorFor(): void
     {
-        /** @var ObjectProphecy|\SplObjectStorage $objectStorage1 */
-        $objectStorage1 = $this->prophesize(\SplObjectStorage::class);
+        $this->comparatorFactory->getComparatorFor('abc', 'efg')->willReturn(null)->shouldBeCalledOnce();
+        $this->assertFalse($this->getDefaultComparator($this->comparatorFactory->reveal())->isEqual('abc', 'efg'));
+    }
 
-        /** @var ObjectProphecy|\SplObjectStorage $objectStorage2 */
-        $objectStorage2 = $this->prophesize(\SplObjectStorage::class);
-        $objectStorage2->rewind()->willThrow(new \Exception('Force the IsEqual constraint to throw an exception'));
+    /**
+     * @test
+     *
+     * @throws ExpectationFailedException
+     * @throws InvalidArgumentException
+     * @throws ObjectProphecyException
+     * @throws ComparisonFailure
+     * @return void
+     */
+    public function isEqualShouldReturnFalseWhenComparatorAssertEqualsThrowsComparisonFailure(): void
+    {
+        $this->comparatorFactory->getComparatorFor('a', 'b')->willReturn($this->comparator)->shouldBeCalledOnce();
+        $this->comparator->assertEquals('a', 'b')->willThrow(ComparisonFailure::class)->shouldBeCalledOnce();
+        $this->assertFalse($this->getDefaultComparator($this->comparatorFactory->reveal())->isEqual('a', 'b'));
+    }
 
-        $this->assertFalse($this->getDefaultComparator()->isEqual($objectStorage1->reveal(), $objectStorage2->reveal()));
+    /**
+     * @test
+     *
+     * @throws ExpectationFailedException
+     * @throws InvalidArgumentException
+     * @throws ObjectProphecyException
+     * @throws ComparisonFailure
+     * @return void
+     */
+    public function isEqualShouldReturnTrueWhenComparatorAssertEqualsNotThrowsAnException(): void
+    {
+        $this->comparatorFactory->getComparatorFor('a', 'b')->willReturn($this->comparator)->shouldBeCalledOnce();
+        $this->comparator->assertEquals('a', 'b')->willReturn(null)->shouldBeCalledOnce();
+        $this->assertTrue($this->getDefaultComparator($this->comparatorFactory->reveal())->isEqual('a', 'b'));
     }
 
     /**
@@ -148,14 +192,14 @@ class DefaultComparatorTest extends TestCase
         $this->assertTrue($this->getDefaultComparator()->isLessThan(2, 1));
         $this->assertTrue($this->getDefaultComparator()->isLessThan(10, 8));
         $this->assertTrue($this->getDefaultComparator()->isLessThan(true, false));
-//        $this->assertTrue($this->getDefaultComparator()->isLessThan('longer', 'short'));
     }
 
     /**
+     * @param null|ComparatorFactory $comparatorFactory
      * @return DefaultComparator
      */
-    private function getDefaultComparator(): DefaultComparator
+    private function getDefaultComparator(?ComparatorFactory $comparatorFactory = null): DefaultComparator
     {
-        return new DefaultComparator();
+        return new DefaultComparator($comparatorFactory);
     }
 }
