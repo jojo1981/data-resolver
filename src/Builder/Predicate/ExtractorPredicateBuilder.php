@@ -238,4 +238,55 @@ class ExtractorPredicateBuilder
             $this->predicateBuilderFactory->getInPredicateBuilder($expectedValues)
         );
     }
+
+    /**
+     * @param string $prefix
+     * @param bool $caseSensitive
+     * @return ConditionalPredicateBuilder
+     */
+    public function stringStartsWith(string $prefix, bool $caseSensitive = true): ConditionalPredicateBuilder
+    {
+        return $this->predicateBuilderFactory->getConditionalPredicateBuilder(
+            $this->extractorBuilder,
+            $this->predicateBuilderFactory->getStringStartsWithPredicateBuilder($prefix, $caseSensitive)
+        );
+    }
+
+    /**
+     * @param string $suffix
+     * @param bool $caseSensitive
+     * @return ConditionalPredicateBuilder
+     */
+    public function stringEndsWith(string $suffix, bool $caseSensitive = true): ConditionalPredicateBuilder
+    {
+        return $this->predicateBuilderFactory->getConditionalPredicateBuilder(
+            $this->extractorBuilder,
+            $this->predicateBuilderFactory->getStringEndsWithPredicateBuilder($suffix, $caseSensitive)
+        );
+    }
+
+    /**
+     * @param string $subString
+     * @param bool $caseSensitive
+     * @return ConditionalPredicateBuilder
+     */
+    public function stringContains(string $subString, bool $caseSensitive = true): ConditionalPredicateBuilder
+    {
+        return $this->predicateBuilderFactory->getConditionalPredicateBuilder(
+            $this->extractorBuilder,
+            $this->predicateBuilderFactory->getStringContainsPredicateBuilder($subString, $caseSensitive)
+        );
+    }
+
+    /**
+     * @param string $pattern
+     * @return ConditionalPredicateBuilder
+     */
+    public function stringMatchesRegex(string $pattern): ConditionalPredicateBuilder
+    {
+        return $this->predicateBuilderFactory->getConditionalPredicateBuilder(
+            $this->extractorBuilder,
+            $this->predicateBuilderFactory->getStringRegexPredicateBuilder($pattern)
+        );
+    }
 }

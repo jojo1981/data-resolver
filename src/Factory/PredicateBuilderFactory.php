@@ -24,6 +24,10 @@ use Jojo1981\DataResolver\Builder\Predicate\NotPredicateBuilder;
 use Jojo1981\DataResolver\Builder\Predicate\OrPredicateBuilder;
 use Jojo1981\DataResolver\Builder\Predicate\PredicateBuilder;
 use Jojo1981\DataResolver\Builder\Predicate\SomePredicateBuilder;
+use Jojo1981\DataResolver\Builder\Predicate\StringContainsPredicateBuilder;
+use Jojo1981\DataResolver\Builder\Predicate\StringEndsWithPredicateBuilder;
+use Jojo1981\DataResolver\Builder\Predicate\StringRegexPredicateBuilder;
+use Jojo1981\DataResolver\Builder\Predicate\StringStartsWithPredicateBuilder;
 use Jojo1981\DataResolver\Builder\PredicateBuilderInterface;
 use Jojo1981\DataResolver\Comparator\ComparatorInterface;
 use Jojo1981\DataResolver\Handler\SequenceHandlerInterface;
@@ -194,5 +198,53 @@ class PredicateBuilderFactory
     public function getSomePredicateBuilder(PredicateBuilderInterface $predicateBuilder): SomePredicateBuilder
     {
         return new SomePredicateBuilder($this->sequenceHandler, $predicateBuilder->build());
+    }
+
+    /**
+     * @param string $prefix
+     * @param bool $caseSensitive
+     * @return StringStartsWithPredicateBuilder
+     */
+    public function getStringStartsWithPredicateBuilder(
+        string $prefix,
+        bool $caseSensitive
+    ): StringStartsWithPredicateBuilder
+    {
+        return new StringStartsWithPredicateBuilder($prefix, $caseSensitive);
+    }
+
+    /**
+     * @param string $suffix
+     * @param bool $caseSensitive
+     * @return StringEndsWithPredicateBuilder
+     */
+    public function getStringEndsWithPredicateBuilder(
+        string $suffix,
+        bool $caseSensitive
+    ): StringEndsWithPredicateBuilder
+    {
+        return new StringEndsWithPredicateBuilder($suffix, $caseSensitive);
+    }
+
+    /**
+     * @param string $subString
+     * @param bool $caseSensitive
+     * @return StringContainsPredicateBuilder
+     */
+    public function getStringContainsPredicateBuilder(
+        string $subString,
+        bool $caseSensitive
+    ): StringContainsPredicateBuilder
+    {
+        return new StringContainsPredicateBuilder($subString, $caseSensitive);
+    }
+
+    /**
+     * @param string $pattern
+     * @return StringRegexPredicateBuilder
+     */
+    public function getStringRegexPredicateBuilder(string $pattern): StringRegexPredicateBuilder
+    {
+        return new StringRegexPredicateBuilder($pattern);
     }
 }
