@@ -130,6 +130,16 @@ class ResolverBuilder
     }
 
     /**
+     * @return $this
+     */
+    public function strlen(): self
+    {
+        $this->extractors[] = $this->extractorBuilderFactory->getStringLengthExtractorBuilder()->build();
+
+        return $this;
+    }
+
+    /**
      * @return Resolver
      */
     public function build(): Resolver

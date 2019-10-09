@@ -14,6 +14,7 @@ use Jojo1981\DataResolver\Builder\Extractor\CompositeExtractorBuilder;
 use Jojo1981\DataResolver\Builder\Extractor\CountExtractorBuilder;
 use Jojo1981\DataResolver\Builder\Extractor\NoneExtractorBuilder;
 use Jojo1981\DataResolver\Builder\Extractor\SomeExtractorBuilder;
+use Jojo1981\DataResolver\Builder\Extractor\StringLengthExtractorBuilder;
 use Jojo1981\DataResolver\Builder\ExtractorBuilderInterface;
 use Jojo1981\DataResolver\Builder\Extractor\FilterExtractorBuilder;
 use Jojo1981\DataResolver\Builder\Extractor\FindExtractorBuilder;
@@ -138,6 +139,14 @@ class ExtractorBuilderFactory
             $this->mergeHandler,
             \array_merge([$propertyName], $propertyNames)
         );
+    }
+
+    /**
+     * @return StringLengthExtractorBuilder
+     */
+    public function getStringLengthExtractorBuilder(): StringLengthExtractorBuilder
+    {
+        return new StringLengthExtractorBuilder();
     }
 
     /**

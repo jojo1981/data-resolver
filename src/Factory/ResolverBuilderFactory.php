@@ -131,6 +131,14 @@ class ResolverBuilderFactory
     }
 
     /**
+     * @return ResolverBuilder
+     */
+    public function strlen(): ResolverBuilder
+    {
+        return $this->create()->strlen();
+    }
+
+    /**
      * @param null|string|ResolverBuilder $arg
      * @throws ResolverException
      * @return ExtractorPredicateBuilder
