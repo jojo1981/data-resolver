@@ -47,18 +47,6 @@ class ExtractorPredicateBuilder
     }
 
     /**
-     * @param mixed $expectedValue
-     * @return ConditionalPredicateBuilder
-     */
-    public function equals($expectedValue): ConditionalPredicateBuilder
-    {
-        return $this->predicateBuilderFactory->getConditionalPredicateBuilder(
-            $this->extractorBuilder,
-            $this->predicateBuilderFactory->getEqualsPredicateBuilder($expectedValue)
-        );
-    }
-
-    /**
      * @param string $propertyName
      * @return ExtractorPredicateBuilder
      */
@@ -73,12 +61,78 @@ class ExtractorPredicateBuilder
     }
 
     /**
-     * @param mixed $expectedValue
+     * @param mixed $referenceValue
      * @return ConditionalPredicateBuilder
      */
-    public function notEquals($expectedValue): ConditionalPredicateBuilder
+    public function equals($referenceValue): ConditionalPredicateBuilder
     {
-        return $this->not($this->equals($expectedValue));
+        return $this->predicateBuilderFactory->getConditionalPredicateBuilder(
+            $this->extractorBuilder,
+            $this->predicateBuilderFactory->getEqualsPredicateBuilder($referenceValue)
+        );
+    }
+
+    /**
+     * @param mixed $referenceValue
+     * @return ConditionalPredicateBuilder
+     */
+    public function greaterThan($referenceValue): ConditionalPredicateBuilder
+    {
+        return $this->predicateBuilderFactory->getConditionalPredicateBuilder(
+            $this->extractorBuilder,
+            $this->predicateBuilderFactory->getGreaterThanPredicateBuilder($referenceValue)
+        );
+    }
+
+    /**
+     * @param mixed $referenceValue
+     * @return ConditionalPredicateBuilder
+     */
+    public function lessThan($referenceValue): ConditionalPredicateBuilder
+    {
+        return $this->predicateBuilderFactory->getConditionalPredicateBuilder(
+            $this->extractorBuilder,
+            $this->predicateBuilderFactory->getLessThanPredicateBuilder($referenceValue)
+        );
+    }
+
+    /**
+     * @param mixed $referenceValue
+     * @return ConditionalPredicateBuilder
+     */
+    public function greaterThanOrEquals($referenceValue): ConditionalPredicateBuilder
+    {
+        return $this->predicateBuilderFactory->getConditionalPredicateBuilder(
+            $this->extractorBuilder,
+            $this->predicateBuilderFactory->getOrPredicateBuilder(
+                $this->predicateBuilderFactory->getGreaterThanPredicateBuilder($referenceValue),
+                $this->predicateBuilderFactory->getEqualsPredicateBuilder($referenceValue)
+            )
+        );
+    }
+
+    /**
+     * @param mixed $referenceValue
+     * @return ConditionalPredicateBuilder
+     */
+    public function lessThanOrEquals($referenceValue): ConditionalPredicateBuilder
+    {
+        return $this->predicateBuilderFactory->getConditionalPredicateBuilder(
+            $this->extractorBuilder,
+            $this->predicateBuilderFactory->getOrPredicateBuilder(
+                $this->predicateBuilderFactory->getLessThanPredicateBuilder($referenceValue),
+                $this->predicateBuilderFactory->getEqualsPredicateBuilder($referenceValue)
+            )
+        );
+    }
+
+    /**
+     * @param mixed $referenceValue
+     * @return ConditionalPredicateBuilder
+     */
+    public function notEquals($referenceValue): ConditionalPredicateBuilder
+    {
+        return $this->not($this->equals($referenceValue));
     }
 
     /**

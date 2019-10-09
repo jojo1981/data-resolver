@@ -11,13 +11,13 @@ namespace Jojo1981\DataResolver\Builder\Predicate;
 
 use Jojo1981\DataResolver\Builder\PredicateBuilderInterface;
 use Jojo1981\DataResolver\Comparator\ComparatorInterface;
-use Jojo1981\DataResolver\Predicate\EqualsPredicate;
+use Jojo1981\DataResolver\Predicate\LessThanPredicate;
 use Jojo1981\DataResolver\Predicate\PredicateInterface;
 
 /**
  * @package Jojo1981\DataResolver\Builder\Predicate
  */
-class EqualsPredicateBuilder implements PredicateBuilderInterface
+class LessThanPredicateBuilder implements PredicateBuilderInterface
 {
     /** @var ComparatorInterface */
     private $comparator;
@@ -40,6 +40,6 @@ class EqualsPredicateBuilder implements PredicateBuilderInterface
      */
     public function build(): PredicateInterface
     {
-        return new EqualsPredicate($this->comparator, $this->referenceValue);
+        return new LessThanPredicate($this->comparator, $this->referenceValue);
     }
 }

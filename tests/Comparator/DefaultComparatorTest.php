@@ -35,7 +35,7 @@ class DefaultComparatorTest extends TestCase
      * @throws ExpectationFailedException
      * @return void
      */
-    public function isEqualShouldReturnFalseEvenWhenTheUsedIsEqualConstraintThrowsAnException(): void
+    public function isEqualShouldReturnFalseWhenTheUsedIsEqualConstraintThrowsAnException(): void
     {
         /** @var ObjectProphecy|\SplObjectStorage $objectStorage1 */
         $objectStorage1 = $this->prophesize(\SplObjectStorage::class);
@@ -54,7 +54,7 @@ class DefaultComparatorTest extends TestCase
      * @throws ExpectationFailedException
      * @return void
      */
-    public function isEqualShouldReturnFalseWhenValueDoesNotExistsInExpectedValues(): void
+    public function isEqualShouldReturnFalseWhenValuesAreNotEqual(): void
     {
         $this->assertFalse($this->getDefaultComparator()->isEqual('value1', 'value2'));
         $this->assertFalse($this->getDefaultComparator()->isEqual('Value1', 'value1'));
@@ -70,7 +70,7 @@ class DefaultComparatorTest extends TestCase
      * @throws ExpectationFailedException
      * @return void
      */
-    public function isEqualShouldReturnTrueWhenValueDoesExistsInExpectedValues(): void
+    public function isEqualShouldReturnTrueWhenValuesAreEqual(): void
     {
         $this->assertTrue($this->getDefaultComparator()->isEqual('value1', 'value1'));
         $this->assertTrue($this->getDefaultComparator()->isEqual(['value1'], ['value1']));
@@ -82,6 +82,73 @@ class DefaultComparatorTest extends TestCase
             ['name' => 'my-name', 'age' => 'my-age'],
             ['age' => 'my-age', 'name' => 'my-name']
         ));
+    }
+
+    /**
+     * @test
+     *
+     * @throws InvalidArgumentException
+     * @throws ExpectationFailedException
+     * @return void
+     */
+    public function isGreaterThanShouldReturnFalseWhenValueToCompareIsNotGreaterThanTheReferenceValue(): void
+    {
+        $this->assertFalse($this->getDefaultComparator()->isGreaterThan(-4, -4));
+        $this->assertFalse($this->getDefaultComparator()->isGreaterThan(0, 0));
+        $this->assertFalse($this->getDefaultComparator()->isGreaterThan(1, 1));
+        $this->assertFalse($this->getDefaultComparator()->isGreaterThan(10, 8));
+        $this->assertFalse($this->getDefaultComparator()->isGreaterThan(false, false));
+        $this->assertFalse($this->getDefaultComparator()->isGreaterThan(true, false));
+    }
+
+    /**
+     * @test
+     *
+     * @throws InvalidArgumentException
+     * @throws ExpectationFailedException
+     * @return void
+     */
+    public function isGreaterThanShouldReturnTrueWhenValueToCompareIsGreaterThanTheReferenceValue(): void
+    {
+        $this->assertTrue($this->getDefaultComparator()->isGreaterThan(-4, 0));
+        $this->assertTrue($this->getDefaultComparator()->isGreaterThan(0, 1));
+        $this->assertTrue($this->getDefaultComparator()->isGreaterThan(1, 2));
+        $this->assertTrue($this->getDefaultComparator()->isGreaterThan(8, 10));
+        $this->assertTrue($this->getDefaultComparator()->isGreaterThan(false, true));
+    }
+
+    /**
+     * @test
+     *
+     * @throws InvalidArgumentException
+     * @throws ExpectationFailedException
+     * @return void
+     */
+    public function isLessThanShouldReturnFalseWhenValueToCompareIsNotLessThanTheReferenceValue(): void
+    {
+        $this->assertFalse($this->getDefaultComparator()->isLessThan(-4, -4));
+        $this->assertFalse($this->getDefaultComparator()->isLessThan(0, 0));
+        $this->assertFalse($this->getDefaultComparator()->isLessThan(1, 1));
+        $this->assertFalse($this->getDefaultComparator()->isLessThan(8, 10));
+        $this->assertFalse($this->getDefaultComparator()->isLessThan(false, false));
+        $this->assertFalse($this->getDefaultComparator()->isLessThan(false, true));
+    }
+
+    /**
+     * @test
+     *
+     * @throws InvalidArgumentException
+     * @throws ExpectationFailedException
+     * @return void
+     */
+    public function isLessThanShouldReturnTrueWhenValueToCompareIsLessThanTheReferenceValue(): void
+    {
+        $this->assertTrue($this->getDefaultComparator()->isLessThan(0, -4));
+        $this->assertTrue($this->getDefaultComparator()->isLessThan(1, 0));
+        $this->assertTrue($this->getDefaultComparator()->isLessThan(2, 1));
+        $this->assertTrue($this->getDefaultComparator()->isLessThan(10, 8));
+        $this->assertTrue($this->getDefaultComparator()->isLessThan(true, false));
+//        $this->assertTrue($this->getDefaultComparator()->isLessThan('longer', 'short'));
     }
 
     /**

@@ -7,17 +7,15 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed in the root of the source code
  */
-namespace Jojo1981\DataResolver\Builder\Predicate;
+namespace Jojo1981\DataResolver\Predicate;
 
-use Jojo1981\DataResolver\Builder\PredicateBuilderInterface;
 use Jojo1981\DataResolver\Comparator\ComparatorInterface;
-use Jojo1981\DataResolver\Predicate\EqualsPredicate;
-use Jojo1981\DataResolver\Predicate\PredicateInterface;
+use Jojo1981\DataResolver\Resolver\Context;
 
 /**
- * @package Jojo1981\DataResolver\Builder\Predicate
+ * @package Jojo1981\DataResolver\Predicate
  */
-class EqualsPredicateBuilder implements PredicateBuilderInterface
+class LessThanPredicate implements PredicateInterface
 {
     /** @var ComparatorInterface */
     private $comparator;
@@ -36,10 +34,11 @@ class EqualsPredicateBuilder implements PredicateBuilderInterface
     }
 
     /**
-     * @return PredicateInterface
+     * @param Context $context
+     * @return bool
      */
-    public function build(): PredicateInterface
+    public function match(Context $context): bool
     {
-        return new EqualsPredicate($this->comparator, $this->referenceValue);
+        return $this->comparator->isLessThan($this->referenceValue, $context->getData());
     }
 }

@@ -16,7 +16,9 @@ use Jojo1981\DataResolver\Builder\Predicate\CallBackPredicateBuilder;
 use Jojo1981\DataResolver\Builder\Predicate\ConditionalPredicateBuilder;
 use Jojo1981\DataResolver\Builder\Predicate\EqualsPredicateBuilder;
 use Jojo1981\DataResolver\Builder\Predicate\ExtractorPredicateBuilder;
+use Jojo1981\DataResolver\Builder\Predicate\GreaterThanPredicateBuilder;
 use Jojo1981\DataResolver\Builder\Predicate\InPredicateBuilder;
+use Jojo1981\DataResolver\Builder\Predicate\LessThanPredicateBuilder;
 use Jojo1981\DataResolver\Builder\Predicate\NonePredicateBuilder;
 use Jojo1981\DataResolver\Builder\Predicate\NotPredicateBuilder;
 use Jojo1981\DataResolver\Builder\Predicate\OrPredicateBuilder;
@@ -92,12 +94,30 @@ class PredicateBuilderFactory
     }
 
     /**
-     * @param mixed $expectedValue
+     * @param mixed $referenceValue
      * @return EqualsPredicateBuilder
      */
-    public function getEqualsPredicateBuilder($expectedValue): EqualsPredicateBuilder
+    public function getEqualsPredicateBuilder($referenceValue): EqualsPredicateBuilder
     {
-        return new EqualsPredicateBuilder($expectedValue, $this->comparator);
+        return new EqualsPredicateBuilder($this->comparator, $referenceValue);
+    }
+
+    /**
+     * @param mixed $referenceValue
+     * @return GreaterThanPredicateBuilder
+     */
+    public function getGreaterThanPredicateBuilder($referenceValue): GreaterThanPredicateBuilder
+    {
+        return new GreaterThanPredicateBuilder($this->comparator, $referenceValue);
+    }
+
+    /**
+     * @param mixed $referenceValue
+     * @return LessThanPredicateBuilder
+     */
+    public function getLessThanPredicateBuilder($referenceValue): LessThanPredicateBuilder
+    {
+        return new LessThanPredicateBuilder($this->comparator, $referenceValue);
     }
 
     /**

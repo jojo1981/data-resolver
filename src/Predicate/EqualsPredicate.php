@@ -17,20 +17,20 @@ use Jojo1981\DataResolver\Resolver\Context;
  */
 class EqualsPredicate implements PredicateInterface
 {
-    /** @var mixed */
-    private $expectedValue;
-
     /** @var ComparatorInterface */
     private $comparator;
 
+    /** @var mixed */
+    private $referenceValue;
+
     /**
-     * @param mixed $expectedValue
+     * @param mixed $referenceValue
      * @param ComparatorInterface $comparator
      */
-    public function __construct($expectedValue, ComparatorInterface $comparator)
+    public function __construct(ComparatorInterface $comparator, $referenceValue)
     {
-        $this->expectedValue = $expectedValue;
         $this->comparator = $comparator;
+        $this->referenceValue = $referenceValue;
     }
 
     /**
@@ -39,6 +39,6 @@ class EqualsPredicate implements PredicateInterface
      */
     public function match(Context $context): bool
     {
-        return $this->comparator->isEqual($this->expectedValue, $context->getData());
+        return $this->comparator->isEqual($this->referenceValue, $context->getData());
     }
 }

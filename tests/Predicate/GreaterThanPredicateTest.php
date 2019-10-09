@@ -10,7 +10,7 @@
 namespace tests\Jojo1981\DataResolver\Predicate;
 
 use Jojo1981\DataResolver\Comparator\ComparatorInterface;
-use Jojo1981\DataResolver\Predicate\EqualsPredicate;
+use Jojo1981\DataResolver\Predicate\GreaterThanPredicate;
 use Jojo1981\DataResolver\Resolver\Context;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\TestCase;
@@ -25,7 +25,7 @@ use SebastianBergmann\RecursionContext\InvalidArgumentException;
 /**
  * @package tests\Jojo1981\DataResolver\Predicate
  */
-class EqualsPredicateTest extends TestCase
+class GreaterThanPredicateTest extends TestCase
 {
     /** @var ObjectProphecy|ComparatorInterface */
     private $comparator;
@@ -39,7 +39,7 @@ class EqualsPredicateTest extends TestCase
     protected function setUp(): void
     {
         $this->comparator = $this->prophesize(ComparatorInterface::class);
-        $this->comparator->isGreaterThan(Argument::any(), Argument::any())->shouldNotBeCalled();
+        $this->comparator->isEqual(Argument::any(), Argument::any())->shouldNotBeCalled();
         $this->comparator->isLessThan(Argument::any(), Argument::any())->shouldNotBeCalled();
     }
 
@@ -55,8 +55,8 @@ class EqualsPredicateTest extends TestCase
     {
         $referenceValue = 'dummy1';
         $toCompareValue = 'dummy2';
-        $this->comparator->isEqual($referenceValue, $toCompareValue)->willReturn(true)->shouldBeCalledOnce();
-        $this->assertTrue($this->getEqualsPredicate($referenceValue)->match(new Context($toCompareValue)));
+        $this->comparator->isGreaterThan($referenceValue, $toCompareValue)->willReturn(true)->shouldBeCalledOnce();
+        $this->assertTrue($this->getGreaterThanPredicate($referenceValue)->match(new Context($toCompareValue)));
     }
 
     /**
@@ -71,17 +71,17 @@ class EqualsPredicateTest extends TestCase
     {
         $referenceValue = 'dummy1';
         $toCompareValue = 'dummy2';
-        $this->comparator->isEqual($referenceValue, $toCompareValue)->willReturn(false)->shouldBeCalledOnce();
-        $this->assertFalse($this->getEqualsPredicate($referenceValue)->match(new Context($toCompareValue)));
+        $this->comparator->isGreaterThan($referenceValue, $toCompareValue)->willReturn(false)->shouldBeCalledOnce();
+        $this->assertFalse($this->getGreaterThanPredicate($referenceValue)->match(new Context($toCompareValue)));
     }
 
     /**
      * @param mixed $referenceValue
      * @throws ObjectProphecyException
-     * @return EqualsPredicate
+     * @return GreaterThanPredicate
      */
-    private function getEqualsPredicate($referenceValue): EqualsPredicate
+    private function getGreaterThanPredicate($referenceValue): GreaterThanPredicate
     {
-        return new EqualsPredicate($this->comparator->reveal(), $referenceValue);
+        return new GreaterThanPredicate($this->comparator->reveal(), $referenceValue);
     }
 }

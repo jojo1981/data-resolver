@@ -9,7 +9,7 @@
  */
 namespace Jojo1981\DataResolver\Comparator;
 
-use PHPUnit\Framework\Constraint\IsEqual as IsEqualConstraint;
+use PHPUnit\Framework\Constraint\IsEqual;
 
 /**
  * @package Jojo1981\DataResolver\Comparator
@@ -17,17 +17,36 @@ use PHPUnit\Framework\Constraint\IsEqual as IsEqualConstraint;
 class DefaultComparator implements ComparatorInterface
 {
     /**
-     * @param mixed $valueA
-     * @param mixed $valueB
+     * @param mixed $referenceValue
+     * @param mixed $toCompareValue
      * @return bool
      */
-    public function isEqual($valueA, $valueB): bool
+    public function isEqual($referenceValue, $toCompareValue): bool
     {
-        $isEqualConstraint = new IsEqualConstraint($valueA, 0.0, 25, true);
         try {
-            return $isEqualConstraint->evaluate($valueB, '', true);
+            return (new IsEqual($referenceValue, 0.0, 25, true))->evaluate($toCompareValue, '', true);
         } catch (\Exception $exception) {
             return false;
         }
+    }
+
+    /**
+     * @param mixed $referenceValue
+     * @param mixed $toCompareValue
+     * @return bool
+     */
+    public function isGreaterThan($referenceValue, $toCompareValue): bool
+    {
+        return $toCompareValue > $referenceValue;
+    }
+
+    /**
+     * @param mixed $referenceValue
+     * @param mixed $toCompareValue
+     * @return bool
+     */
+    public function isLessThan($referenceValue, $toCompareValue): bool
+    {
+        return $toCompareValue < $referenceValue;
     }
 }

@@ -15,9 +15,23 @@ namespace Jojo1981\DataResolver\Comparator;
 interface ComparatorInterface
 {
     /**
-     * @param mixed $valueA
-     * @param mixed $valueB
+     * @param mixed $referenceValue
+     * @param mixed $toCompareValue
      * @return bool
      */
-    public function isEqual($valueA, $valueB): bool;
+    public function isEqual($referenceValue, $toCompareValue): bool;
+
+    /**
+     * @param mixed $referenceValue
+     * @param mixed $toCompareValue
+     * @return bool
+     */
+    public function isGreaterThan($referenceValue, $toCompareValue): bool;
+
+    /**
+     * @param mixed $referenceValue
+     * @param mixed $toCompareValue
+     * @return bool
+     */
+    public function isLessThan($referenceValue, $toCompareValue): bool;
 }
