@@ -135,7 +135,19 @@ class ExtractorPredicateBuilder
      */
     public function isTrue(): ConditionalPredicateBuilder
     {
-        return $this->equals(true);
+        return $this->getConditionalPredicateBuilder(
+            $this->predicateBuilderFactory->getBooleanPredicateBuilder(true, true)
+        );
+    }
+
+    /**
+     * @return ConditionalPredicateBuilder
+     */
+    public function isTruly(): ConditionalPredicateBuilder
+    {
+        return $this->getConditionalPredicateBuilder(
+            $this->predicateBuilderFactory->getBooleanPredicateBuilder(true, false)
+        );
     }
 
     /**
@@ -143,7 +155,19 @@ class ExtractorPredicateBuilder
      */
     public function isFalse(): ConditionalPredicateBuilder
     {
-        return $this->equals(false);
+        return $this->getConditionalPredicateBuilder(
+            $this->predicateBuilderFactory->getBooleanPredicateBuilder(false, true)
+        );
+    }
+
+    /**
+     * @return ConditionalPredicateBuilder
+     */
+    public function isFalsely(): ConditionalPredicateBuilder
+    {
+        return $this->getConditionalPredicateBuilder(
+            $this->predicateBuilderFactory->getBooleanPredicateBuilder(false, false)
+        );
     }
 
     /**

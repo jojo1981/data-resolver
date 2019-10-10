@@ -12,6 +12,7 @@ namespace Jojo1981\DataResolver\Factory;
 use Jojo1981\DataResolver\Builder\ExtractorBuilderInterface;
 use Jojo1981\DataResolver\Builder\Predicate\AllPredicateBuilder;
 use Jojo1981\DataResolver\Builder\Predicate\AndPredicateBuilder;
+use Jojo1981\DataResolver\Builder\Predicate\BooleanPredicateBuilder;
 use Jojo1981\DataResolver\Builder\Predicate\CallBackPredicateBuilder;
 use Jojo1981\DataResolver\Builder\Predicate\ConditionalPredicateBuilder;
 use Jojo1981\DataResolver\Builder\Predicate\EqualsPredicateBuilder;
@@ -270,5 +271,15 @@ class PredicateBuilderFactory
     public function getHasPropertyPredicateBuilder(string $propertyName): HasPropertyPredicateBuilder
     {
         return new HasPropertyPredicateBuilder($this->propertyHandler, $this->namingStrategy, $propertyName);
+    }
+
+    /**
+     * @param bool $expected
+     * @param bool $strict
+     * @return BooleanPredicateBuilder
+     */
+    public function getBooleanPredicateBuilder(bool $expected, bool $strict): BooleanPredicateBuilder
+    {
+        return new BooleanPredicateBuilder($expected, $strict);
     }
 }
