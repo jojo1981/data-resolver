@@ -23,6 +23,7 @@ use Jojo1981\DataResolver\Builder\Predicate\InPredicateBuilder;
 use Jojo1981\DataResolver\Builder\Predicate\LessThanPredicateBuilder;
 use Jojo1981\DataResolver\Builder\Predicate\NonePredicateBuilder;
 use Jojo1981\DataResolver\Builder\Predicate\NotPredicateBuilder;
+use Jojo1981\DataResolver\Builder\Predicate\NullPredicateBuilder;
 use Jojo1981\DataResolver\Builder\Predicate\OrPredicateBuilder;
 use Jojo1981\DataResolver\Builder\Predicate\PredicateBuilder;
 use Jojo1981\DataResolver\Builder\Predicate\SomePredicateBuilder;
@@ -281,5 +282,13 @@ class PredicateBuilderFactory
     public function getBooleanPredicateBuilder(bool $expected, bool $strict): BooleanPredicateBuilder
     {
         return new BooleanPredicateBuilder($expected, $strict);
+    }
+
+    /**
+     * @return NullPredicateBuilder
+     */
+    public function getNullPredicateBuilder(): NullPredicateBuilder
+    {
+        return new NullPredicateBuilder();
     }
 }

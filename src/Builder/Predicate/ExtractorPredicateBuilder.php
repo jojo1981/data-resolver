@@ -175,7 +175,7 @@ class ExtractorPredicateBuilder
      */
     public function isNull(): ConditionalPredicateBuilder
     {
-        return $this->equals(null);
+        return $this->getConditionalPredicateBuilder($this->predicateBuilderFactory->getNullPredicateBuilder());
     }
 
     /**
