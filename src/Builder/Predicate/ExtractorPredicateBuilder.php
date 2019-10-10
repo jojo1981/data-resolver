@@ -66,8 +66,7 @@ class ExtractorPredicateBuilder
      */
     public function equals($referenceValue): ConditionalPredicateBuilder
     {
-        return $this->predicateBuilderFactory->getConditionalPredicateBuilder(
-            $this->extractorBuilder,
+        return $this->getConditionalPredicateBuilder(
             $this->predicateBuilderFactory->getEqualsPredicateBuilder($referenceValue)
         );
     }
@@ -78,8 +77,7 @@ class ExtractorPredicateBuilder
      */
     public function greaterThan($referenceValue): ConditionalPredicateBuilder
     {
-        return $this->predicateBuilderFactory->getConditionalPredicateBuilder(
-            $this->extractorBuilder,
+        return $this->getConditionalPredicateBuilder(
             $this->predicateBuilderFactory->getGreaterThanPredicateBuilder($referenceValue)
         );
     }
@@ -90,8 +88,7 @@ class ExtractorPredicateBuilder
      */
     public function lessThan($referenceValue): ConditionalPredicateBuilder
     {
-        return $this->predicateBuilderFactory->getConditionalPredicateBuilder(
-            $this->extractorBuilder,
+        return $this->getConditionalPredicateBuilder(
             $this->predicateBuilderFactory->getLessThanPredicateBuilder($referenceValue)
         );
     }
@@ -102,8 +99,7 @@ class ExtractorPredicateBuilder
      */
     public function greaterThanOrEquals($referenceValue): ConditionalPredicateBuilder
     {
-        return $this->predicateBuilderFactory->getConditionalPredicateBuilder(
-            $this->extractorBuilder,
+        return $this->getConditionalPredicateBuilder(
             $this->predicateBuilderFactory->getOrPredicateBuilder(
                 $this->predicateBuilderFactory->getGreaterThanPredicateBuilder($referenceValue),
                 $this->predicateBuilderFactory->getEqualsPredicateBuilder($referenceValue)
@@ -117,8 +113,7 @@ class ExtractorPredicateBuilder
      */
     public function lessThanOrEquals($referenceValue): ConditionalPredicateBuilder
     {
-        return $this->predicateBuilderFactory->getConditionalPredicateBuilder(
-            $this->extractorBuilder,
+        return $this->getConditionalPredicateBuilder(
             $this->predicateBuilderFactory->getOrPredicateBuilder(
                 $this->predicateBuilderFactory->getLessThanPredicateBuilder($referenceValue),
                 $this->predicateBuilderFactory->getEqualsPredicateBuilder($referenceValue)
@@ -173,8 +168,7 @@ class ExtractorPredicateBuilder
      */
     public function callback(callable $callback): ConditionalPredicateBuilder
     {
-        return $this->predicateBuilderFactory->getConditionalPredicateBuilder(
-            $this->extractorBuilder,
+        return $this->getConditionalPredicateBuilder(
             $this->predicateBuilderFactory->getCallBackPredicateBuilder($callback)
         );
     }
@@ -185,8 +179,7 @@ class ExtractorPredicateBuilder
      */
     public function not(PredicateBuilderInterface $predicateBuilder): ConditionalPredicateBuilder
     {
-        return $this->predicateBuilderFactory->getConditionalPredicateBuilder(
-            $this->extractorBuilder,
+        return $this->getConditionalPredicateBuilder(
             $this->predicateBuilderFactory->getNotPredicateBuilder($predicateBuilder)
         );
     }
@@ -197,8 +190,7 @@ class ExtractorPredicateBuilder
      */
     public function some(PredicateBuilderInterface $predicateBuilder): ConditionalPredicateBuilder
     {
-        return $this->predicateBuilderFactory->getConditionalPredicateBuilder(
-            $this->extractorBuilder,
+        return $this->getConditionalPredicateBuilder(
             $this->predicateBuilderFactory->getSomePredicateBuilder($predicateBuilder)
         );
     }
@@ -209,8 +201,7 @@ class ExtractorPredicateBuilder
      */
     public function all(PredicateBuilderInterface $predicateBuilder): ConditionalPredicateBuilder
     {
-        return $this->predicateBuilderFactory->getConditionalPredicateBuilder(
-            $this->extractorBuilder,
+        return $this->getConditionalPredicateBuilder(
             $this->predicateBuilderFactory->getAllPredicateBuilder($predicateBuilder)
         );
     }
@@ -221,8 +212,7 @@ class ExtractorPredicateBuilder
      */
     public function none(PredicateBuilderInterface $predicateBuilder): ConditionalPredicateBuilder
     {
-        return $this->predicateBuilderFactory->getConditionalPredicateBuilder(
-            $this->extractorBuilder,
+        return $this->getConditionalPredicateBuilder(
             $this->predicateBuilderFactory->getNonePredicateBuilder($predicateBuilder)
         );
     }
@@ -233,8 +223,7 @@ class ExtractorPredicateBuilder
      */
     public function in(array $expectedValues): ConditionalPredicateBuilder
     {
-        return $this->predicateBuilderFactory->getConditionalPredicateBuilder(
-            $this->extractorBuilder,
+        return $this->getConditionalPredicateBuilder(
             $this->predicateBuilderFactory->getInPredicateBuilder($expectedValues)
         );
     }
@@ -246,8 +235,7 @@ class ExtractorPredicateBuilder
      */
     public function stringStartsWith(string $prefix, bool $caseSensitive = true): ConditionalPredicateBuilder
     {
-        return $this->predicateBuilderFactory->getConditionalPredicateBuilder(
-            $this->extractorBuilder,
+        return $this->getConditionalPredicateBuilder(
             $this->predicateBuilderFactory->getStringStartsWithPredicateBuilder($prefix, $caseSensitive)
         );
     }
@@ -259,8 +247,7 @@ class ExtractorPredicateBuilder
      */
     public function stringEndsWith(string $suffix, bool $caseSensitive = true): ConditionalPredicateBuilder
     {
-        return $this->predicateBuilderFactory->getConditionalPredicateBuilder(
-            $this->extractorBuilder,
+        return $this->getConditionalPredicateBuilder(
             $this->predicateBuilderFactory->getStringEndsWithPredicateBuilder($suffix, $caseSensitive)
         );
     }
@@ -272,8 +259,7 @@ class ExtractorPredicateBuilder
      */
     public function stringContains(string $subString, bool $caseSensitive = true): ConditionalPredicateBuilder
     {
-        return $this->predicateBuilderFactory->getConditionalPredicateBuilder(
-            $this->extractorBuilder,
+        return $this->getConditionalPredicateBuilder(
             $this->predicateBuilderFactory->getStringContainsPredicateBuilder($subString, $caseSensitive)
         );
     }
@@ -284,8 +270,7 @@ class ExtractorPredicateBuilder
      */
     public function stringMatchesRegex(string $pattern): ConditionalPredicateBuilder
     {
-        return $this->predicateBuilderFactory->getConditionalPredicateBuilder(
-            $this->extractorBuilder,
+        return $this->getConditionalPredicateBuilder(
             $this->predicateBuilderFactory->getStringRegexPredicateBuilder($pattern)
         );
     }
@@ -296,9 +281,22 @@ class ExtractorPredicateBuilder
      */
     public function hasProperty(string $propertyName): ConditionalPredicateBuilder
     {
+        return $this->getConditionalPredicateBuilder(
+            $this->predicateBuilderFactory->getHasPropertyPredicateBuilder($propertyName)
+        );
+    }
+
+    /**
+     * @param PredicateBuilderInterface $predicateBuilder
+     * @return ConditionalPredicateBuilder
+     */
+    private function getConditionalPredicateBuilder(
+        PredicateBuilderInterface $predicateBuilder
+    ): ConditionalPredicateBuilder
+    {
         return $this->predicateBuilderFactory->getConditionalPredicateBuilder(
             $this->extractorBuilder,
-            $this->predicateBuilderFactory->getHasPropertyPredicateBuilder($propertyName)
+            $predicateBuilder
         );
     }
 }
