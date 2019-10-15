@@ -38,13 +38,14 @@ class ExtractorPredicate implements PredicateInterface
 
     /**
      * @param Context $context
-     * @throws PredicateException
-     * @throws HandlerException
-     * @throws ExtractorException
      * @return bool
      */
     public function match(Context $context): bool
     {
-        return $this->predicate->match($context->copy()->setData($this->extractor->extract($context)));
+        try {
+            return $this->predicate->match($context->copy()->setData($this->extractor->extract($context)));
+        } catch (\Exception $exception) {
+            return false;
+        }
     }
 }

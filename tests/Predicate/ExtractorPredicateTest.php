@@ -68,6 +68,24 @@ class ExtractorPredicateTest extends TestCase
      * @throws ObjectProphecyException
      * @return void
      */
+    public function matchShouldReturnFalseBecauseTheTheExtractorThrowsAnException(): void
+    {
+        $this->predicate->match($this->copiedContext)->willThrow(\Exception::class)->shouldBeCalled();
+
+        $this->assertFalse($this->getExtractorPredicate()->match($this->originalContext->reveal()));
+    }
+
+    /**
+     * @test
+     *
+     * @throws ExtractorException
+     * @throws HandlerException
+     * @throws PredicateException
+     * @throws ExpectationFailedException
+     * @throws InvalidArgumentException
+     * @throws ObjectProphecyException
+     * @return void
+     */
     public function matchShouldReturnFalseBecauseThePredicateReturnFalseWhenMatchingTheReturnedValueOfTheExtractor(): void
     {
         $this->predicate->match($this->copiedContext)->willReturn(false)->shouldBeCalled();
