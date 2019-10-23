@@ -10,8 +10,7 @@
 namespace Jojo1981\DataResolver\Builder\Predicate;
 
 use Jojo1981\DataResolver\Builder\PredicateBuilderInterface;
-use Jojo1981\DataResolver\Handler\PropertyHandlerInterface;
-use Jojo1981\DataResolver\NamingStrategy\NamingStrategyInterface;
+use Jojo1981\DataResolver\Extractor\HasPropertyExtractor;
 use Jojo1981\DataResolver\Predicate\HasPropertyPredicate;
 use Jojo1981\DataResolver\Predicate\PredicateInterface;
 
@@ -20,28 +19,15 @@ use Jojo1981\DataResolver\Predicate\PredicateInterface;
  */
 class HasPropertyPredicateBuilder implements PredicateBuilderInterface
 {
-    /** @var PropertyHandlerInterface */
-    private $propertyHandler;
-
-    /** @var NamingStrategyInterface */
-    private $namingStrategy;
-
-    /** @var string */
-    private $propertyName;
+    /** @var HasPropertyExtractor */
+    private $extractor;
 
     /**
-     * @param PropertyHandlerInterface $propertyHandler
-     * @param NamingStrategyInterface $namingStrategy
-     * @param string $propertyName
+     * @param HasPropertyExtractor $extractor
      */
-    public function __construct(
-        PropertyHandlerInterface $propertyHandler,
-        NamingStrategyInterface $namingStrategy,
-        string $propertyName
-    ) {
-        $this->propertyHandler = $propertyHandler;
-        $this->namingStrategy = $namingStrategy;
-        $this->propertyName = $propertyName;
+    public function __construct(HasPropertyExtractor $extractor)
+    {
+        $this->extractor = $extractor;
     }
 
     /**
@@ -49,6 +35,6 @@ class HasPropertyPredicateBuilder implements PredicateBuilderInterface
      */
     public function build(): PredicateInterface
     {
-        return new HasPropertyPredicate($this->propertyHandler, $this->namingStrategy, $this->propertyName);
+        return new HasPropertyPredicate($this->extractor);
     }
 }

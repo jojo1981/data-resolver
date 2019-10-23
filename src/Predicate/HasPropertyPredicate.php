@@ -9,8 +9,7 @@
  */
 namespace Jojo1981\DataResolver\Predicate;
 
-use Jojo1981\DataResolver\Handler\PropertyHandlerInterface;
-use Jojo1981\DataResolver\NamingStrategy\NamingStrategyInterface;
+use Jojo1981\DataResolver\Extractor\HasPropertyExtractor;
 use Jojo1981\DataResolver\Resolver\Context;
 
 /**
@@ -18,28 +17,15 @@ use Jojo1981\DataResolver\Resolver\Context;
  */
 class HasPropertyPredicate implements PredicateInterface
 {
-    /** @var PropertyHandlerInterface */
-    private $propertyHandler;
-
-    /** @var NamingStrategyInterface */
-    private $namingStrategy;
-
-    /** @var string */
-    private $propertyName;
+    /** @var HasPropertyExtractor */
+    private $extractor;
 
     /**
-     * @param PropertyHandlerInterface $propertyHandler
-     * @param NamingStrategyInterface $namingStrategy
-     * @param string $propertyName
+     * @param HasPropertyExtractor $extractor
      */
-    public function __construct(
-        PropertyHandlerInterface $propertyHandler,
-        NamingStrategyInterface $namingStrategy,
-        string $propertyName
-    ) {
-        $this->propertyHandler = $propertyHandler;
-        $this->namingStrategy = $namingStrategy;
-        $this->propertyName = $propertyName;
+    public function __construct(HasPropertyExtractor $extractor)
+    {
+        $this->extractor = $extractor;
     }
 
     /**
@@ -48,17 +34,8 @@ class HasPropertyPredicate implements PredicateInterface
      */
     public function match(Context $context): bool
     {
-        $data = $context->getData();
-        if (!$this->propertyHandler->supports($this->propertyName, $data)) {
-            return false;
-        }
-
         try {
-            return $this->propertyHandler->hasValueForPropertyName(
-                $this->namingStrategy,
-                $this->propertyName,
-                $data
-            );
+            return $this->extractor->extract($context);
         } catch (\Exception $exception) {
             return false;
         }

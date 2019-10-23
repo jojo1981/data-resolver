@@ -271,7 +271,9 @@ class PredicateBuilderFactory
      */
     public function getHasPropertyPredicateBuilder(string $propertyName): HasPropertyPredicateBuilder
     {
-        return new HasPropertyPredicateBuilder($this->propertyHandler, $this->namingStrategy, $propertyName);
+        return new HasPropertyPredicateBuilder(
+            $this->extractorBuilderFactory->getHasPropertyExtractorBuilder($propertyName)->build()
+        );
     }
 
     /**
