@@ -12,6 +12,7 @@ namespace Jojo1981\DataResolver\Factory;
 use Jojo1981\DataResolver\Builder\Extractor\AllExtractorBuilder;
 use Jojo1981\DataResolver\Builder\Extractor\CompositeExtractorBuilder;
 use Jojo1981\DataResolver\Builder\Extractor\CountExtractorBuilder;
+use Jojo1981\DataResolver\Builder\Extractor\HasPropertyExtractorBuilder;
 use Jojo1981\DataResolver\Builder\Extractor\NoneExtractorBuilder;
 use Jojo1981\DataResolver\Builder\Extractor\SomeExtractorBuilder;
 use Jojo1981\DataResolver\Builder\Extractor\StringLengthExtractorBuilder;
@@ -147,6 +148,15 @@ class ExtractorBuilderFactory
     public function getStringLengthExtractorBuilder(): StringLengthExtractorBuilder
     {
         return new StringLengthExtractorBuilder();
+    }
+
+    /**
+     * @param string $propertyName
+     * @return HasPropertyExtractorBuilder
+     */
+    public function getHasPropertyExtractorBuilder(string $propertyName): HasPropertyExtractorBuilder
+    {
+        return new HasPropertyExtractorBuilder($this->propertyHandler, $this->namingStrategy, $propertyName);
     }
 
     /**

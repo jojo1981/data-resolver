@@ -16,6 +16,7 @@ use Jojo1981\DataResolver\Builder\Predicate\OrPredicateBuilder;
 use Jojo1981\DataResolver\Builder\PredicateBuilderInterface;
 use Jojo1981\DataResolver\Builder\ResolverBuilder;
 use Jojo1981\DataResolver\Exception\ResolverException;
+use Jojo1981\DataResolver\Resolver;
 
 /**
  * @api
@@ -97,45 +98,54 @@ class ResolverBuilderFactory
 
     /**
      * @param PredicateBuilderInterface $predicateBuilder
-     * @return ResolverBuilder
+     * @return Resolver
      */
-    public function all(PredicateBuilderInterface $predicateBuilder): ResolverBuilder
+    public function all(PredicateBuilderInterface $predicateBuilder): Resolver
     {
         return $this->create()->all($predicateBuilder);
     }
 
     /**
      * @param PredicateBuilderInterface $predicateBuilder
-     * @return ResolverBuilder
+     * @return Resolver
      */
-    public function none(PredicateBuilderInterface $predicateBuilder): ResolverBuilder
+    public function none(PredicateBuilderInterface $predicateBuilder): Resolver
     {
         return $this->create()->none($predicateBuilder);
     }
 
     /**
      * @param PredicateBuilderInterface $predicateBuilder
-     * @return ResolverBuilder
+     * @return Resolver
      */
-    public function some(PredicateBuilderInterface $predicateBuilder): ResolverBuilder
+    public function some(PredicateBuilderInterface $predicateBuilder): Resolver
     {
         return $this->create()->some($predicateBuilder);
     }
 
     /**
-     * @return ResolverBuilder
+     * @return Resolver
      */
-    public function count(): ResolverBuilder
+    public function count(): Resolver
     {
         return $this->create()->count();
     }
 
     /**
-     * @return ResolverBuilder
+     * @return Resolver
      */
-    public function strlen(): ResolverBuilder
+    public function strlen(): Resolver
     {
         return $this->create()->strlen();
+    }
+
+    /**
+     * @param string $propertyName
+     * @return Resolver
+     */
+    public function hasProperty(string $propertyName): Resolver
+    {
+        return $this->create()->hasProperty($propertyName);
     }
 
     /**

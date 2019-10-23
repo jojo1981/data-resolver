@@ -88,55 +88,66 @@ class ResolverBuilder
 
     /**
      * @param PredicateBuilderInterface $predicateBuilder
-     * @return $this
+     * @return Resolver
      */
-    public function all(PredicateBuilderInterface $predicateBuilder): self
+    public function all(PredicateBuilderInterface $predicateBuilder): Resolver
     {
         $this->extractors[] = $this->extractorBuilderFactory->getAllExtractorBuilder($predicateBuilder)->build();
 
-        return $this;
+        return $this->build();
     }
 
     /**
      * @param PredicateBuilderInterface $predicateBuilder
-     * @return $this
+     * @return Resolver
      */
-    public function none(PredicateBuilderInterface $predicateBuilder): self
+    public function none(PredicateBuilderInterface $predicateBuilder): Resolver
     {
         $this->extractors[] = $this->extractorBuilderFactory->getNoneExtractorBuilder($predicateBuilder)->build();
 
-        return $this;
+        return $this->build();
     }
 
     /**
      * @param PredicateBuilderInterface $predicateBuilder
-     * @return $this
+     * @return Resolver
      */
-    public function some(PredicateBuilderInterface $predicateBuilder): self
+    public function some(PredicateBuilderInterface $predicateBuilder): Resolver
     {
         $this->extractors[] = $this->extractorBuilderFactory->getSomeExtractorBuilder($predicateBuilder)->build();
 
-        return $this;
+        return $this->build();
     }
 
     /**
-     * @return $this
+     * @return Resolver
      */
-    public function count(): self
+    public function count(): Resolver
     {
         $this->extractors[] = $this->extractorBuilderFactory->getCountExtractorBuilder()->build();
 
-        return $this;
+        return $this->build();
     }
 
     /**
-     * @return $this
+     * @return Resolver
      */
-    public function strlen(): self
+    public function strlen(): Resolver
     {
         $this->extractors[] = $this->extractorBuilderFactory->getStringLengthExtractorBuilder()->build();
 
-        return $this;
+        return $this->build();
+    }
+
+    /**
+     * @param string $propertyName
+     * @return Resolver
+     */
+    public function hasProperty(string $propertyName): Resolver
+    {
+        $this->extractors[] = $this->extractorBuilderFactory->getHasPropertyExtractorBuilder($propertyName)->build();
+
+        return $this->build();
     }
 
     /**
