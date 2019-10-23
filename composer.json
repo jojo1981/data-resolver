@@ -35,6 +35,11 @@
       "Jojo1981\\DataResolver\\": "src/"
     }
   },
+  "autoload-dev": {
+    "psr-4": {
+      "tests\\Jojo1981\\DataResolver\\": "tests/"
+    }
+  },
   "config": {
     "bin-dir": "bin",
     "sort-packages": true
