@@ -68,7 +68,7 @@ class ConditionalPredicateBuilder implements PredicateBuilderInterface
     }
 
     /**
-     * @return PredicateInterface
+     * @return ExtractorPredicate
      */
     public function build(): PredicateInterface
     {

@@ -31,7 +31,7 @@ class ResolverExtractorBuilder implements ExtractorBuilderInterface
     }
 
     /**
-     * @return ExtractorInterface
+     * @return ResolverExtractor
      */
     public function build(): ExtractorInterface
     {

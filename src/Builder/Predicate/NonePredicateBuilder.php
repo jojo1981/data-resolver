@@ -36,7 +36,7 @@ class NonePredicateBuilder implements PredicateBuilderInterface
     }
 
     /**
-     * @return PredicateInterface
+     * @return NonePredicate
      */
     public function build(): PredicateInterface
     {

@@ -30,7 +30,7 @@ class StringRegexPredicateBuilder implements PredicateBuilderInterface
     }
 
     /**
-     * @return PredicateInterface
+     * @return StringRegexPredicate
      */
     public function build(): PredicateInterface
     {

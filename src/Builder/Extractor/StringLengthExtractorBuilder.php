@@ -19,7 +19,7 @@ use Jojo1981\DataResolver\Extractor\StringLengthExtractor;
 class StringLengthExtractorBuilder implements ExtractorBuilderInterface
 {
     /**
-     * @return ExtractorInterface
+     * @return StringLengthExtractor
      */
     public function build(): ExtractorInterface
     {

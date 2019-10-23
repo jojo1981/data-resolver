@@ -19,7 +19,7 @@ use Jojo1981\DataResolver\Predicate\PredicateInterface;
 class NullPredicateBuilder implements PredicateBuilderInterface
 {
     /**
-     * @return PredicateInterface
+     * @return NullPredicate
      */
     public function build(): PredicateInterface
     {

@@ -38,7 +38,7 @@ class FilterExtractorBuilder implements ExtractorBuilderInterface
     }
 
     /**
-     * @return FindExtractor
+     * @return FilterExtractor
      */
     public function build(): ExtractorInterface
     {

@@ -34,7 +34,7 @@ class StringEndsWithPredicateBuilder implements PredicateBuilderInterface
     }
 
     /**
-     * @return PredicateInterface
+     * @return StringEndsWithPredicate
      */
     public function build(): PredicateInterface
     {

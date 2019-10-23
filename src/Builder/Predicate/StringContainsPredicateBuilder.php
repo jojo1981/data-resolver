@@ -35,7 +35,7 @@ class StringContainsPredicateBuilder implements PredicateBuilderInterface
     }
 
     /**
-     * @return PredicateInterface
+     * @return StringContainsPredicate
      */
     public function build(): PredicateInterface
     {

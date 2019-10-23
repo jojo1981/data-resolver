@@ -36,7 +36,7 @@ class EqualsPredicateBuilder implements PredicateBuilderInterface
     }
 
     /**
-     * @return PredicateInterface
+     * @return EqualsPredicate
      */
     public function build(): PredicateInterface
     {

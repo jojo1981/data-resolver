@@ -31,7 +31,7 @@ class NotPredicateBuilder implements PredicateBuilderInterface
     }
 
     /**
-     * @return PredicateInterface
+     * @return NotPredicate
      */
     public function build(): PredicateInterface
     {

@@ -45,7 +45,7 @@ class HasPropertyExtractorBuilder implements ExtractorBuilderInterface
     }
 
     /**
-     * @return ExtractorInterface
+     * @return HasPropertyExtractor
      */
     public function build(): ExtractorInterface
     {

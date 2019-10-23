@@ -36,7 +36,7 @@ class OrPredicateBuilder implements PredicateBuilderInterface
     }
 
     /**
-     * @return PredicateInterface
+     * @return OrPredicate
      */
     public function build(): PredicateInterface
     {

@@ -32,7 +32,7 @@ class CountExtractorBuilder implements ExtractorBuilderInterface
     }
 
     /**
-     * @return FindExtractor
+     * @return CountExtractor
      */
     public function build(): ExtractorInterface
     {

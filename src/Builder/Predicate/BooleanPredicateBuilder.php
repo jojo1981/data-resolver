@@ -35,7 +35,7 @@ class BooleanPredicateBuilder implements PredicateBuilderInterface
     }
 
     /**
-     * @return PredicateInterface
+     * @return BooleanPredicate
      */
     public function build(): PredicateInterface
     {

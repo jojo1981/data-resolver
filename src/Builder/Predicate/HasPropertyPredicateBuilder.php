@@ -45,7 +45,7 @@ class HasPropertyPredicateBuilder implements PredicateBuilderInterface
     }
 
     /**
-     * @return PredicateInterface
+     * @return HasPropertyPredicate
      */
     public function build(): PredicateInterface
     {

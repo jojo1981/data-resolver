@@ -36,7 +36,7 @@ class GreaterThanPredicateBuilder implements PredicateBuilderInterface
     }
 
     /**
-     * @return PredicateInterface
+     * @return GreaterThanPredicate
      */
     public function build(): PredicateInterface
     {

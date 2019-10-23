@@ -35,7 +35,7 @@ class CompositeExtractorBuilder implements ExtractorBuilderInterface
     }
 
     /**
-     * @return ExtractorInterface
+     * @return CompositeExtractor
      */
     public function build(): ExtractorInterface
     {

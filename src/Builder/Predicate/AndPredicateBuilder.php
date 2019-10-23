@@ -36,7 +36,7 @@ class AndPredicateBuilder implements PredicateBuilderInterface
     }
 
     /**
-     * @return PredicateInterface
+     * @return AndPredicate
      */
     public function build(): PredicateInterface
     {

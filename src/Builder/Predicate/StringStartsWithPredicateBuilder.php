@@ -35,7 +35,7 @@ class StringStartsWithPredicateBuilder implements PredicateBuilderInterface
     }
 
     /**
-     * @return PredicateInterface
+     * @return StringStartsWithPredicate
      */
     public function build(): PredicateInterface
     {

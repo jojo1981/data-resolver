@@ -36,7 +36,7 @@ class LessThanPredicateBuilder implements PredicateBuilderInterface
     }
 
     /**
-     * @return PredicateInterface
+     * @return LessThanPredicate
      */
     public function build(): PredicateInterface
     {

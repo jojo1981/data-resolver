@@ -36,7 +36,7 @@ class FlattenExtractorBuilder implements ExtractorBuilderInterface
     }
 
     /**
-     * @return ExtractorInterface
+     * @return FlattenExtractor
      */
     public function build(): ExtractorInterface
     {

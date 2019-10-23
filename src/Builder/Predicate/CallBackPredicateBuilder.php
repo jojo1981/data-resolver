@@ -30,7 +30,7 @@ class CallBackPredicateBuilder implements PredicateBuilderInterface
     }
 
     /**
-     * @return PredicateInterface
+     * @return CallBackPredicate
      */
     public function build(): PredicateInterface
     {
