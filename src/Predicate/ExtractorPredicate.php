@@ -9,10 +9,7 @@
  */
 namespace Jojo1981\DataResolver\Predicate;
 
-use Jojo1981\DataResolver\Extractor\Exception\ExtractorException;
 use Jojo1981\DataResolver\Extractor\ExtractorInterface;
-use Jojo1981\DataResolver\Handler\Exception\HandlerException;
-use Jojo1981\DataResolver\Predicate\Exception\PredicateException;
 use Jojo1981\DataResolver\Resolver\Context;
 
 /**
