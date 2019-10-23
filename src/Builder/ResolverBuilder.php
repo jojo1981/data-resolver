@@ -44,11 +44,12 @@ class ResolverBuilder
      */
     public function get(string $propertyName, string ...$propertyNames): self
     {
-        $this->extractors[] = $this->extractorBuilderFactory
+        $result = clone $this;
+        $result->extractors[] = $this->extractorBuilderFactory
             ->getPropertyExtractorBuilder($propertyName, ...$propertyNames)
             ->build();
 
-        return $this;
+        return $result;
     }
 
     /**
@@ -57,9 +58,10 @@ class ResolverBuilder
      */
     public function find(PredicateBuilderInterface $predicateBuilder): self
     {
-        $this->extractors[] = $this->extractorBuilderFactory->getFindExtractorBuilder($predicateBuilder)->build();
+        $result = clone $this;
+        $result->extractors[] = $this->extractorBuilderFactory->getFindExtractorBuilder($predicateBuilder)->build();
 
-        return $this;
+        return $result;
     }
 
     /**
@@ -68,9 +70,10 @@ class ResolverBuilder
      */
     public function filter(PredicateBuilderInterface $predicateBuilder): self
     {
-        $this->extractors[] = $this->extractorBuilderFactory->getFilterExtractorBuilder($predicateBuilder)->build();
+        $result = clone $this;
+        $result->extractors[] = $this->extractorBuilderFactory->getFilterExtractorBuilder($predicateBuilder)->build();
 
-        return $this;
+        return $result;
     }
 
     /**
@@ -79,11 +82,12 @@ class ResolverBuilder
      */
     public function flatten(ResolverBuilder $resolverBuilder): self
     {
-        $this->extractors[] = $this->extractorBuilderFactory->getFlattenExtractorBuilder(
+        $result = clone $this;
+        $result->extractors[] = $this->extractorBuilderFactory->getFlattenExtractorBuilder(
             $this->extractorBuilderFactory->getResolverExtractorBuilder($resolverBuilder)
         )->build();
 
-        return $this;
+        return $result;
     }
 
     /**
@@ -92,9 +96,10 @@ class ResolverBuilder
      */
     public function all(PredicateBuilderInterface $predicateBuilder): Resolver
     {
-        $this->extractors[] = $this->extractorBuilderFactory->getAllExtractorBuilder($predicateBuilder)->build();
+        $result = clone $this;
+        $result->extractors[] = $this->extractorBuilderFactory->getAllExtractorBuilder($predicateBuilder)->build();
 
-        return $this->build();
+        return $result->build();
     }
 
     /**
@@ -103,9 +108,10 @@ class ResolverBuilder
      */
     public function none(PredicateBuilderInterface $predicateBuilder): Resolver
     {
-        $this->extractors[] = $this->extractorBuilderFactory->getNoneExtractorBuilder($predicateBuilder)->build();
+        $result = clone $this;
+        $result->extractors[] = $this->extractorBuilderFactory->getNoneExtractorBuilder($predicateBuilder)->build();
 
-        return $this->build();
+        return $result->build();
     }
 
     /**
@@ -114,9 +120,10 @@ class ResolverBuilder
      */
     public function some(PredicateBuilderInterface $predicateBuilder): Resolver
     {
-        $this->extractors[] = $this->extractorBuilderFactory->getSomeExtractorBuilder($predicateBuilder)->build();
+        $result = clone $this;
+        $result->extractors[] = $this->extractorBuilderFactory->getSomeExtractorBuilder($predicateBuilder)->build();
 
-        return $this->build();
+        return $result->build();
     }
 
     /**
@@ -124,9 +131,10 @@ class ResolverBuilder
      */
     public function count(): Resolver
     {
-        $this->extractors[] = $this->extractorBuilderFactory->getCountExtractorBuilder()->build();
+        $result = clone $this;
+        $result->extractors[] = $this->extractorBuilderFactory->getCountExtractorBuilder()->build();
 
-        return $this->build();
+        return $result->build();
     }
 
     /**
@@ -134,9 +142,10 @@ class ResolverBuilder
      */
     public function strlen(): Resolver
     {
-        $this->extractors[] = $this->extractorBuilderFactory->getStringLengthExtractorBuilder()->build();
+        $result = clone $this;
+        $result->extractors[] = $this->extractorBuilderFactory->getStringLengthExtractorBuilder()->build();
 
-        return $this->build();
+        return $result->build();
     }
 
     /**
@@ -145,9 +154,10 @@ class ResolverBuilder
      */
     public function hasProperty(string $propertyName): Resolver
     {
-        $this->extractors[] = $this->extractorBuilderFactory->getHasPropertyExtractorBuilder($propertyName)->build();
+        $result = clone $this;
+        $result->extractors[] = $this->extractorBuilderFactory->getHasPropertyExtractorBuilder($propertyName)->build();
 
-        return $this->build();
+        return $result->build();
     }
 
     /**
