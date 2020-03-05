@@ -2,15 +2,15 @@
 /*
  * This file is part of the jojo1981/data-resolver package
  *
- * Copyright (c) 2019 Joost Nijhuis <jnijhuis81@gmail.com>
+ * Copyright (c) 2020 Joost Nijhuis <jnijhuis81@gmail.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed in the root of the source code
  */
 namespace tests\Jojo1981\DataResolver\Extractor;
 
-use Jojo1981\DataResolver\Extractor\CountExtractor;
 use Jojo1981\DataResolver\Extractor\Exception\ExtractorException;
+use Jojo1981\DataResolver\Extractor\SumExtractor;
 use Jojo1981\DataResolver\Handler\Exception\HandlerException;
 use Jojo1981\DataResolver\Handler\SequenceHandlerInterface;
 use Jojo1981\DataResolver\Predicate\Exception\PredicateException;
@@ -27,7 +27,7 @@ use SebastianBergmann\RecursionContext\InvalidArgumentException;
 /**
  * @package tests\Jojo1981\DataResolver\Extractor
  */
-class CountExtractorTest extends TestCase
+class SumExtractorTest extends TestCase
 {
     /** @var ObjectProphecy|SequenceHandlerInterface */
     private $sequenceHandler;
@@ -66,9 +66,9 @@ class CountExtractorTest extends TestCase
         $this->originalContext->getPath()->willReturn('my-path')->shouldBeCalledOnce();
         $this->sequenceHandler->supports('my-data')->willReturn(false)->shouldBeCalledOnce();
 
-        $this->expectExceptionObject(new ExtractorException('Could not extract data with `' . CountExtractor::class . '` at path: `my-path`'));
+        $this->expectExceptionObject(new ExtractorException('Could not extract data with `' . SumExtractor::class . '` at path: `my-path`'));
 
-        $this->getCountExtractor()->extract($this->originalContext->reveal());
+        $this->getSumExtractor()->extract($this->originalContext->reveal());
     }
 
     /**
@@ -88,17 +88,17 @@ class CountExtractorTest extends TestCase
         $this->originalContext->getPath()->shouldNotBeCalled();
         $this->originalContext->copy()->shouldNotBeCalled();
         $this->sequenceHandler->supports('my-data')->willReturn(true)->shouldBeCalledOnce();
-        $this->sequenceHandler->count('my-data')->willReturn(25)->shouldBeCalledOnce();
+        $this->sequenceHandler->getIterator('my-data')->willReturn(new \ArrayIterator([3, 20, 2]))->shouldBeCalledOnce();
 
-        $this->assertEquals(25, $this->getCountExtractor()->extract($this->originalContext->reveal()));
+        $this->assertEquals(25, $this->getSumExtractor()->extract($this->originalContext->reveal()));
     }
 
     /**
      * @throws ObjectProphecyException
-     * @return CountExtractor
+     * @return SumExtractor
      */
-    private function getCountExtractor(): CountExtractor
+    private function getSumExtractor(): SumExtractor
     {
-        return new CountExtractor($this->sequenceHandler->reveal());
+        return new SumExtractor($this->sequenceHandler->reveal());
     }
 }

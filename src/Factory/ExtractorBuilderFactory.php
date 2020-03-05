@@ -16,6 +16,7 @@ use Jojo1981\DataResolver\Builder\Extractor\HasPropertyExtractorBuilder;
 use Jojo1981\DataResolver\Builder\Extractor\NoneExtractorBuilder;
 use Jojo1981\DataResolver\Builder\Extractor\SomeExtractorBuilder;
 use Jojo1981\DataResolver\Builder\Extractor\StringLengthExtractorBuilder;
+use Jojo1981\DataResolver\Builder\Extractor\SumExtractorBuilder;
 use Jojo1981\DataResolver\Builder\ExtractorBuilderInterface;
 use Jojo1981\DataResolver\Builder\Extractor\FilterExtractorBuilder;
 use Jojo1981\DataResolver\Builder\Extractor\FindExtractorBuilder;
@@ -125,6 +126,14 @@ class ExtractorBuilderFactory
     public function getCountExtractorBuilder(): CountExtractorBuilder
     {
         return new CountExtractorBuilder($this->sequenceHandler);
+    }
+
+    /**
+     * @return SumExtractorBuilder
+     */
+    public function getSumExtractorBuilder(): SumExtractorBuilder
+    {
+        return new SumExtractorBuilder($this->sequenceHandler);
     }
 
     /**

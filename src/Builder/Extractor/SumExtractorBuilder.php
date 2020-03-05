@@ -2,7 +2,7 @@
 /*
  * This file is part of the jojo1981/data-resolver package
  *
- * Copyright (c) 2019 Joost Nijhuis <jnijhuis81@gmail.com>
+ * Copyright (c) 2020 Joost Nijhuis <jnijhuis81@gmail.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed in the root of the source code
@@ -12,12 +12,13 @@ namespace Jojo1981\DataResolver\Builder\Extractor;
 use Jojo1981\DataResolver\Builder\ExtractorBuilderInterface;
 use Jojo1981\DataResolver\Extractor\CountExtractor;
 use Jojo1981\DataResolver\Extractor\ExtractorInterface;
+use Jojo1981\DataResolver\Extractor\SumExtractor;
 use Jojo1981\DataResolver\Handler\SequenceHandlerInterface;
 
 /**
  * @package Jojo1981\DataResolver\Builder\Extractor
  */
-class CountExtractorBuilder implements ExtractorBuilderInterface
+class SumExtractorBuilder implements ExtractorBuilderInterface
 {
     /** @var SequenceHandlerInterface */
     private $sequenceHandler;
@@ -35,6 +36,6 @@ class CountExtractorBuilder implements ExtractorBuilderInterface
      */
     public function build(): ExtractorInterface
     {
-        return new CountExtractor($this->sequenceHandler);
+        return new SumExtractor($this->sequenceHandler);
     }
 }

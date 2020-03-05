@@ -140,6 +140,17 @@ class ResolverBuilder
     /**
      * @return Resolver
      */
+    public function sum(): Resolver
+    {
+        $result = clone $this;
+        $result->extractors[] = $this->extractorBuilderFactory->getSumExtractorBuilder()->build();
+
+        return $result->build();
+    }
+
+    /**
+     * @return Resolver
+     */
     public function strlen(): Resolver
     {
         $result = clone $this;
