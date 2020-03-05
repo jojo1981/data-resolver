@@ -127,7 +127,7 @@ class ExtractorPredicateBuilder
      */
     public function notEquals($referenceValue): ConditionalPredicateBuilder
     {
-        return $this->not($this->equals($referenceValue));
+        return $this->not($this->predicateBuilderFactory->getEqualsPredicateBuilder($referenceValue));
     }
 
     /**
@@ -183,7 +183,7 @@ class ExtractorPredicateBuilder
      */
     public function isNotNull(): ConditionalPredicateBuilder
     {
-        return $this->not($this->isNull());
+        return $this->not($this->predicateBuilderFactory->getNullPredicateBuilder());
     }
 
     /**
