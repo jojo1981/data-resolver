@@ -10,6 +10,7 @@
 namespace Jojo1981\DataResolver\Factory;
 
 use Jojo1981\DataResolver\Builder\Extractor\AllExtractorBuilder;
+use Jojo1981\DataResolver\Builder\Extractor\CallbackExtractorBuilder;
 use Jojo1981\DataResolver\Builder\Extractor\CompositeExtractorBuilder;
 use Jojo1981\DataResolver\Builder\Extractor\CountExtractorBuilder;
 use Jojo1981\DataResolver\Builder\Extractor\HasPropertyExtractorBuilder;
@@ -126,6 +127,15 @@ class ExtractorBuilderFactory
     public function getCountExtractorBuilder(): CountExtractorBuilder
     {
         return new CountExtractorBuilder($this->sequenceHandler);
+    }
+
+    /**
+     * @param callable $callback
+     * @return CallbackExtractorBuilder
+     */
+    public function getCallbackExtractorBuilder(callable $callback): CallbackExtractorBuilder
+    {
+        return new CallbackExtractorBuilder($callback);
     }
 
     /**

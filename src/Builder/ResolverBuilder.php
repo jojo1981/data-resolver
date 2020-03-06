@@ -91,6 +91,18 @@ class ResolverBuilder
     }
 
     /**
+     * @param callable $callback
+     * @return $this
+     */
+    public function callback(callable $callback): self
+    {
+        $result = clone $this;
+        $result->extractors[] = $this->extractorBuilderFactory->getCallbackExtractorBuilder($callback)->build();
+
+        return $result;
+    }
+
+    /**
      * @param PredicateBuilderInterface $predicateBuilder
      * @return Resolver
      */
