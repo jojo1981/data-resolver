@@ -24,6 +24,7 @@
     "sebastian/comparator": "^3.0"
   },
   "require-dev": {
+    "ext-json": "*",
     "php-coveralls/php-coveralls": "^2.1",
     "phpunit/phpunit": "^7.5"
   },
