@@ -23,6 +23,8 @@ The extract operations are:
 - get the next value with a `find`, `filter` or `flatten` using a predicate.
 - get the next value (boolean) with `all`, `some`, `none` for sequences and `hasProperty` for objects
 - get the next value (integer) with `count` for sequences and or `strlen` for strings
+- get the next value (float) with `sum` for sequences of integers/floats
+- get the next value (mixed) with `callback` for mixed data
 
 The predicates are:
 
@@ -44,6 +46,9 @@ The predicates are:
 - all(PredicateBuilderInterface $predicateBuilder)
 - none(PredicateBuilderInterface $predicateBuilder)
 - in(array $expectedValues)
+- notIn(array $expectedValues)
+- isEmpty()
+- isNotEmpty()
 - stringStartsWith(string $prefix, bool $caseSensitive = true)
 - stringEndsWith(string $suffix, bool $caseSensitive = true)
 - stringContains(string $subString, bool $caseSensitive = true)
