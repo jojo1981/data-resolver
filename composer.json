@@ -25,8 +25,11 @@
   },
   "require-dev": {
     "ext-json": "*",
+    "dg/bypass-finals": "^1.1",
+    "friendsofphp/php-cs-fixer": "^2.16",
     "php-coveralls/php-coveralls": "^2.1",
-    "phpunit/phpunit": "^7.5|^9.0"
+    "phpunit/phpunit": "^7.5|^9.0",
+    "roave/security-advisories": "dev-master"
   },
   "suggest": {
     "jojo1981/data-resolver-handlers": "Add support to work with 3th party libraries"
@@ -44,5 +47,10 @@
   "config": {
     "bin-dir": "bin",
     "sort-packages": true
+  },
+  "scripts": {
+    "test": "./bin/phpunit",
+    "cs-fix": "./bin/php-cs-fixer fix ./src --rules=@PSR2 --using-cache=no",
+    "cs-check": "./bin/php-cs-fixer fix ./src --dry-run --diff --diff-format=udiff --rules=@PSR2 --using-cache=no"
   }
 }
