@@ -20,6 +20,7 @@ use Jojo1981\DataResolver\Builder\Predicate\ExtractorPredicateBuilder;
 use Jojo1981\DataResolver\Builder\Predicate\GreaterThanPredicateBuilder;
 use Jojo1981\DataResolver\Builder\Predicate\HasPropertyPredicateBuilder;
 use Jojo1981\DataResolver\Builder\Predicate\InPredicateBuilder;
+use Jojo1981\DataResolver\Builder\Predicate\IsEmptyPredicateBuilder;
 use Jojo1981\DataResolver\Builder\Predicate\LessThanPredicateBuilder;
 use Jojo1981\DataResolver\Builder\Predicate\NonePredicateBuilder;
 use Jojo1981\DataResolver\Builder\Predicate\NotPredicateBuilder;
@@ -286,5 +287,13 @@ class PredicateBuilderFactory
     public function getNullPredicateBuilder(): NullPredicateBuilder
     {
         return new NullPredicateBuilder();
+    }
+
+    /**
+     * @return IsEmptyPredicateBuilder
+     */
+    public function getIsEmptyPredicateBuilder(): IsEmptyPredicateBuilder
+    {
+        return new IsEmptyPredicateBuilder($this->sequenceHandler);
     }
 }

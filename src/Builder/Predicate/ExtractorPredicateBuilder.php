@@ -187,6 +187,22 @@ class ExtractorPredicateBuilder
     }
 
     /**
+     * @return ConditionalPredicateBuilder
+     */
+    public function isEmpty(): ConditionalPredicateBuilder
+    {
+        return $this->getConditionalPredicateBuilder($this->predicateBuilderFactory->getIsEmptyPredicateBuilder());
+    }
+
+    /**
+     * @return ConditionalPredicateBuilder
+     */
+    public function isNotEmpty(): ConditionalPredicateBuilder
+    {
+        return $this->not($this->predicateBuilderFactory->getIsEmptyPredicateBuilder());
+    }
+
+    /**
      * @param callable $callback
      * @return ConditionalPredicateBuilder
      */
