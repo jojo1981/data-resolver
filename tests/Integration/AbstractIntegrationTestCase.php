@@ -11,7 +11,7 @@ namespace tests\Jojo1981\DataResolver\Integration;
 
 use Jojo1981\DataResolver\Factory;
 use Jojo1981\DataResolver\Factory\ResolverBuilderFactory;
-use PHPUnit\Framework\TestCase;
+use tests\Jojo1981\DataResolver\TestCase;
 
 /**
  * @package tests\Jojo1981\DataResolver\Integration

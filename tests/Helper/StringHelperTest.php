@@ -11,7 +11,7 @@ namespace tests\Jojo1981\DataResolver\Helper;
 
 use Jojo1981\DataResolver\Helper\StringHelper;
 use PHPUnit\Framework\ExpectationFailedException;
-use PHPUnit\Framework\TestCase;
+use tests\Jojo1981\DataResolver\TestCase;
 use SebastianBergmann\RecursionContext\InvalidArgumentException;
 
 /**

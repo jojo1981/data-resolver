@@ -17,7 +17,7 @@ use Jojo1981\DataResolver\Handler\SequenceHandlerInterface;
 use Jojo1981\DataResolver\Predicate\Exception\PredicateException;
 use Jojo1981\DataResolver\Resolver\Context;
 use PHPUnit\Framework\ExpectationFailedException;
-use PHPUnit\Framework\TestCase;
+use tests\Jojo1981\DataResolver\TestCase;
 use Prophecy\Argument;
 use Prophecy\Exception\Doubler\ClassNotFoundException;
 use Prophecy\Exception\Doubler\DoubleException;

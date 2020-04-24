@@ -12,7 +12,7 @@ namespace tests\Jojo1981\DataResolver\Handler\MergeHandler;
 use Jojo1981\DataResolver\Handler\MergeHandler\DefaultMergeHandler;
 use Jojo1981\DataResolver\Resolver\Context;
 use PHPUnit\Framework\ExpectationFailedException;
-use PHPUnit\Framework\TestCase;
+use tests\Jojo1981\DataResolver\TestCase;
 use SebastianBergmann\RecursionContext\InvalidArgumentException;
 
 /**

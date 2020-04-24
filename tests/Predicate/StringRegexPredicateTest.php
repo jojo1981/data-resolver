@@ -12,7 +12,7 @@ namespace tests\Jojo1981\DataResolver\Predicate;
 use Jojo1981\DataResolver\Predicate\StringRegexPredicate;
 use Jojo1981\DataResolver\Resolver\Context;
 use PHPUnit\Framework\ExpectationFailedException;
-use PHPUnit\Framework\TestCase;
+use tests\Jojo1981\DataResolver\TestCase;
 use Prophecy\Exception\Doubler\ClassNotFoundException;
 use Prophecy\Exception\Doubler\DoubleException;
 use Prophecy\Exception\Doubler\InterfaceNotFoundException;

@@ -12,7 +12,7 @@ namespace tests\Jojo1981\DataResolver\Handler\SequenceHandler;
 use Jojo1981\DataResolver\Handler\Exception\HandlerException;
 use Jojo1981\DataResolver\Handler\SequenceHandler\ArraySequenceHandler;
 use PHPUnit\Framework\ExpectationFailedException;
-use PHPUnit\Framework\TestCase;
+use tests\Jojo1981\DataResolver\TestCase;
 use SebastianBergmann\RecursionContext\InvalidArgumentException;
 
 /**

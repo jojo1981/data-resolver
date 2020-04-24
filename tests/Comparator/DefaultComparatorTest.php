@@ -11,7 +11,7 @@ namespace tests\Jojo1981\DataResolver\Comparator;
 
 use Jojo1981\DataResolver\Comparator\DefaultComparator;
 use PHPUnit\Framework\ExpectationFailedException;
-use PHPUnit\Framework\TestCase;
+use tests\Jojo1981\DataResolver\TestCase;
 use Prophecy\Exception\Doubler\ClassNotFoundException;
 use Prophecy\Exception\Doubler\DoubleException;
 use Prophecy\Exception\Doubler\InterfaceNotFoundException;

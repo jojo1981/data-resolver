@@ -13,7 +13,7 @@ use Jojo1981\DataResolver\Handler\Exception\HandlerException;
 use Jojo1981\DataResolver\Handler\SequenceHandler\CompositeSequenceHandler;
 use Jojo1981\DataResolver\Handler\SequenceHandlerInterface;
 use PHPUnit\Framework\ExpectationFailedException;
-use PHPUnit\Framework\TestCase;
+use tests\Jojo1981\DataResolver\TestCase;
 use Prophecy\Argument;
 use Prophecy\Exception\Doubler\ClassNotFoundException;
 use Prophecy\Exception\Doubler\DoubleException;

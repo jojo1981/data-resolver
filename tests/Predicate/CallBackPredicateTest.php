@@ -12,7 +12,7 @@ namespace tests\Jojo1981\DataResolver\Predicate;
 use Jojo1981\DataResolver\Predicate\CallBackPredicate;
 use Jojo1981\DataResolver\Resolver\Context;
 use PHPUnit\Framework\ExpectationFailedException;
-use PHPUnit\Framework\TestCase;
+use tests\Jojo1981\DataResolver\TestCase;
 use SebastianBergmann\RecursionContext\InvalidArgumentException;
 
 /**
