@@ -28,6 +28,7 @@ class IsEmptyPredicateTest extends AbstractIntegrationTestCase
 {
     /**
      * @test
+     * @coversNothing
      *
      * @return void
      * @throws ExtractorException
@@ -72,6 +73,7 @@ class IsEmptyPredicateTest extends AbstractIntegrationTestCase
 
     /**
      * @test
+     * @coversNothing
      *
      * @return void
      * @throws ExtractorException

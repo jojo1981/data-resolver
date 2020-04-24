@@ -278,6 +278,26 @@ class ExtractorPredicateBuilder
     }
 
     /**
+     * @param int $expectedCount
+     * @return ConditionalPredicateBuilder
+     */
+    public function hasCount(int $expectedCount): ConditionalPredicateBuilder
+    {
+        return $this->getConditionalPredicateBuilder(
+            $this->predicateBuilderFactory->getCountPredicateBuilder($expectedCount)
+        );
+    }
+
+    /**
+     * @param int $expectedCount
+     * @return ConditionalPredicateBuilder
+     */
+    public function hasNotCount(int $expectedCount): ConditionalPredicateBuilder
+    {
+        return $this->not($this->predicateBuilderFactory->getCountPredicateBuilder($expectedCount));
+    }
+
+    /**
      * @param string $prefix
      * @param bool $caseSensitive
      * @return ConditionalPredicateBuilder

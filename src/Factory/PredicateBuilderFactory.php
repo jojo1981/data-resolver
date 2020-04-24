@@ -15,6 +15,7 @@ use Jojo1981\DataResolver\Builder\Predicate\AndPredicateBuilder;
 use Jojo1981\DataResolver\Builder\Predicate\BooleanPredicateBuilder;
 use Jojo1981\DataResolver\Builder\Predicate\CallBackPredicateBuilder;
 use Jojo1981\DataResolver\Builder\Predicate\ConditionalPredicateBuilder;
+use Jojo1981\DataResolver\Builder\Predicate\CountPredicateBuilder;
 use Jojo1981\DataResolver\Builder\Predicate\EqualsPredicateBuilder;
 use Jojo1981\DataResolver\Builder\Predicate\ExtractorPredicateBuilder;
 use Jojo1981\DataResolver\Builder\Predicate\GreaterThanPredicateBuilder;
@@ -34,9 +35,7 @@ use Jojo1981\DataResolver\Builder\Predicate\StringRegexPredicateBuilder;
 use Jojo1981\DataResolver\Builder\Predicate\StringStartsWithPredicateBuilder;
 use Jojo1981\DataResolver\Builder\PredicateBuilderInterface;
 use Jojo1981\DataResolver\Comparator\ComparatorInterface;
-use Jojo1981\DataResolver\Handler\PropertyHandlerInterface;
 use Jojo1981\DataResolver\Handler\SequenceHandlerInterface;
-use Jojo1981\DataResolver\NamingStrategy\NamingStrategyInterface;
 
 /**
  * @internal
@@ -47,12 +46,6 @@ class PredicateBuilderFactory
     /** @var ExtractorBuilderFactory */
     private $extractorBuilderFactory;
 
-    /** @var NamingStrategyInterface */
-    private $namingStrategy;
-
-    /** @var PropertyHandlerInterface */
-    private $propertyHandler;
-
     /** @var SequenceHandlerInterface */
     private $sequenceHandler;
 
@@ -61,21 +54,15 @@ class PredicateBuilderFactory
 
     /**
      * @param ExtractorBuilderFactory $extractorBuilderFactory
-     * @param NamingStrategyInterface $namingStrategy
-     * @param PropertyHandlerInterface $propertyHandler
      * @param SequenceHandlerInterface $sequenceHandler
      * @param ComparatorInterface $comparator
      */
     public function __construct(
         ExtractorBuilderFactory $extractorBuilderFactory,
-        NamingStrategyInterface $namingStrategy,
-        PropertyHandlerInterface $propertyHandler,
         SequenceHandlerInterface $sequenceHandler,
         ComparatorInterface $comparator
     ) {
         $this->extractorBuilderFactory = $extractorBuilderFactory;
-        $this->namingStrategy = $namingStrategy;
-        $this->propertyHandler = $propertyHandler;
         $this->sequenceHandler = $sequenceHandler;
         $this->comparator = $comparator;
     }
@@ -295,5 +282,14 @@ class PredicateBuilderFactory
     public function getIsEmptyPredicateBuilder(): IsEmptyPredicateBuilder
     {
         return new IsEmptyPredicateBuilder($this->sequenceHandler);
+    }
+
+    /**
+     * @param int $expectedCount
+     * @return CountPredicateBuilder
+     */
+    public function getCountPredicateBuilder(int $expectedCount): CountPredicateBuilder
+    {
+        return new CountPredicateBuilder($this->sequenceHandler, $expectedCount);
     }
 }
