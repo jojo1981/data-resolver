@@ -14,6 +14,7 @@ use Jojo1981\DataResolver\Extractor\ExtractorInterface;
 use Jojo1981\DataResolver\Handler\Exception\HandlerException;
 use Jojo1981\DataResolver\Predicate\Exception\PredicateException;
 use Jojo1981\DataResolver\Resolver\Context;
+use function array_walk;
 
 /**
  * @api
@@ -24,15 +25,12 @@ class Resolver
     /** @var ExtractorInterface[] */
     private $extractors = [];
 
-    /** @var Context */
-    private $context;
-
     /**
      * @param ExtractorInterface[] $extractors
      */
     public function __construct(array $extractors)
     {
-        \array_walk($extractors, [$this, 'addExtractor']);
+        array_walk($extractors, [$this, 'addExtractor']);
     }
 
     /**
@@ -46,19 +44,19 @@ class Resolver
 
     /**
      * @param mixed $data
-     * @throws ExtractorException
+     * @return mixed
      * @throws PredicateException
      * @throws HandlerException
-     * @return mixed
+     * @throws ExtractorException
      */
     public function resolve($data)
     {
-        $this->context = $data instanceof Context ? $data : new Context(null);
+        $context = $data instanceof Context ? $data : new Context(null);
         foreach ($this->extractors as $extractor) {
             if (!$data instanceof Context) {
-                $this->context->setData($data);
+                $context->setData($data);
             }
-            $data = $extractor->extract($this->context);
+            $data = $extractor->extract($context);
         }
 
         return $data instanceof Context ? $data->getData() : $data;
