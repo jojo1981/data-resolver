@@ -253,6 +253,15 @@ class ExtractorPredicateBuilder
     }
 
     /**
+     * @param array $expectedValues
+     * @return ConditionalPredicateBuilder
+     */
+    public function notIn(array $expectedValues): ConditionalPredicateBuilder
+    {
+        return $this->not($this->predicateBuilderFactory->getInPredicateBuilder($expectedValues));
+    }
+
+    /**
      * @param string $prefix
      * @param bool $caseSensitive
      * @return ConditionalPredicateBuilder
