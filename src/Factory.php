@@ -26,6 +26,7 @@ use Jojo1981\DataResolver\Handler\SequenceHandler\CompositeSequenceHandler;
 use Jojo1981\DataResolver\Handler\SequenceHandlerInterface;
 use Jojo1981\DataResolver\NamingStrategy\DefaultNamingStrategy;
 use Jojo1981\DataResolver\NamingStrategy\NamingStrategyInterface;
+use function array_push;
 
 /**
  * @api
@@ -67,8 +68,8 @@ class Factory
     private $sequenceHandlers = [];
 
     /**
-     * @throws ResolverException
      * @return $this
+     * @throws ResolverException
      */
     public function useDefaultPropertyHandlers(): self
     {
@@ -81,8 +82,8 @@ class Factory
     }
 
     /**
-     * @throws ResolverException
      * @return $this
+     * @throws ResolverException
      */
     public function useDefaultSequenceHandlers(): self
     {
@@ -96,8 +97,8 @@ class Factory
 
     /**
      * @param PropertyHandlerInterface $propertyHandler
-     * @throws ResolverException
      * @return $this
+     * @throws ResolverException
      */
     public function registerPropertyHandler(PropertyHandlerInterface $propertyHandler): self
     {
@@ -111,8 +112,8 @@ class Factory
 
     /**
      * @param SequenceHandlerInterface $sequenceHandler
-     * @throws ResolverException
      * @return $this
+     * @throws ResolverException
      */
     public function registerSequenceHandler(SequenceHandlerInterface $sequenceHandler): self
     {
@@ -126,8 +127,8 @@ class Factory
 
     /**
      * @param NamingStrategyInterface $namingStrategy
-     * @throws ResolverException
      * @return $this
+     * @throws ResolverException
      */
     public function setNamingStrategy(NamingStrategyInterface $namingStrategy): self
     {
@@ -139,8 +140,8 @@ class Factory
 
     /**
      * @param MergeHandlerInterface $mergeHandler
-     * @throws ResolverException
      * @return $this
+     * @throws ResolverException
      */
     public function setMergeHandler(MergeHandlerInterface $mergeHandler): self
     {
@@ -152,8 +153,8 @@ class Factory
 
     /**
      * @param ComparatorInterface $comparator
-     * @throws ResolverException
      * @return $this
+     * @throws ResolverException
      */
     public function setComparator(ComparatorInterface $comparator): self
     {
@@ -221,7 +222,7 @@ class Factory
     {
         if (null === $this->propertyHandler) {
             if (empty($this->propertyHandlers)) {
-                \array_push($this->propertyHandlers, ...$this->getDefaultPropertyHandlers());
+                array_push($this->propertyHandlers, ...$this->getDefaultPropertyHandlers());
             }
             $this->propertyHandler = new CompositePropertyHandler($this->propertyHandlers);
         }
@@ -236,7 +237,7 @@ class Factory
     {
         if (null === $this->sequenceHandler) {
             if (empty($this->sequenceHandlers)) {
-                \array_push($this->sequenceHandlers, ...$this->getDefaultSequenceHandlers());
+                array_push($this->sequenceHandlers, ...$this->getDefaultSequenceHandlers());
             }
             $this->sequenceHandler = new CompositeSequenceHandler($this->sequenceHandlers);
         }
@@ -285,8 +286,8 @@ class Factory
     }
 
     /**
-     * @throws ResolverException
      * @return void
+     * @throws ResolverException
      */
     private function assertNotFrozen(): void
     {

@@ -30,6 +30,7 @@ use Jojo1981\DataResolver\Handler\MergeHandlerInterface;
 use Jojo1981\DataResolver\Handler\PropertyHandlerInterface;
 use Jojo1981\DataResolver\Handler\SequenceHandlerInterface;
 use Jojo1981\DataResolver\NamingStrategy\NamingStrategyInterface;
+use function array_merge;
 
 /**
  * @internal
@@ -100,7 +101,7 @@ class ExtractorBuilderFactory
      */
     public function getAllExtractorBuilder(PredicateBuilderInterface $predicateBuilder): AllExtractorBuilder
     {
-        return new AllExtractorBuilder($this->sequenceHandler,  $predicateBuilder->build());
+        return new AllExtractorBuilder($this->sequenceHandler, $predicateBuilder->build());
     }
 
     /**
@@ -109,7 +110,7 @@ class ExtractorBuilderFactory
      */
     public function getNoneExtractorBuilder(PredicateBuilderInterface $predicateBuilder): NoneExtractorBuilder
     {
-        return new NoneExtractorBuilder($this->sequenceHandler,  $predicateBuilder->build());
+        return new NoneExtractorBuilder($this->sequenceHandler, $predicateBuilder->build());
     }
 
     /**
@@ -118,7 +119,7 @@ class ExtractorBuilderFactory
      */
     public function getSomeExtractorBuilder(PredicateBuilderInterface $predicateBuilder): SomeExtractorBuilder
     {
-        return new SomeExtractorBuilder($this->sequenceHandler,  $predicateBuilder->build());
+        return new SomeExtractorBuilder($this->sequenceHandler, $predicateBuilder->build());
     }
 
     /**
@@ -151,13 +152,15 @@ class ExtractorBuilderFactory
      * @param string ...$propertyNames
      * @return PropertyExtractorBuilder
      */
-    public function getPropertyExtractorBuilder(string $propertyName, string ...$propertyNames): PropertyExtractorBuilder
-    {
+    public function getPropertyExtractorBuilder(
+        string $propertyName,
+        string ...$propertyNames
+    ): PropertyExtractorBuilder {
         return new PropertyExtractorBuilder(
             $this->namingStrategy,
             $this->propertyHandler,
             $this->mergeHandler,
-            \array_merge([$propertyName], $propertyNames)
+            array_merge([$propertyName], $propertyNames)
         );
     }
 
@@ -195,8 +198,7 @@ class ExtractorBuilderFactory
     public function getCompositeExtractorBuilder(
         ExtractorBuilderInterface $extractorBuilder1,
         ExtractorBuilderInterface $extractorBuilder2
-    ): CompositeExtractorBuilder
-    {
+    ): CompositeExtractorBuilder {
         return new CompositeExtractorBuilder($extractorBuilder1->build(), $extractorBuilder2->build());
     }
 }

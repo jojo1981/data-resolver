@@ -11,6 +11,8 @@ namespace Jojo1981\DataResolver\Handler\SequenceHandler;
 
 use Jojo1981\DataResolver\Handler\Exception\HandlerException;
 use Jojo1981\DataResolver\Handler\SequenceHandlerInterface;
+use Traversable;
+use function array_walk;
 
 /**
  * @package Jojo1981\DataResolver\Handler\SequenceHandler
@@ -25,7 +27,7 @@ class CompositeSequenceHandler implements SequenceHandlerInterface
      */
     public function __construct(array $handlers)
     {
-        \array_walk($handlers, [$this, 'addHandler']);
+        array_walk($handlers, [$this, 'addHandler']);
     }
 
     /**
@@ -54,10 +56,10 @@ class CompositeSequenceHandler implements SequenceHandlerInterface
 
     /**
      * @param mixed $data
+     * @return Traversable
      * @throws HandlerException
-     * @return \Traversable
      */
-    public function getIterator($data): \Traversable
+    public function getIterator($data): Traversable
     {
         return $this->getSupportedHandler('getIterator', $data)->getIterator($data);
     }
@@ -65,8 +67,8 @@ class CompositeSequenceHandler implements SequenceHandlerInterface
     /**
      * @param mixed $data
      * @param callable $callback
-     * @throws HandlerException
      * @return mixed
+     * @throws HandlerException
      */
     public function filter($data, callable $callback)
     {
@@ -75,8 +77,8 @@ class CompositeSequenceHandler implements SequenceHandlerInterface
 
     /**
      * @param mixed $data
-     * @throws HandlerException
      * @return int
+     * @throws HandlerException
      */
     public function count($data): int
     {
@@ -86,8 +88,8 @@ class CompositeSequenceHandler implements SequenceHandlerInterface
     /**
      * @param mixed $data
      * @param callable $callback
-     * @throws HandlerException
      * @return mixed
+     * @throws HandlerException
      */
     public function flatten($data, callable $callback)
     {
@@ -97,8 +99,8 @@ class CompositeSequenceHandler implements SequenceHandlerInterface
     /**
      * @param string $methodName
      * @param $data
-     * @throws HandlerException
      * @return SequenceHandlerInterface
+     * @throws HandlerException
      */
     private function getSupportedHandler(string $methodName, $data): SequenceHandlerInterface
     {

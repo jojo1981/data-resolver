@@ -14,6 +14,7 @@ use Jojo1981\DataResolver\Exception\ResolverException;
 use Jojo1981\DataResolver\Extractor\Exception\ExtractorException;
 use Jojo1981\DataResolver\Handler\Exception\HandlerException;
 use Jojo1981\DataResolver\Predicate\Exception\PredicateException;
+use PHPUnit\Framework\Exception as PHPUnitException;
 use PHPUnit\Framework\ExpectationFailedException;
 use SebastianBergmann\RecursionContext\InvalidArgumentException;
 use stdClass;
@@ -29,12 +30,13 @@ class ComposeTest extends AbstractIntegrationTestCase
      * @test
      * @coversNothing
      *
-     * @throws InvalidArgumentException
+     * @return void
      * @throws ExtractorException
      * @throws HandlerException
+     * @throws InvalidArgumentException
      * @throws PredicateException
+     * @throws PHPUnitException
      * @throws ExpectationFailedException
-     * @return void
      */
     public function checkComposeWithSimpleResolver(): void
     {
@@ -72,13 +74,13 @@ class ComposeTest extends AbstractIntegrationTestCase
      * @test
      * @coversNothing
      *
-     * @throws ExtractorException
+     * @return void
      * @throws HandlerException
      * @throws PredicateException
      * @throws ExpectationFailedException
      * @throws ResolverException
      * @throws InvalidArgumentException
-     * @return void
+     * @throws ExtractorException
      */
     public function checkComposeWithComplexResolver(): void
     {
@@ -86,8 +88,9 @@ class ComposeTest extends AbstractIntegrationTestCase
 
         $resolverBuilder2 = $this->getResolverBuilderFactory()
             ->compose($resolverBuilder1)
-            ->filter($this->getResolverBuilderFactory()->where('city')->equals('New York')
-        );
+            ->filter(
+                $this->getResolverBuilderFactory()->where('city')->equals('New York')
+            );
 
         $resolver1 = $resolverBuilder1->build();
         $resolver2 = $resolverBuilder2->build();
@@ -110,7 +113,7 @@ class ComposeTest extends AbstractIntegrationTestCase
     }
 
     /**
-     * @return array
+     * @return array[]
      */
     private function getPersonAsAssociativeArray(): array
     {

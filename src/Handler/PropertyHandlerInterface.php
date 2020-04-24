@@ -30,8 +30,8 @@ interface PropertyHandlerInterface
      * @param NamingStrategyInterface $namingStrategy
      * @param string $propertyName
      * @param mixed $data
-     * @throws HandlerException
      * @return mixed
+     * @throws HandlerException
      */
     public function getValueForPropertyName(NamingStrategyInterface $namingStrategy, string $propertyName, $data);
 
@@ -39,8 +39,8 @@ interface PropertyHandlerInterface
      * @param NamingStrategyInterface $namingStrategy
      * @param string $propertyName
      * @param mixed $data
-     * @throws HandlerException
      * @return bool
+     * @throws HandlerException
      */
     public function hasValueForPropertyName(NamingStrategyInterface $namingStrategy, string $propertyName, $data): bool;
 }

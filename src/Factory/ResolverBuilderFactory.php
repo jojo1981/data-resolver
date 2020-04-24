@@ -17,6 +17,8 @@ use Jojo1981\DataResolver\Builder\PredicateBuilderInterface;
 use Jojo1981\DataResolver\Builder\ResolverBuilder;
 use Jojo1981\DataResolver\Exception\ResolverException;
 use Jojo1981\DataResolver\Resolver;
+use function strpos;
+use function trim;
 
 /**
  * @api
@@ -149,9 +151,9 @@ class ResolverBuilderFactory
     }
 
     /**
-     * @param null|string|ResolverBuilder $arg
-     * @throws ResolverException
+     * @param string|ResolverBuilder|null $arg
      * @return ExtractorPredicateBuilder
+     * @throws ResolverException
      */
     public function where($arg = null): ExtractorPredicateBuilder
     {
@@ -194,8 +196,7 @@ class ResolverBuilderFactory
     public function or(
         PredicateBuilderInterface $leftPredicateBuilder,
         PredicateBuilderInterface $rightPredicateBuilder
-    ): OrPredicateBuilder
-    {
+    ): OrPredicateBuilder {
         return $this->predicateBuilderFactory->getOrPredicateBuilder($leftPredicateBuilder, $rightPredicateBuilder);
     }
 
@@ -207,8 +208,7 @@ class ResolverBuilderFactory
     public function and(
         PredicateBuilderInterface $leftPredicateBuilder,
         PredicateBuilderInterface $rightPredicateBuilder
-    ): AndPredicateBuilder
-    {
+    ): AndPredicateBuilder {
         return $this->predicateBuilderFactory->getAndPredicateBuilder($leftPredicateBuilder, $rightPredicateBuilder);
     }
 
@@ -218,8 +218,8 @@ class ResolverBuilderFactory
      */
     private function getExtractorPredicateBuilderForPropertyName(string $propertyName): ExtractorPredicateBuilder
     {
-        $propertyName = \trim($propertyName, '.');
-        if (false === \strpos($propertyName, '.')) {
+        $propertyName = trim($propertyName, '.');
+        if (false === strpos($propertyName, '.')) {
             return $this->predicateBuilderFactory->getExtractorPredicateBuilder(
                 $this->extractorBuilderFactory->getPropertyExtractorBuilder($propertyName)
             );

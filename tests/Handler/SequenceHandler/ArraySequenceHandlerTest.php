@@ -9,9 +9,12 @@
  */
 namespace tests\Jojo1981\DataResolver\Handler\SequenceHandler;
 
+use ArrayIterator;
 use Jojo1981\DataResolver\Handler\Exception\HandlerException;
 use Jojo1981\DataResolver\Handler\SequenceHandler\ArraySequenceHandler;
+use PHPUnit\Framework\Exception as PHPUnitException;
 use PHPUnit\Framework\ExpectationFailedException;
+use stdClass;
 use tests\Jojo1981\DataResolver\TestCase;
 use SebastianBergmann\RecursionContext\InvalidArgumentException;
 
@@ -23,8 +26,8 @@ class ArraySequenceHandlerTest extends TestCase
     /**
      * @test
      *
-     * @throws HandlerException
      * @return void
+     * @throws HandlerException
      */
     public function getIteratorShouldThrowHandlerExceptionWhenCalledWithUnsupportedData(): void
     {
@@ -39,8 +42,8 @@ class ArraySequenceHandlerTest extends TestCase
     /**
      * @test
      *
-     * @throws HandlerException
      * @return void
+     * @throws HandlerException
      */
     public function filterShouldThrowHandlerExceptionWhenCalledWithUnsupportedData(): void
     {
@@ -49,14 +52,15 @@ class ArraySequenceHandlerTest extends TestCase
             'of method `filter`. You should invoke the `supports` method first!'
         ));
 
-        $this->getArraySequenceHandler()->filter(null, static function () {});
+        $this->getArraySequenceHandler()->filter(null, static function () {
+        });
     }
 
     /**
      * @test
      *
-     * @throws HandlerException
      * @return void
+     * @throws HandlerException
      */
     public function flattenShouldThrowHandlerExceptionWhenCalledWithUnsupportedData(): void
     {
@@ -65,14 +69,15 @@ class ArraySequenceHandlerTest extends TestCase
             'of method `flatten`. You should invoke the `supports` method first!'
         ));
 
-        $this->getArraySequenceHandler()->flatten(null, static function () {});
+        $this->getArraySequenceHandler()->flatten(null, static function () {
+        });
     }
 
     /**
      * @test
      *
-     * @throws HandlerException
      * @return void
+     * @throws HandlerException
      */
     public function countShouldThrowHandlerExceptionWhenCalledWithUnsupportedData(): void
     {
@@ -87,30 +92,30 @@ class ArraySequenceHandlerTest extends TestCase
     /**
      * @test
      *
-     * @throws InvalidArgumentException
-     * @throws ExpectationFailedException
      * @return void
+     * @throws ExpectationFailedException
+     * @throws InvalidArgumentException
      */
     public function supportsShouldReturnFalseWhenDataIsNotAnIndexedArray(): void
     {
         $this->assertFalse($this->getArraySequenceHandler()->supports(['key' => 'value']));
         $this->assertFalse($this->getArraySequenceHandler()->supports(null));
-        $this->assertFalse($this->getArraySequenceHandler()->supports(new \stdClass()));
+        $this->assertFalse($this->getArraySequenceHandler()->supports(new stdClass()));
         $this->assertFalse($this->getArraySequenceHandler()->supports(''));
         $this->assertFalse($this->getArraySequenceHandler()->supports('text'));
         $this->assertFalse($this->getArraySequenceHandler()->supports(10));
         $this->assertFalse($this->getArraySequenceHandler()->supports(3.25));
         $this->assertFalse($this->getArraySequenceHandler()->supports(true));
         $this->assertFalse($this->getArraySequenceHandler()->supports(false));
-        $this->assertFalse($this->getArraySequenceHandler()->supports(new \ArrayIterator()));
+        $this->assertFalse($this->getArraySequenceHandler()->supports(new ArrayIterator()));
     }
 
     /**
      * @test
      *
-     * @throws InvalidArgumentException
-     * @throws ExpectationFailedException
      * @return void
+     * @throws ExpectationFailedException
+     * @throws InvalidArgumentException
      */
     public function supportsShouldReturnTrueWhenDataIsAnIndexedArray(): void
     {
@@ -122,27 +127,28 @@ class ArraySequenceHandlerTest extends TestCase
     /**
      * @test
      *
+     * @return void
      * @throws HandlerException
      * @throws InvalidArgumentException
+     * @throws PHPUnitException
      * @throws ExpectationFailedException
-     * @return void
      */
     public function getIteratorShouldReturnAnArrayIteratorWhenDataIsSupported(): void
     {
         $data = [['name' => 'item1'], ['name' => 'item2']];
-        /** @var \ArrayIterator $iterator */
+        /** @var ArrayIterator $iterator */
         $iterator = $this->getArraySequenceHandler()->getIterator($data);
-        $this->assertInstanceOf(\ArrayIterator::class, $iterator);
+        $this->assertInstanceOf(ArrayIterator::class, $iterator);
         $this->assertEquals($data, $iterator->getArrayCopy());
     }
 
     /**
      * @test
      *
-     * @throws HandlerException
+     * @return void
      * @throws InvalidArgumentException
      * @throws ExpectationFailedException
-     * @return void
+     * @throws HandlerException
      */
     public function filterShouldReturnTheFilteredResultWhenDataIsSupported(): void
     {
@@ -170,10 +176,10 @@ class ArraySequenceHandlerTest extends TestCase
     /**
      * @test
      *
-     * @throws HandlerException
+     * @return void
      * @throws InvalidArgumentException
      * @throws ExpectationFailedException
-     * @return void
+     * @throws HandlerException
      */
     public function flattenShouldReturnTheFlattenResultWhenDataIsSupported(): void
     {
@@ -201,10 +207,10 @@ class ArraySequenceHandlerTest extends TestCase
     /**
      * @test
      *
-     * @throws HandlerException
+     * @return void
      * @throws InvalidArgumentException
      * @throws ExpectationFailedException
-     * @return void
+     * @throws HandlerException
      */
     public function flattenShouldIgnoreNullAnEmptyArrayValueAndHandleAssociativeArrayValueFromCallback(): void
     {
@@ -238,10 +244,10 @@ class ArraySequenceHandlerTest extends TestCase
     /**
      * @test
      *
-     * @throws HandlerException
+     * @return void
      * @throws InvalidArgumentException
      * @throws ExpectationFailedException
-     * @return void
+     * @throws HandlerException
      */
     public function countShouldReturnTheCountResultWhenDataIsSupported(): void
     {

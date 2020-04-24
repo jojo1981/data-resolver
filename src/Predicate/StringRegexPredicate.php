@@ -9,6 +9,8 @@
  */
 namespace Jojo1981\DataResolver\Predicate;
 
+use function preg_match;
+
 /**
  * @package Jojo1981\DataResolver\Predicate
  */
@@ -31,6 +33,6 @@ class StringRegexPredicate extends AbstractStringPredicate
      */
     protected function performMatch($data): bool
     {
-        return \preg_match($this->pattern, $data) > 0;
+        return preg_match($this->pattern, $data) > 0;
     }
 }

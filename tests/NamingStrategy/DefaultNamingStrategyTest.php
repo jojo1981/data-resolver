@@ -33,9 +33,9 @@ class DefaultNamingStrategyTest extends TestCase
     /**
      * @test
      *
-     * @throws InvalidArgumentException
-     * @throws ExpectationFailedException
      * @return void
+     * @throws ExpectationFailedException
+     * @throws InvalidArgumentException
      */
     public function getPropertyNamesShouldReturnSnakeCaseAndCamelCasePropertyNames(): void
     {
@@ -47,9 +47,9 @@ class DefaultNamingStrategyTest extends TestCase
     /**
      * @test
      *
-     * @throws InvalidArgumentException
-     * @throws ExpectationFailedException
      * @return void
+     * @throws ExpectationFailedException
+     * @throws InvalidArgumentException
      */
     public function getMethodNamesShouldReturnOneCamelCaseGetterMethodNameInAnArray(): void
     {

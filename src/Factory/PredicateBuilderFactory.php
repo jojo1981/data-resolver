@@ -96,8 +96,7 @@ class PredicateBuilderFactory
     public function getAndPredicateBuilder(
         PredicateBuilderInterface $leftPredicateBuilder,
         PredicateBuilderInterface $rightPredicateBuilder
-    ): AndPredicateBuilder
-    {
+    ): AndPredicateBuilder {
         return new AndPredicateBuilder($leftPredicateBuilder->build(), $rightPredicateBuilder->build());
     }
 
@@ -109,8 +108,7 @@ class PredicateBuilderFactory
     public function getConditionalPredicateBuilder(
         ExtractorBuilderInterface $extractorBuilder,
         PredicateBuilderInterface $predicateBuilder
-    ): ConditionalPredicateBuilder
-    {
+    ): ConditionalPredicateBuilder {
         return new ConditionalPredicateBuilder($this, $extractorBuilder->build(), $predicateBuilder->build());
     }
 
@@ -185,8 +183,7 @@ class PredicateBuilderFactory
     public function getOrPredicateBuilder(
         PredicateBuilderInterface $leftPredicateBuilder,
         PredicateBuilderInterface $rightPredicateBuilder
-    ): OrPredicateBuilder
-    {
+    ): OrPredicateBuilder {
         return new OrPredicateBuilder($leftPredicateBuilder->build(), $rightPredicateBuilder->build());
     }
 
@@ -225,8 +222,7 @@ class PredicateBuilderFactory
     public function getStringStartsWithPredicateBuilder(
         string $prefix,
         bool $caseSensitive
-    ): StringStartsWithPredicateBuilder
-    {
+    ): StringStartsWithPredicateBuilder {
         return new StringStartsWithPredicateBuilder($prefix, $caseSensitive);
     }
 
@@ -238,8 +234,7 @@ class PredicateBuilderFactory
     public function getStringEndsWithPredicateBuilder(
         string $suffix,
         bool $caseSensitive
-    ): StringEndsWithPredicateBuilder
-    {
+    ): StringEndsWithPredicateBuilder {
         return new StringEndsWithPredicateBuilder($suffix, $caseSensitive);
     }
 
@@ -251,8 +246,7 @@ class PredicateBuilderFactory
     public function getStringContainsPredicateBuilder(
         string $subString,
         bool $caseSensitive
-    ): StringContainsPredicateBuilder
-    {
+    ): StringContainsPredicateBuilder {
         return new StringContainsPredicateBuilder($subString, $caseSensitive);
     }
 

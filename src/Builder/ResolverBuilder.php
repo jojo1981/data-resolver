@@ -27,10 +27,12 @@ class ResolverBuilder
 
     /**
      * @param ExtractorBuilderFactory $extractorBuilderFactory
-     * @param null|ResolverBuilder $resolverBuilder
+     * @param ResolverBuilder|null $resolverBuilder
      */
-    public function __construct(ExtractorBuilderFactory $extractorBuilderFactory, ?ResolverBuilder $resolverBuilder = null)
-    {
+    public function __construct(
+        ExtractorBuilderFactory $extractorBuilderFactory,
+        ?ResolverBuilder $resolverBuilder = null
+    ) {
         $this->extractorBuilderFactory = $extractorBuilderFactory;
         if (null !== $resolverBuilder) {
             $this->extractors[] = $extractorBuilderFactory->getResolverExtractorBuilder($resolverBuilder)->build();

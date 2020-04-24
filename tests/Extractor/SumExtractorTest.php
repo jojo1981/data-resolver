@@ -9,6 +9,7 @@
  */
 namespace tests\Jojo1981\DataResolver\Extractor;
 
+use ArrayIterator;
 use Jojo1981\DataResolver\Extractor\Exception\ExtractorException;
 use Jojo1981\DataResolver\Extractor\SumExtractor;
 use Jojo1981\DataResolver\Handler\Exception\HandlerException;
@@ -35,30 +36,26 @@ class SumExtractorTest extends TestCase
     /** @var ObjectProphecy|Context */
     private $originalContext;
 
-    /** @var ObjectProphecy|Context */
-    private $copiedContext;
-
     /**
-     * @throws DoubleException
+     * @return void
      * @throws InterfaceNotFoundException
      * @throws ClassNotFoundException
-     * @return void
+     * @throws DoubleException
      */
     protected function setUp(): void
     {
         $this->sequenceHandler = $this->prophesize(SequenceHandlerInterface::class);
         $this->originalContext = $this->prophesize(Context::class);
-        $this->copiedContext = $this->prophesize(Context::class);
     }
 
     /**
      * @test
      *
-     * @throws HandlerException
+     * @return void
      * @throws ObjectProphecyException
      * @throws PredicateException
      * @throws ExtractorException
-     * @return void
+     * @throws HandlerException
      */
     public function extractShouldThrowAnExceptionBecauseSequenceHandlerDoesNotSupportTheDataFromContext(): void
     {
@@ -74,13 +71,13 @@ class SumExtractorTest extends TestCase
     /**
      * @test
      *
-     * @throws HandlerException
+     * @return void
      * @throws ObjectProphecyException
      * @throws PredicateException
      * @throws ExpectationFailedException
      * @throws InvalidArgumentException
      * @throws ExtractorException
-     * @return void
+     * @throws HandlerException
      */
     public function extractShouldReturnTheResultFromTheSequenceHandlerFilterMethod(): void
     {
@@ -88,14 +85,18 @@ class SumExtractorTest extends TestCase
         $this->originalContext->getPath()->shouldNotBeCalled();
         $this->originalContext->copy()->shouldNotBeCalled();
         $this->sequenceHandler->supports('my-data')->willReturn(true)->shouldBeCalledOnce();
-        $this->sequenceHandler->getIterator('my-data')->willReturn(new \ArrayIterator([3, 20, 2]))->shouldBeCalledOnce();
+        $this->sequenceHandler->getIterator('my-data')->willReturn(new ArrayIterator([
+            3,
+            20,
+            2
+        ]))->shouldBeCalledOnce();
 
         $this->assertEquals(25, $this->getSumExtractor()->extract($this->originalContext->reveal()));
     }
 
     /**
-     * @throws ObjectProphecyException
      * @return SumExtractor
+     * @throws ObjectProphecyException
      */
     private function getSumExtractor(): SumExtractor
     {

@@ -51,7 +51,13 @@
   },
   "scripts": {
     "test": "./bin/phpunit",
-    "cs-fix": "./bin/php-cs-fixer fix ./src --rules=@PSR2 --using-cache=no",
-    "cs-check": "./bin/php-cs-fixer fix ./src --dry-run --diff --diff-format=udiff --rules=@PSR2 --using-cache=no"
+    "cs-fix": [
+      "./bin/php-cs-fixer fix ./src --rules=@PSR2 --using-cache=no",
+      "./bin/php-cs-fixer fix ./tests --rules=@PSR2 --using-cache=no"
+    ],
+    "cs-check": [
+      "./bin/php-cs-fixer fix ./src --dry-run --diff --diff-format=udiff --rules=@PSR2 --using-cache=no",
+      "./bin/php-cs-fixer fix ./tests --dry-run --diff --diff-format=udiff --rules=@PSR2 --using-cache=no"
+    ]
   }
 }

@@ -43,10 +43,10 @@ class OrPredicateTest extends TestCase
     private $copiedContext;
 
     /**
-     * @throws DoubleException
+     * @return void
      * @throws InterfaceNotFoundException
      * @throws ClassNotFoundException
-     * @return void
+     * @throws DoubleException
      */
     protected function setUp(): void
     {
@@ -59,13 +59,13 @@ class OrPredicateTest extends TestCase
     /**
      * @test
      *
-     * @throws ExtractorException
+     * @return void
      * @throws HandlerException
      * @throws PredicateException
      * @throws ExpectationFailedException
      * @throws InvalidArgumentException
      * @throws ObjectProphecyException
-     * @return void
+     * @throws ExtractorException
      */
     public function matchShouldReturnFalseBecauseLeftPredicateAndRightPredicateReturnFalse(): void
     {
@@ -79,13 +79,13 @@ class OrPredicateTest extends TestCase
     /**
      * @test
      *
-     * @throws ExtractorException
+     * @return void
      * @throws HandlerException
      * @throws PredicateException
      * @throws ExpectationFailedException
      * @throws InvalidArgumentException
      * @throws ObjectProphecyException
-     * @return void
+     * @throws ExtractorException
      */
     public function matchShouldReturnTrueBecauseLeftPredicateReturnFalseAndRightPredicateReturnTrue(): void
     {
@@ -99,13 +99,13 @@ class OrPredicateTest extends TestCase
     /**
      * @test
      *
-     * @throws ExtractorException
+     * @return void
      * @throws HandlerException
      * @throws PredicateException
      * @throws ExpectationFailedException
      * @throws InvalidArgumentException
      * @throws ObjectProphecyException
-     * @return void
+     * @throws ExtractorException
      */
     public function matchShouldReturnTrueBecauseLeftPredicateReturnTrueAndRightPredicateShouldNotBeCalled(): void
     {
@@ -117,8 +117,8 @@ class OrPredicateTest extends TestCase
     }
 
     /**
-     * @throws ObjectProphecyException
      * @return OrPredicate
+     * @throws ObjectProphecyException
      */
     private function getOrPredicate(): OrPredicate
     {

@@ -17,6 +17,7 @@ use Jojo1981\DataResolver\Predicate\Exception\PredicateException;
 use Jojo1981\DataResolver\Predicate\PredicateInterface;
 use Jojo1981\DataResolver\Resolver\Context;
 use PHPUnit\Framework\ExpectationFailedException;
+use Prophecy\Exception\InvalidArgumentException as ProphecyInvalidArgumentException;
 use tests\Jojo1981\DataResolver\TestCase;
 use Prophecy\Argument;
 use Prophecy\Exception\Doubler\ClassNotFoundException;
@@ -44,10 +45,10 @@ class FilterExtractorTest extends TestCase
     private $copiedContext;
 
     /**
-     * @throws DoubleException
+     * @return void
      * @throws InterfaceNotFoundException
      * @throws ClassNotFoundException
-     * @return void
+     * @throws DoubleException
      */
     protected function setUp(): void
     {
@@ -62,11 +63,11 @@ class FilterExtractorTest extends TestCase
     /**
      * @test
      *
-     * @throws HandlerException
+     * @return void
      * @throws ObjectProphecyException
      * @throws PredicateException
      * @throws ExtractorException
-     * @return void
+     * @throws HandlerException
      */
     public function extractShouldThrowAnExceptionBecauseSequenceHandlerDoesNotSupportTheDataFromContext(): void
     {
@@ -82,20 +83,21 @@ class FilterExtractorTest extends TestCase
     /**
      * @test
      *
+     * @return void
+     * @throws ExtractorException
      * @throws HandlerException
+     * @throws InvalidArgumentException
      * @throws ObjectProphecyException
      * @throws PredicateException
+     * @throws ProphecyInvalidArgumentException
      * @throws ExpectationFailedException
-     * @throws InvalidArgumentException
-     * @throws ExtractorException
-     * @return void
      */
     public function extractShouldCatchExceptionThrownByPredicateAndConsiderThePredicateAsFalse(): void
     {
         $this->originalContext->getData()->willReturn('my-data')->shouldBeCalledTimes(2);
         $this->originalContext->getPath()->shouldNotBeCalled();
         $this->originalContext->copy()->willReturn($this->copiedContext)->shouldBeCalledOnce();
-        $this->copiedContext->setData( 'my-value-1')->willReturn($this->copiedContext)->shouldBeCalledOnce();
+        $this->copiedContext->setData('my-value-1')->willReturn($this->copiedContext)->shouldBeCalledOnce();
 
         $this->sequenceHandler->supports('my-data')->willReturn(true)->shouldBeCalledOnce();
         $this->predicate->match($this->copiedContext)->willThrow(\Exception::class)->shouldBeCalledOnce();
@@ -116,21 +118,22 @@ class FilterExtractorTest extends TestCase
     /**
      * @test
      *
+     * @return void
+     * @throws ExtractorException
      * @throws HandlerException
+     * @throws InvalidArgumentException
      * @throws ObjectProphecyException
      * @throws PredicateException
+     * @throws ProphecyInvalidArgumentException
      * @throws ExpectationFailedException
-     * @throws InvalidArgumentException
-     * @throws ExtractorException
-     * @return void
      */
     public function extractShouldReturnTheResultFromTheSequenceHandlerFilterMethod(): void
     {
         $this->originalContext->getData()->willReturn('my-data')->shouldBeCalledTimes(2);
         $this->originalContext->getPath()->shouldNotBeCalled();
         $this->originalContext->copy()->willReturn($this->copiedContext)->shouldBeCalledTimes(2);
-        $this->copiedContext->setData( 'my-value-1')->willReturn($this->copiedContext)->shouldBeCalledOnce();
-        $this->copiedContext->setData( 'my-value-2')->willReturn($this->copiedContext)->shouldBeCalledOnce();
+        $this->copiedContext->setData('my-value-1')->willReturn($this->copiedContext)->shouldBeCalledOnce();
+        $this->copiedContext->setData('my-value-2')->willReturn($this->copiedContext)->shouldBeCalledOnce();
 
         $this->sequenceHandler->supports('my-data')->willReturn(true)->shouldBeCalledOnce();
         $this->predicate->match($this->copiedContext)->willReturn(false, true)->shouldBeCalledTimes(2);
@@ -150,8 +153,8 @@ class FilterExtractorTest extends TestCase
     }
 
     /**
-     * @throws ObjectProphecyException
      * @return FilterExtractor
+     * @throws ObjectProphecyException
      */
     private function getFilterExtractor(): FilterExtractor
     {

@@ -47,10 +47,10 @@ class SomeExtractor extends AbstractSequenceExtractor
 
     /**
      * @param Context $context
-     * @throws HandlerException
+     * @return bool
      * @throws ExtractorException
      * @throws PredicateException
-     * @return bool
+     * @throws HandlerException
      */
     protected function performExtract(Context $context): bool
     {

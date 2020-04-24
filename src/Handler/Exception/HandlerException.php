@@ -10,6 +10,7 @@
 namespace Jojo1981\DataResolver\Handler\Exception;
 
 use Jojo1981\DataResolver\Exception\ResolverException;
+use ReflectionException;
 
 /**
  * Base exception class for when exceptions occur during the handling process
@@ -22,7 +23,7 @@ class HandlerException extends ResolverException
      * @param string $className
      * @param string $invokedMethodName
      * @param string $assertMethodName
-     * @param null|string $extraMessage
+     * @param string|null $extraMessage
      * @return HandlerException
      */
     public static function IllegalMethodInvocation(
@@ -30,8 +31,7 @@ class HandlerException extends ResolverException
         string $invokedMethodName,
         string $assertMethodName,
         ?string $extraMessage = null
-    ): HandlerException
-    {
+    ): HandlerException {
         return new static(\sprintf(
             'The `%s`%s. Illegal invocation of method `%s`. You should invoke the `%s` method first!',
             $className,
@@ -42,10 +42,10 @@ class HandlerException extends ResolverException
     }
 
     /**
-     * @param \ReflectionException $reflectionException
+     * @param ReflectionException $reflectionException
      * @return HandlerException
      */
-    public static function couldNotGetReflection(\ReflectionException $reflectionException): HandlerException
+    public static function couldNotGetReflection(ReflectionException $reflectionException): HandlerException
     {
         return new static('Can not get reflection', 0, $reflectionException);
     }

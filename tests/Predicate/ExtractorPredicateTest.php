@@ -44,10 +44,10 @@ class ExtractorPredicateTest extends TestCase
     private $copiedContext;
 
     /**
-     * @throws DoubleException
+     * @return void
      * @throws InterfaceNotFoundException
      * @throws ClassNotFoundException
-     * @return void
+     * @throws DoubleException
      */
     protected function setUp(): void
     {
@@ -60,13 +60,13 @@ class ExtractorPredicateTest extends TestCase
     /**
      * @test
      *
-     * @throws ExtractorException
+     * @return void
      * @throws HandlerException
      * @throws PredicateException
      * @throws ExpectationFailedException
      * @throws InvalidArgumentException
      * @throws ObjectProphecyException
-     * @return void
+     * @throws ExtractorException
      */
     public function matchShouldReturnFalseBecauseTheTheExtractorThrowsAnException(): void
     {
@@ -78,16 +78,16 @@ class ExtractorPredicateTest extends TestCase
     /**
      * @test
      *
-     * @throws ExtractorException
+     * @return void
      * @throws HandlerException
      * @throws PredicateException
      * @throws ExpectationFailedException
      * @throws InvalidArgumentException
      * @throws ObjectProphecyException
-     * @return void
+     * @throws ExtractorException
      */
-    public function matchShouldReturnFalseBecauseThePredicateReturnFalseWhenMatchingTheReturnedValueOfTheExtractor(): void
-    {
+    public function matchShouldReturnFalseBecauseThePredicateReturnFalseWhenMatchingTheReturnedValueOfTheExtractor(
+    ): void {
         $this->predicate->match($this->copiedContext)->willReturn(false)->shouldBeCalled();
 
         $this->assertFalse($this->getExtractorPredicate()->match($this->originalContext->reveal()));
@@ -96,13 +96,13 @@ class ExtractorPredicateTest extends TestCase
     /**
      * @test
      *
-     * @throws ExtractorException
+     * @return void
      * @throws HandlerException
      * @throws InvalidArgumentException
      * @throws ObjectProphecyException
      * @throws PredicateException
      * @throws ExpectationFailedException
-     * @return void
+     * @throws ExtractorException
      */
     public function matchShouldReturnTrueBecauseThePredicateReturnTrueWhenMatchingTheReturnedValueOfTheExtractor(): void
     {
@@ -112,11 +112,11 @@ class ExtractorPredicateTest extends TestCase
     }
 
     /**
-     * @throws HandlerException
+     * @return ExtractorPredicate
      * @throws ObjectProphecyException
      * @throws PredicateException
      * @throws ExtractorException
-     * @return ExtractorPredicate
+     * @throws HandlerException
      */
     private function getExtractorPredicate(): ExtractorPredicate
     {

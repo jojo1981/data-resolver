@@ -37,10 +37,10 @@ class ResolverExtractorTest extends TestCase
     private $context;
 
     /**
-     * @throws DoubleException
+     * @return void
      * @throws InterfaceNotFoundException
      * @throws ClassNotFoundException
-     * @return void
+     * @throws DoubleException
      */
     protected function setUp(): void
     {
@@ -53,13 +53,13 @@ class ResolverExtractorTest extends TestCase
     /**
      * @test
      *
-     * @throws ExtractorException
+     * @return void
      * @throws HandlerException
      * @throws PredicateException
      * @throws ExpectationFailedException
      * @throws InvalidArgumentException
      * @throws ObjectProphecyException
-     * @return void
+     * @throws ExtractorException
      */
     public function extractShouldReturnTheResultFromTheInjectedResolverResolveMethod(): void
     {
@@ -68,8 +68,8 @@ class ResolverExtractorTest extends TestCase
     }
 
     /**
-     * @throws ObjectProphecyException
      * @return ResolverExtractor
+     * @throws ObjectProphecyException
      */
     private function getResolverExtractor(): ResolverExtractor
     {

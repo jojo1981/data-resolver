@@ -12,6 +12,7 @@ namespace tests\Jojo1981\DataResolver\Predicate;
 use Jojo1981\DataResolver\Predicate\StringEndsWithPredicate;
 use Jojo1981\DataResolver\Resolver\Context;
 use PHPUnit\Framework\ExpectationFailedException;
+use stdClass;
 use tests\Jojo1981\DataResolver\TestCase;
 use Prophecy\Exception\Doubler\ClassNotFoundException;
 use Prophecy\Exception\Doubler\DoubleException;
@@ -29,10 +30,10 @@ class StringEndsWithPredicateTest extends TestCase
     private $context;
 
     /**
-     * @throws DoubleException
+     * @return void
      * @throws InterfaceNotFoundException
      * @throws ClassNotFoundException
-     * @return void
+     * @throws DoubleException
      */
     protected function setUp(): void
     {
@@ -47,18 +48,17 @@ class StringEndsWithPredicateTest extends TestCase
      * @param bool $caseSensitive
      * @param mixed $testData
      * @param bool $expectedResult
-     * @throws ObjectProphecyException
+     * @return void
      * @throws ExpectationFailedException
      * @throws InvalidArgumentException
-     * @return void
+     * @throws ObjectProphecyException
      */
     public function matchShouldReturnExpectedResult(
         string $suffix,
         bool $caseSensitive,
         $testData,
         bool $expectedResult
-    ): void
-    {
+    ): void {
         $this->context->getData()->willReturn($testData)->shouldBeCalledOnce();
         $this->assertEquals(
             $expectedResult,
@@ -67,7 +67,7 @@ class StringEndsWithPredicateTest extends TestCase
     }
 
     /**
-     * @return array
+     * @return array[]
      */
     public function getTestData(): array
     {
@@ -75,7 +75,7 @@ class StringEndsWithPredicateTest extends TestCase
             ['text', true, true, false],
             ['text', true, false, false],
             ['text', true, null, false],
-            ['text', true, new \stdClass(), false],
+            ['text', true, new stdClass(), false],
             ['text', true, [], false],
             ['text', true, [1, 2, 3], false],
             ['text', true, ['key' => 'value'], false],
@@ -86,7 +86,7 @@ class StringEndsWithPredicateTest extends TestCase
             ['text', false, true, false],
             ['text', false, false, false],
             ['text', false, null, false],
-            ['text', false, new \stdClass(), false],
+            ['text', false, new stdClass(), false],
             ['text', false, [], false],
             ['text', false, [1, 2, 3], false],
             ['text', false, ['key' => 'value'], false],

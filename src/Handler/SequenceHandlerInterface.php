@@ -10,6 +10,7 @@
 namespace Jojo1981\DataResolver\Handler;
 
 use Jojo1981\DataResolver\Handler\Exception\HandlerException;
+use Traversable;
 
 /**
  * Sequence handlers can handle sequences and provide an iterator, filter and flatten method for the data it supports
@@ -26,31 +27,31 @@ interface SequenceHandlerInterface
 
     /**
      * @param mixed $data
+     * @return Traversable
      * @throws HandlerException
-     * @return \Traversable
      */
-    public function getIterator($data): \Traversable;
+    public function getIterator($data): Traversable;
 
     /**
      * @param mixed $data
      * @param callable $callback
-     * @throws HandlerException
      * @return mixed
+     * @throws HandlerException
      */
     public function filter($data, callable $callback);
 
     /**
      * @param mixed $data
-     * @throws HandlerException
      * @return int
+     * @throws HandlerException
      */
     public function count($data): int;
 
     /**
      * @param mixed $data
      * @param callable $callback
-     * @throws HandlerException
      * @return mixed
+     * @throws HandlerException
      */
     public function flatten($data, callable $callback);
 }

@@ -33,6 +33,6 @@ class CallBackPredicate implements PredicateInterface
      */
     public function match(Context $context): bool
     {
-        return (bool) \call_user_func($this->callback, $context->getData());
+        return (bool)\call_user_func($this->callback, $context->getData());
     }
 }

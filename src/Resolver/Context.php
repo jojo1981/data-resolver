@@ -9,6 +9,11 @@
  */
 namespace Jojo1981\DataResolver\Resolver;
 
+use function array_pop;
+use function explode;
+use function implode;
+use function strpos;
+
 /**
  * @package Jojo1981\DataResolver\Resolver
  */
@@ -43,7 +48,7 @@ class Context
      */
     public function getPath(): string
     {
-        return \implode('.', $this->pathParts);
+        return implode('.', $this->pathParts);
     }
 
     /**
@@ -62,7 +67,7 @@ class Context
      */
     public function popPathPart(): self
     {
-        \array_pop($this->pathParts);
+        array_pop($this->pathParts);
 
         return $this;
     }
@@ -73,7 +78,7 @@ class Context
      */
     public function setPath(string $path): self
     {
-        $this->pathParts = false !== \strpos($path, '.') ? \explode('.', $path) : [];
+        $this->pathParts = false !== strpos($path, '.') ? explode('.', $path) : [];
 
         return $this;
     }

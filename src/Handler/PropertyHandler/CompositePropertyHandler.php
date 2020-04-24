@@ -12,6 +12,7 @@ namespace Jojo1981\DataResolver\Handler\PropertyHandler;
 use Jojo1981\DataResolver\Handler\Exception\HandlerException;
 use Jojo1981\DataResolver\Handler\PropertyHandlerInterface;
 use Jojo1981\DataResolver\NamingStrategy\NamingStrategyInterface;
+use function array_walk;
 
 /**
  * @package Jojo1981\DataResolver\Handler\PropertyHandler
@@ -26,7 +27,7 @@ class CompositePropertyHandler implements PropertyHandlerInterface
      */
     public function __construct(array $handlers)
     {
-        \array_walk($handlers, [$this, 'addHandler']);
+        array_walk($handlers, [$this, 'addHandler']);
     }
 
     /**
@@ -58,8 +59,8 @@ class CompositePropertyHandler implements PropertyHandlerInterface
      * @param NamingStrategyInterface $namingStrategy
      * @param string $propertyName
      * @param mixed $data
-     * @throws HandlerException
      * @return mixed
+     * @throws HandlerException
      */
     public function getValueForPropertyName(NamingStrategyInterface $namingStrategy, string $propertyName, $data)
     {
@@ -71,21 +72,21 @@ class CompositePropertyHandler implements PropertyHandlerInterface
      * @param NamingStrategyInterface $namingStrategy
      * @param string $propertyName
      * @param mixed $data
-     * @throws HandlerException
      * @return bool
+     * @throws HandlerException
      */
     public function hasValueForPropertyName(NamingStrategyInterface $namingStrategy, string $propertyName, $data): bool
     {
         return $this->getSupportedHandler('hasValueForPropertyName', $propertyName, $data)
-            ->hasValueForPropertyName($namingStrategy,$propertyName, $data);
+            ->hasValueForPropertyName($namingStrategy, $propertyName, $data);
     }
 
     /**
      * @param string $methodName
      * @param string $propertyName
      * @param mixed $data
-     * @throws HandlerException
      * @return PropertyHandlerInterface
+     * @throws HandlerException
      */
     private function getSupportedHandler(string $methodName, string $propertyName, $data): PropertyHandlerInterface
     {

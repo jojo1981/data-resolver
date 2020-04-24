@@ -10,6 +10,7 @@
 namespace Jojo1981\DataResolver\NamingStrategy;
 
 use Jojo1981\DataResolver\Helper\StringHelper;
+use function array_values;
 
 /**
  * @package Jojo1981\DataResolver\NamingStrategy
@@ -22,7 +23,7 @@ class DefaultNamingStrategy implements NamingStrategyInterface
      */
     public function getPropertyNames(string $propertyName): array
     {
-        return \array_values(\array_unique([
+        return array_values(\array_unique([
             StringHelper::toSnakeCase($propertyName),
             StringHelper::toCamelCase($propertyName)
         ]));

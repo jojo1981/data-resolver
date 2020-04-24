@@ -11,6 +11,7 @@ namespace tests\Jojo1981\DataResolver\Comparator;
 
 use Jojo1981\DataResolver\Comparator\DefaultComparator;
 use PHPUnit\Framework\ExpectationFailedException;
+use stdClass;
 use tests\Jojo1981\DataResolver\TestCase;
 use Prophecy\Exception\Doubler\ClassNotFoundException;
 use Prophecy\Exception\Doubler\DoubleException;
@@ -34,10 +35,10 @@ class DefaultComparatorTest extends TestCase
     private $comparator;
 
     /**
-     * @throws DoubleException
+     * @return void
      * @throws InterfaceNotFoundException
      * @throws ClassNotFoundException
-     * @return void
+     * @throws DoubleException
      */
     protected function setUp(): void
     {
@@ -48,10 +49,10 @@ class DefaultComparatorTest extends TestCase
     /**
      * @test
      *
-     * @throws InvalidArgumentException
+     * @return void
      * @throws ObjectProphecyException
      * @throws ExpectationFailedException
-     * @return void
+     * @throws InvalidArgumentException
      */
     public function isEqualShouldReturnFalseWhenComparatorFactoryHasNoComparatorFor(): void
     {
@@ -62,11 +63,11 @@ class DefaultComparatorTest extends TestCase
     /**
      * @test
      *
-     * @throws ExpectationFailedException
+     * @return void
      * @throws InvalidArgumentException
      * @throws ObjectProphecyException
      * @throws ComparisonFailure
-     * @return void
+     * @throws ExpectationFailedException
      */
     public function isEqualShouldReturnFalseWhenComparatorAssertEqualsThrowsComparisonFailure(): void
     {
@@ -78,11 +79,11 @@ class DefaultComparatorTest extends TestCase
     /**
      * @test
      *
-     * @throws ExpectationFailedException
+     * @return void
      * @throws InvalidArgumentException
      * @throws ObjectProphecyException
      * @throws ComparisonFailure
-     * @return void
+     * @throws ExpectationFailedException
      */
     public function isEqualShouldReturnTrueWhenComparatorAssertEqualsNotThrowsAnException(): void
     {
@@ -94,9 +95,9 @@ class DefaultComparatorTest extends TestCase
     /**
      * @test
      *
-     * @throws InvalidArgumentException
-     * @throws ExpectationFailedException
      * @return void
+     * @throws ExpectationFailedException
+     * @throws InvalidArgumentException
      */
     public function isEqualShouldReturnFalseWhenValuesAreNotEqual(): void
     {
@@ -110,15 +111,15 @@ class DefaultComparatorTest extends TestCase
     /**
      * @test
      *
-     * @throws InvalidArgumentException
-     * @throws ExpectationFailedException
      * @return void
+     * @throws ExpectationFailedException
+     * @throws InvalidArgumentException
      */
     public function isEqualShouldReturnTrueWhenValuesAreEqual(): void
     {
         $this->assertTrue($this->getDefaultComparator()->isEqual('value1', 'value1'));
         $this->assertTrue($this->getDefaultComparator()->isEqual(['value1'], ['value1']));
-        $this->assertTrue($this->getDefaultComparator()->isEqual(new \stdClass(), new \stdClass()));
+        $this->assertTrue($this->getDefaultComparator()->isEqual(new stdClass(), new stdClass()));
         $this->assertTrue($this->getDefaultComparator()->isEqual(['name' => 'Tester'], ['name' => 'Tester']));
         $this->assertTrue($this->getDefaultComparator()->isEqual(true, true));
         $this->assertTrue($this->getDefaultComparator()->isEqual(false, false));
@@ -131,9 +132,9 @@ class DefaultComparatorTest extends TestCase
     /**
      * @test
      *
-     * @throws InvalidArgumentException
-     * @throws ExpectationFailedException
      * @return void
+     * @throws ExpectationFailedException
+     * @throws InvalidArgumentException
      */
     public function isGreaterThanShouldReturnFalseWhenValueToCompareIsNotGreaterThanTheReferenceValue(): void
     {
@@ -148,9 +149,9 @@ class DefaultComparatorTest extends TestCase
     /**
      * @test
      *
-     * @throws InvalidArgumentException
-     * @throws ExpectationFailedException
      * @return void
+     * @throws ExpectationFailedException
+     * @throws InvalidArgumentException
      */
     public function isGreaterThanShouldReturnTrueWhenValueToCompareIsGreaterThanTheReferenceValue(): void
     {
@@ -164,9 +165,9 @@ class DefaultComparatorTest extends TestCase
     /**
      * @test
      *
-     * @throws InvalidArgumentException
-     * @throws ExpectationFailedException
      * @return void
+     * @throws ExpectationFailedException
+     * @throws InvalidArgumentException
      */
     public function isLessThanShouldReturnFalseWhenValueToCompareIsNotLessThanTheReferenceValue(): void
     {
@@ -181,9 +182,9 @@ class DefaultComparatorTest extends TestCase
     /**
      * @test
      *
-     * @throws InvalidArgumentException
-     * @throws ExpectationFailedException
      * @return void
+     * @throws ExpectationFailedException
+     * @throws InvalidArgumentException
      */
     public function isLessThanShouldReturnTrueWhenValueToCompareIsLessThanTheReferenceValue(): void
     {
@@ -195,7 +196,7 @@ class DefaultComparatorTest extends TestCase
     }
 
     /**
-     * @param null|ComparatorFactory $comparatorFactory
+     * @param ComparatorFactory|null $comparatorFactory
      * @return DefaultComparator
      */
     private function getDefaultComparator(?ComparatorFactory $comparatorFactory = null): DefaultComparator

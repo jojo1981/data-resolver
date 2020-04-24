@@ -9,6 +9,9 @@
  */
 namespace Jojo1981\DataResolver\Predicate;
 
+use function mb_stripos;
+use function mb_strpos;
+
 /**
  * @package Jojo1981\DataResolver\Predicate
  */
@@ -37,9 +40,9 @@ class StringContainsPredicate extends AbstractStringPredicate
     protected function performMatch($data): bool
     {
         if ($this->caseSensitive) {
-            return false !== \mb_strpos($data, $this->subString);
+            return false !== mb_strpos($data, $this->subString);
         }
 
-        return false !== \mb_stripos($data, $this->subString);
+        return false !== mb_stripos($data, $this->subString);
     }
 }

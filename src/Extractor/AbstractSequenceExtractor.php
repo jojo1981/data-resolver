@@ -14,6 +14,7 @@ use Jojo1981\DataResolver\Handler\Exception\HandlerException;
 use Jojo1981\DataResolver\Handler\SequenceHandlerInterface;
 use Jojo1981\DataResolver\Predicate\Exception\PredicateException;
 use Jojo1981\DataResolver\Resolver\Context;
+use function get_class;
 
 /**
  * @package Jojo1981\DataResolver\Extractor
@@ -22,17 +23,17 @@ abstract class AbstractSequenceExtractor implements ExtractorInterface
 {
     /**
      * @param Context $context
-     * @throws HandlerException
+     * @return mixed
      * @throws PredicateException
      * @throws ExtractorException
-     * @return mixed
+     * @throws HandlerException
      */
     final public function extract(Context $context)
     {
         if (!$this->getSequenceHandler()->supports($context->getData())) {
             throw new ExtractorException(\sprintf(
                 'Could not extract data with `%s` at path: `%s`',
-                \get_class($this),
+                get_class($this),
                 $context->getPath()
             ));
         }
@@ -47,9 +48,9 @@ abstract class AbstractSequenceExtractor implements ExtractorInterface
 
     /**
      * @param Context $context
-     * @throws PredicateException
-     * @throws HandlerException
      * @return mixed
+     * @throws HandlerException
+     * @throws PredicateException
      */
     abstract protected function performExtract(Context $context);
 }

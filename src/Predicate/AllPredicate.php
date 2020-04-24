@@ -14,6 +14,7 @@ use Jojo1981\DataResolver\Handler\Exception\HandlerException;
 use Jojo1981\DataResolver\Handler\SequenceHandlerInterface;
 use Jojo1981\DataResolver\Predicate\Exception\PredicateException;
 use Jojo1981\DataResolver\Resolver\Context;
+use function get_class;
 
 /**
  * @package Jojo1981\DataResolver\Predicate
@@ -38,17 +39,17 @@ class AllPredicate implements PredicateInterface
 
     /**
      * @param Context $context
-     * @throws PredicateException
+     * @return bool
      * @throws ExtractorException
      * @throws HandlerException
-     * @return bool
+     * @throws PredicateException
      */
     public function match(Context $context): bool
     {
         if (!$this->sequenceHandler->supports($context->getData())) {
             throw new PredicateException(\sprintf(
                 'Could not match data with `%s` at path: `%s`',
-                \get_class($this),
+                get_class($this),
                 $context->getPath()
             ));
         }

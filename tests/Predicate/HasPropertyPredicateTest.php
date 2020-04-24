@@ -33,10 +33,10 @@ class HasPropertyPredicateTest extends TestCase
     private $context;
 
     /**
-     * @throws DoubleException
+     * @return void
      * @throws InterfaceNotFoundException
      * @throws ClassNotFoundException
-     * @return void
+     * @throws DoubleException
      */
     protected function setUp(): void
     {
@@ -47,10 +47,10 @@ class HasPropertyPredicateTest extends TestCase
     /**
      * @test
      *
-     * @throws ExpectationFailedException
+     * @return void
      * @throws InvalidArgumentException
      * @throws ObjectProphecyException
-     * @return void
+     * @throws ExpectationFailedException
      */
     public function matchShouldReturnFalseWhenExtractorThrowsAnException(): void
     {
@@ -61,10 +61,10 @@ class HasPropertyPredicateTest extends TestCase
     /**
      * @test
      *
-     * @throws InvalidArgumentException
+     * @return void
      * @throws ObjectProphecyException
      * @throws ExpectationFailedException
-     * @return void
+     * @throws InvalidArgumentException
      */
     public function matchShouldReturnFalseWhenWhenExtractorReturnsFalse(): void
     {
@@ -75,10 +75,10 @@ class HasPropertyPredicateTest extends TestCase
     /**
      * @test
      *
-     * @throws InvalidArgumentException
+     * @return void
      * @throws ObjectProphecyException
      * @throws ExpectationFailedException
-     * @return void
+     * @throws InvalidArgumentException
      */
     public function matchShouldReturnTrueWhenWhenExtractorReturnsTrue(): void
     {
@@ -87,8 +87,8 @@ class HasPropertyPredicateTest extends TestCase
     }
 
     /**
-     * @throws ObjectProphecyException
      * @return HasPropertyPredicate
+     * @throws ObjectProphecyException
      */
     private function getHasPropertyPredicate(): HasPropertyPredicate
     {

@@ -25,10 +25,10 @@ interface ExtractorInterface
 {
     /**
      * @param Context $context
-     * @throws HandlerException
+     * @return mixed
      * @throws ExtractorException
      * @throws PredicateException
-     * @return mixed
+     * @throws HandlerException
      */
     public function extract(Context $context);
 }

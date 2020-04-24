@@ -13,8 +13,10 @@ use Jojo1981\DataResolver\Builder\ResolverBuilder;
 use Jojo1981\DataResolver\Extractor\Exception\ExtractorException;
 use Jojo1981\DataResolver\Handler\Exception\HandlerException;
 use Jojo1981\DataResolver\Predicate\Exception\PredicateException;
+use PHPUnit\Framework\Exception as PHPUnitException;
 use PHPUnit\Framework\ExpectationFailedException;
 use SebastianBergmann\RecursionContext\InvalidArgumentException;
+use stdClass;
 use tests\Jojo1981\DataResolver\Integration\AbstractIntegrationTestCase;
 
 /**
@@ -27,10 +29,11 @@ class CreateTest extends AbstractIntegrationTestCase
      * @coversNothing
      *
      * @return void
-     * @throws InvalidArgumentException
      * @throws ExtractorException
      * @throws HandlerException
+     * @throws InvalidArgumentException
      * @throws PredicateException
+     * @throws PHPUnitException
      * @throws ExpectationFailedException
      */
     public function checkCreate(): void
@@ -46,7 +49,7 @@ class CreateTest extends AbstractIntegrationTestCase
         $this->assertEquals(-1.2, $resolver->resolve(-1.2));
         $this->assertEquals(1.2, $resolver->resolve(1.2));
         $this->assertEquals(10, $resolver->resolve(10));
-        $this->assertEquals(new \stdClass(), $resolver->resolve(new \stdClass()));
+        $this->assertEquals(new stdClass(), $resolver->resolve(new stdClass()));
         $this->assertEquals('text', $resolver->resolve('text'));
         $this->assertEquals('true', $resolver->resolve('true'));
         $this->assertEquals('false', $resolver->resolve('false'));
@@ -54,7 +57,10 @@ class CreateTest extends AbstractIntegrationTestCase
         $this->assertEquals([1, 2, 3], $resolver->resolve([1, 2, 3]));
         $this->assertEquals(['zero', 'one', 'two'], $resolver->resolve(['zero', 'one', 'two']));
         $this->assertEquals([1 => 'one', 2 => 'two'], $resolver->resolve([1 => 'one', 2 => 'two']));
-        $this->assertEquals(['one' => 1, 'two' => 2, 'three' => 3], $resolver->resolve(['one' => 1, 'two' => 2, 'three' => 3]));
+        $this->assertEquals(
+            ['one' => 1, 'two' => 2, 'three' => 3],
+            $resolver->resolve(['one' => 1, 'two' => 2, 'three' => 3])
+        );
         $this->assertEquals(0, $resolver->resolve(0));
         $this->assertEquals('', $resolver->resolve(''));
         $this->assertEquals('0', $resolver->resolve('0'));

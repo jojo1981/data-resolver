@@ -17,6 +17,7 @@ use Jojo1981\DataResolver\Handler\SequenceHandlerInterface;
 use Jojo1981\DataResolver\Predicate\Exception\PredicateException;
 use Jojo1981\DataResolver\Resolver\Context;
 use PHPUnit\Framework\ExpectationFailedException;
+use Prophecy\Exception\InvalidArgumentException as ProphecyInvalidArgumentException;
 use tests\Jojo1981\DataResolver\TestCase;
 use Prophecy\Argument;
 use Prophecy\Exception\Doubler\ClassNotFoundException;
@@ -25,6 +26,8 @@ use Prophecy\Exception\Doubler\InterfaceNotFoundException;
 use Prophecy\Exception\Prophecy\ObjectProphecyException;
 use Prophecy\Prophecy\ObjectProphecy;
 use SebastianBergmann\RecursionContext\InvalidArgumentException;
+use function call_user_func;
+use function is_callable;
 
 /**
  * @package tests\Jojo1981\DataResolver\Extractor
@@ -44,10 +47,10 @@ class FlattenExtractorTest extends TestCase
     private $copiedContext;
 
     /**
-     * @throws DoubleException
+     * @return void
      * @throws InterfaceNotFoundException
      * @throws ClassNotFoundException
-     * @return void
+     * @throws DoubleException
      */
     protected function setUp(): void
     {
@@ -62,11 +65,11 @@ class FlattenExtractorTest extends TestCase
     /**
      * @test
      *
-     * @throws HandlerException
+     * @return void
      * @throws ObjectProphecyException
      * @throws PredicateException
      * @throws ExtractorException
-     * @return void
+     * @throws HandlerException
      */
     public function extractShouldThrowAnExceptionBecauseSequenceHandlerDoesNotSupportTheDataFromContext(): void
     {
@@ -82,13 +85,14 @@ class FlattenExtractorTest extends TestCase
     /**
      * @test
      *
+     * @return void
+     * @throws ExtractorException
      * @throws HandlerException
+     * @throws InvalidArgumentException
      * @throws ObjectProphecyException
      * @throws PredicateException
+     * @throws ProphecyInvalidArgumentException
      * @throws ExpectationFailedException
-     * @throws InvalidArgumentException
-     * @throws ExtractorException
-     * @return void
      */
     public function extractShouldReturnTheResultFromTheSequenceHandlerFlattenMethod(): void
     {
@@ -96,14 +100,14 @@ class FlattenExtractorTest extends TestCase
         $this->originalContext->getPath()->shouldNotBeCalled();
         $this->originalContext->copy()->willReturn($this->copiedContext)->shouldBeCalledOnce();
         $this->copiedContext->pushPathPart('my-key-1')->willReturn($this->copiedContext)->shouldBeCalledOnce();
-        $this->copiedContext->setData( 'my-value-1')->willReturn($this->copiedContext)->shouldBeCalledOnce();
+        $this->copiedContext->setData('my-value-1')->willReturn($this->copiedContext)->shouldBeCalledOnce();
 
         $this->sequenceHandler->supports('my-data')->willReturn(true)->shouldBeCalledOnce();
         $this->extractor->extract($this->copiedContext)->willReturn('extracted-value')->shouldBeCalledOnce();
 
         $this->sequenceHandler->flatten('my-data', Argument::that(function ($arg): bool {
-            if (\is_callable($arg)) {
-                $this->assertEquals('extracted-value', \call_user_func($arg, 'my-value-1', 'my-key-1'));
+            if (is_callable($arg)) {
+                $this->assertEquals('extracted-value', call_user_func($arg, 'my-value-1', 'my-key-1'));
 
                 return true;
             }
@@ -115,8 +119,8 @@ class FlattenExtractorTest extends TestCase
     }
 
     /**
-     * @throws ObjectProphecyException
      * @return FlattenExtractor
+     * @throws ObjectProphecyException
      */
     private function getFlattenExtractor(): FlattenExtractor
     {

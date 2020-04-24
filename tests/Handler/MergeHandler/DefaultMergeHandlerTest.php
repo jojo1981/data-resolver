@@ -12,6 +12,7 @@ namespace tests\Jojo1981\DataResolver\Handler\MergeHandler;
 use Jojo1981\DataResolver\Handler\MergeHandler\DefaultMergeHandler;
 use Jojo1981\DataResolver\Resolver\Context;
 use PHPUnit\Framework\ExpectationFailedException;
+use stdClass;
 use tests\Jojo1981\DataResolver\TestCase;
 use SebastianBergmann\RecursionContext\InvalidArgumentException;
 
@@ -23,9 +24,9 @@ class DefaultMergeHandlerTest extends TestCase
     /**
      * @test
      *
-     * @throws InvalidArgumentException
-     * @throws ExpectationFailedException
      * @return void
+     * @throws ExpectationFailedException
+     * @throws InvalidArgumentException
      */
     public function mergeWithContextDataNullWithEmptyElementShouldReturnEmptyArray(): void
     {
@@ -36,9 +37,9 @@ class DefaultMergeHandlerTest extends TestCase
     /**
      * @test
      *
-     * @throws InvalidArgumentException
-     * @throws ExpectationFailedException
      * @return void
+     * @throws ExpectationFailedException
+     * @throws InvalidArgumentException
      */
     public function mergeWithContextDataArrayWithEmptyElementShouldReturnAnEmptyArray(): void
     {
@@ -49,27 +50,30 @@ class DefaultMergeHandlerTest extends TestCase
     /**
      * @test
      *
-     * @throws InvalidArgumentException
-     * @throws ExpectationFailedException
      * @return void
+     * @throws ExpectationFailedException
+     * @throws InvalidArgumentException
      */
     public function mergeWithContextDataObjectWithElementsShouldReturnNonEmptyStdClass(): void
     {
-        $expected = new \stdClass();
+        $expected = new stdClass();
         $expected->id = 'id1';
         $expected->name = 10;
         $expected->list = [1, 7, 8];
 
-        $result = $this->getDefaultMergeHandler()->merge(new Context(new \stdClass(), ''), $this->getElementsTestData());
+        $result = $this->getDefaultMergeHandler()->merge(
+            new Context(new stdClass(), ''),
+            $this->getElementsTestData()
+        );
         $this->assertEquals($expected, $result);
     }
 
     /**
      * @test
      *
-     * @throws InvalidArgumentException
-     * @throws ExpectationFailedException
      * @return void
+     * @throws ExpectationFailedException
+     * @throws InvalidArgumentException
      */
     public function mergeWithContextDataArrayWithElementsShouldReturnNonEmptyAssociativeArray(): void
     {
@@ -86,9 +90,9 @@ class DefaultMergeHandlerTest extends TestCase
     /**
      * @test
      *
-     * @throws InvalidArgumentException
-     * @throws ExpectationFailedException
      * @return void
+     * @throws ExpectationFailedException
+     * @throws InvalidArgumentException
      */
     public function mergeWithContextDataIndexedArrayWithElementsShouldReturnMergedIndexedArray(): void
     {

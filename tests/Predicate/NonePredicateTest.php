@@ -9,6 +9,7 @@
  */
 namespace tests\Jojo1981\DataResolver\Predicate;
 
+use ArrayIterator;
 use Jojo1981\DataResolver\Extractor\Exception\ExtractorException;
 use Jojo1981\DataResolver\Handler\Exception\HandlerException;
 use Jojo1981\DataResolver\Handler\SequenceHandlerInterface;
@@ -44,10 +45,10 @@ class NonePredicateTest extends TestCase
     private $copiedContext;
 
     /**
-     * @throws DoubleException
+     * @return void
      * @throws InterfaceNotFoundException
      * @throws ClassNotFoundException
-     * @return void
+     * @throws DoubleException
      */
     protected function setUp(): void
     {
@@ -60,11 +61,11 @@ class NonePredicateTest extends TestCase
     /**
      * @test
      *
-     * @throws HandlerException
+     * @return void
      * @throws PredicateException
      * @throws ObjectProphecyException
      * @throws ExtractorException
-     * @return void
+     * @throws HandlerException
      */
     public function matchShouldThrowAnExceptionBecauseSequenceHandlerDoesNotSupportTheDataFromContext(): void
     {
@@ -82,13 +83,13 @@ class NonePredicateTest extends TestCase
     /**
      * @test
      *
-     * @throws ExtractorException
+     * @return void
      * @throws HandlerException
      * @throws InvalidArgumentException
      * @throws ObjectProphecyException
      * @throws PredicateException
      * @throws ExpectationFailedException
-     * @return void
+     * @throws ExtractorException
      */
     public function matchShouldReturnTrueWhenDataIsAnEmptyArray(): void
     {
@@ -96,7 +97,7 @@ class NonePredicateTest extends TestCase
         $this->originalContext->getPath()->shouldNotBeCalled();
 
         $this->sequenceHandler->supports(Argument::exact('my-data-2'))->willReturn(true)->shouldBeCalled();
-        $this->sequenceHandler->getIterator(Argument::exact('my-data-2'))->willReturn(new \ArrayIterator())->shouldBeCalled();
+        $this->sequenceHandler->getIterator(Argument::exact('my-data-2'))->willReturn(new ArrayIterator())->shouldBeCalled();
 
         $this->predicate->match(Argument::any())->shouldNotBeCalled();
 
@@ -106,13 +107,13 @@ class NonePredicateTest extends TestCase
     /**
      * @test
      *
-     * @throws ExtractorException
+     * @return void
      * @throws HandlerException
      * @throws InvalidArgumentException
      * @throws ObjectProphecyException
      * @throws PredicateException
      * @throws ExpectationFailedException
-     * @return void
+     * @throws ExtractorException
      */
     public function matchShouldReturnFalseAsSoonAsPossibleThusWhenAnItemIsMatching(): void
     {
@@ -124,7 +125,7 @@ class NonePredicateTest extends TestCase
         $this->copiedContext->setData('value1')->willReturn($this->copiedContext)->shouldBeCalled();
         $this->copiedContext->setData('value2')->willReturn($this->copiedContext)->shouldBeCalled();
 
-        $iterator = new \ArrayIterator(['key1' => 'value1', 'key2' => 'value2', 'key3' => 'value3']);
+        $iterator = new ArrayIterator(['key1' => 'value1', 'key2' => 'value2', 'key3' => 'value3']);
         $this->sequenceHandler->supports(Argument::exact('my-data-2'))->willReturn(true)->shouldBeCalled();
         $this->sequenceHandler->getIterator(Argument::exact('my-data-2'))->willReturn($iterator)->shouldBeCalled();
 
@@ -136,13 +137,13 @@ class NonePredicateTest extends TestCase
     /**
      * @test
      *
-     * @throws ExtractorException
+     * @return void
      * @throws HandlerException
      * @throws InvalidArgumentException
      * @throws ObjectProphecyException
      * @throws PredicateException
      * @throws ExpectationFailedException
-     * @return void
+     * @throws ExtractorException
      */
     public function matchShouldReturnTrueWhenAllItemsAreNotMatching(): void
     {
@@ -156,7 +157,7 @@ class NonePredicateTest extends TestCase
         $this->copiedContext->setData('value2')->willReturn($this->copiedContext)->shouldBeCalled();
         $this->copiedContext->setData('value3')->willReturn($this->copiedContext)->shouldBeCalled();
 
-        $iterator = new \ArrayIterator(['key1' => 'value1', 'key2' => 'value2', 'key3' => 'value3']);
+        $iterator = new ArrayIterator(['key1' => 'value1', 'key2' => 'value2', 'key3' => 'value3']);
         $this->sequenceHandler->supports(Argument::exact('my-data-3'))->willReturn(true)->shouldBeCalled();
         $this->sequenceHandler->getIterator(Argument::exact('my-data-3'))->willReturn($iterator)->shouldBeCalled();
 
@@ -166,8 +167,8 @@ class NonePredicateTest extends TestCase
     }
 
     /**
-     * @throws ObjectProphecyException
      * @return NonePredicate
+     * @throws ObjectProphecyException
      */
     private function getNonePredicate(): NonePredicate
     {

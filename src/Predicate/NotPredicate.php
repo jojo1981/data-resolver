@@ -32,10 +32,10 @@ class NotPredicate implements PredicateInterface
 
     /**
      * @param Context $context
-     * @throws HandlerException
+     * @return bool
      * @throws PredicateException
      * @throws ExtractorException
-     * @return bool
+     * @throws HandlerException
      */
     public function match(Context $context): bool
     {

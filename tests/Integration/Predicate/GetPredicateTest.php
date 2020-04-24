@@ -16,6 +16,7 @@ use Jojo1981\DataResolver\Predicate\Exception\PredicateException;
 use Jojo1981\DataResolver\Resolver\Context;
 use PHPUnit\Framework\ExpectationFailedException;
 use SebastianBergmann\RecursionContext\InvalidArgumentException;
+use stdClass;
 use tests\Jojo1981\DataResolver\Integration\AbstractIntegrationTestCase;
 
 /**
@@ -27,20 +28,20 @@ class GetPredicateTest extends AbstractIntegrationTestCase
      * @test
      * @coversNothing
      *
-     * @throws ExtractorException
+     * @return void
      * @throws HandlerException
      * @throws PredicateException
      * @throws ExpectationFailedException
      * @throws InvalidArgumentException
      * @throws ResolverException
-     * @return void
+     * @throws ExtractorException
      */
     public function checkGetPredicateUsingOneProperty(): void
     {
         $predicate1 = $this->getResolverBuilderFactory()->where('name')->equals('John Doe')->build();
         $predicate2 = $this->getResolverBuilderFactory()->where()->get('name')->equals('John Doe')->build();
 
-        $testData = new \stdClass();
+        $testData = new stdClass();
         $this->assertFalse($predicate1->match(new Context($testData)));
         $this->assertFalse($predicate2->match(new Context($testData)));
 
@@ -53,13 +54,13 @@ class GetPredicateTest extends AbstractIntegrationTestCase
      * @test
      * @coversNothing
      *
-     * @throws ExtractorException
+     * @return void
      * @throws HandlerException
      * @throws PredicateException
      * @throws ExpectationFailedException
      * @throws InvalidArgumentException
      * @throws ResolverException
-     * @return void
+     * @throws ExtractorException
      */
     public function checkGetPredicateUsingMultipleProperties(): void
     {
@@ -67,12 +68,12 @@ class GetPredicateTest extends AbstractIntegrationTestCase
         $predicate2 = $this->getResolverBuilderFactory()->where('level1')->get('level2')->equals('level2')->build();
         $predicate3 = $this->getResolverBuilderFactory()->where()->get('level1')->get('level2')->equals('level2')->build();
 
-        $testData = new \stdClass();
+        $testData = new stdClass();
         $this->assertFalse($predicate1->match(new Context($testData)));
         $this->assertFalse($predicate2->match(new Context($testData)));
         $this->assertFalse($predicate3->match(new Context($testData)));
 
-        $testData->level1 = new \stdClass();
+        $testData->level1 = new stdClass();
         $this->assertFalse($predicate1->match(new Context($testData)));
         $this->assertFalse($predicate2->match(new Context($testData)));
         $this->assertFalse($predicate3->match(new Context($testData)));

@@ -12,6 +12,7 @@ namespace tests\Jojo1981\DataResolver\Predicate;
 use Jojo1981\DataResolver\Predicate\NullPredicate;
 use Jojo1981\DataResolver\Resolver\Context;
 use PHPUnit\Framework\ExpectationFailedException;
+use stdClass;
 use tests\Jojo1981\DataResolver\TestCase;
 use Prophecy\Exception\Doubler\ClassNotFoundException;
 use Prophecy\Exception\Doubler\DoubleException;
@@ -29,10 +30,10 @@ class NullPredicateTest extends TestCase
     private $context;
 
     /**
-     * @throws DoubleException
+     * @return void
      * @throws InterfaceNotFoundException
      * @throws ClassNotFoundException
-     * @return void
+     * @throws DoubleException
      */
     protected function setUp(): void
     {
@@ -45,10 +46,10 @@ class NullPredicateTest extends TestCase
      *
      * @param mixed $value
      * @param bool $expected
-     * @throws ObjectProphecyException
+     * @return void
      * @throws ExpectationFailedException
      * @throws InvalidArgumentException
-     * @return void
+     * @throws ObjectProphecyException
      */
     public function matchShouldReturnTheCorrectValueForIsTrue($value, bool $expected): void
     {
@@ -58,7 +59,7 @@ class NullPredicateTest extends TestCase
     }
 
     /**
-     * @return array
+     * @return array[]
      */
     public function getTestData(): array
     {
@@ -79,7 +80,7 @@ class NullPredicateTest extends TestCase
             ['text', false],
             ['true', false],
             ['false', false],
-            [new \stdClass(), false],
+            [new stdClass(), false],
             [[], false],
             [[1, 2, 3], false],
             [['zero', 'one', 'two'], false],

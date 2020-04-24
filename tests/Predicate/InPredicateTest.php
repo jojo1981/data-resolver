@@ -30,10 +30,10 @@ class InPredicateTest extends TestCase
     private $comparator;
 
     /**
-     * @throws DoubleException
+     * @return void
      * @throws InterfaceNotFoundException
      * @throws ClassNotFoundException
-     * @return void
+     * @throws DoubleException
      */
     protected function setUp(): void
     {
@@ -43,10 +43,10 @@ class InPredicateTest extends TestCase
     /**
      * @test
      *
-     * @throws ExpectationFailedException
+     * @return void
      * @throws ObjectProphecyException
      * @throws InvalidArgumentException
-     * @return void
+     * @throws ExpectationFailedException
      */
     public function matchShouldReturnFalseWhenValueDoesNotExistsInExpectedValues(): void
     {
@@ -59,10 +59,10 @@ class InPredicateTest extends TestCase
     /**
      * @test
      *
-     * @throws ExpectationFailedException
+     * @return void
      * @throws ObjectProphecyException
      * @throws InvalidArgumentException
-     * @return void
+     * @throws ExpectationFailedException
      */
     public function matchShouldReturnTrueWhenValueDoesExistsInExpectedValuesTest1(): void
     {
@@ -74,10 +74,10 @@ class InPredicateTest extends TestCase
     /**
      * @test
      *
-     * @throws ExpectationFailedException
+     * @return void
      * @throws ObjectProphecyException
      * @throws InvalidArgumentException
-     * @return void
+     * @throws ExpectationFailedException
      */
     public function matchShouldReturnTrueWhenValueDoesExistsInExpectedValuesTest2(): void
     {
@@ -90,10 +90,10 @@ class InPredicateTest extends TestCase
     /**
      * @test
      *
-     * @throws ExpectationFailedException
+     * @return void
      * @throws ObjectProphecyException
      * @throws InvalidArgumentException
-     * @return void
+     * @throws ExpectationFailedException
      */
     public function matchShouldReturnTrueWhenValueDoesExistsInExpectedValuesTest3(): void
     {
@@ -106,8 +106,8 @@ class InPredicateTest extends TestCase
 
     /**
      * @param mixed[] $expectedValues
-     * @throws ObjectProphecyException
      * @return InPredicate
+     * @throws ObjectProphecyException
      */
     private function getInPredicate(array $expectedValues): InPredicate
     {

@@ -9,6 +9,7 @@
  */
 namespace tests\Jojo1981\DataResolver\Extractor;
 
+use ArrayIterator;
 use Jojo1981\DataResolver\Extractor\AllExtractor;
 use Jojo1981\DataResolver\Extractor\Exception\ExtractorException;
 use Jojo1981\DataResolver\Handler\Exception\HandlerException;
@@ -44,10 +45,10 @@ class AllExtractorTest extends TestCase
     private $copiedContext;
 
     /**
-     * @throws DoubleException
+     * @return void
      * @throws InterfaceNotFoundException
      * @throws ClassNotFoundException
-     * @return void
+     * @throws DoubleException
      */
     protected function setUp(): void
     {
@@ -62,11 +63,11 @@ class AllExtractorTest extends TestCase
     /**
      * @test
      *
-     * @throws HandlerException
+     * @return void
      * @throws ObjectProphecyException
      * @throws PredicateException
      * @throws ExtractorException
-     * @return void
+     * @throws HandlerException
      */
     public function extractShouldThrowAnExceptionBecauseSequenceHandlerDoesNotSupportTheDataFromContext(): void
     {
@@ -84,13 +85,13 @@ class AllExtractorTest extends TestCase
     /**
      * @test
      *
-     * @throws ExtractorException
+     * @return void
      * @throws HandlerException
      * @throws InvalidArgumentException
      * @throws ObjectProphecyException
      * @throws PredicateException
      * @throws ExpectationFailedException
-     * @return void
+     * @throws ExtractorException
      */
     public function extractShouldReturnTrueWhenSequenceHandlerGetIteratorReturnAnEmptyIterator(): void
     {
@@ -98,7 +99,7 @@ class AllExtractorTest extends TestCase
         $this->originalContext->getPath()->shouldNotBeCalled();
         $this->copiedContext->setData(Argument::any())->shouldNotBeCalled();
         $this->sequenceHandler->supports('my-data')->willReturn(true)->shouldBeCalledOnce();
-        $this->sequenceHandler->getIterator('my-data')->willReturn(new \ArrayIterator())->shouldBeCalledOnce();
+        $this->sequenceHandler->getIterator('my-data')->willReturn(new ArrayIterator())->shouldBeCalledOnce();
         $this->originalContext->copy()->shouldNotBeCalled();
 
         $this->assertTrue($this->getAllExtractor()->extract($this->originalContext->reveal()));
@@ -107,13 +108,13 @@ class AllExtractorTest extends TestCase
     /**
      * @test
      *
-     * @throws ExtractorException
+     * @return void
      * @throws HandlerException
      * @throws InvalidArgumentException
      * @throws ObjectProphecyException
      * @throws PredicateException
      * @throws ExpectationFailedException
-     * @return void
+     * @throws ExtractorException
      */
     public function extractShouldReturnFalseWhenAnItemIsNotMatchedByThePredicate(): void
     {
@@ -137,13 +138,13 @@ class AllExtractorTest extends TestCase
     /**
      * @test
      *
-     * @throws ExtractorException
+     * @return void
      * @throws HandlerException
      * @throws InvalidArgumentException
      * @throws ObjectProphecyException
      * @throws PredicateException
      * @throws ExpectationFailedException
-     * @return void
+     * @throws ExtractorException
      */
     public function extractShouldReturnTrueWhenAllItemsAreMatchedByThePredicate(): void
     {
@@ -167,8 +168,8 @@ class AllExtractorTest extends TestCase
     }
 
     /**
-     * @throws ObjectProphecyException
      * @return AllExtractor
+     * @throws ObjectProphecyException
      */
     private function getAllExtractor(): AllExtractor
     {
@@ -176,10 +177,10 @@ class AllExtractorTest extends TestCase
     }
 
     /**
-     * @return \ArrayIterator
+     * @return ArrayIterator
      */
-    private function getTestIterator(): \ArrayIterator
+    private function getTestIterator(): ArrayIterator
     {
-        return new \ArrayIterator(['key1' => 'value1', 'key2' => 'value2', 'key3' => 'value3']);
+        return new ArrayIterator(['key1' => 'value1', 'key2' => 'value2', 'key3' => 'value3']);
     }
 }

@@ -9,6 +9,12 @@
  */
 namespace Jojo1981\DataResolver\Helper;
 
+use function preg_match;
+use function preg_replace_callback;
+use function str_replace;
+use function strtolower;
+use function strtoupper;
+
 /**
  * @package Jojo1981\DataResolver\Helper
  */
@@ -27,17 +33,17 @@ final class StringHelper
     public static function toCamelCase(string $text, bool $capitalizeFirstChar = false): string
     {
         if ($capitalizeFirstChar) {
-            $text[0] = \strtoupper($text[0]);
+            $text[0] = strtoupper($text[0]);
         } else {
-            $text[0] = \strtolower($text[0]);
+            $text[0] = strtolower($text[0]);
         }
 
-        $text = \str_replace(['-', ' '], '_', $text);
+        $text = str_replace(['-', ' '], '_', $text);
 
-        return \preg_replace_callback(
+        return preg_replace_callback(
             '/_([a-zA-Z])/',
             static function (array $matches): string {
-                return \strtoupper($matches[1]);
+                return strtoupper($matches[1]);
             },
             $text
         );
@@ -49,15 +55,15 @@ final class StringHelper
      */
     public static function toSnakeCase(string $text): string
     {
-        $text = \str_replace(['-', ' '], '_', $text);
-        if (0 === \preg_match('/[A-Z]/', $text)) {
+        $text = str_replace(['-', ' '], '_', $text);
+        if (0 === preg_match('/[A-Z]/', $text)) {
             return $text;
         }
 
-        return \strtolower(\preg_replace_callback(
+        return strtolower(preg_replace_callback(
             '/([a-z])([A-Z])/',
             static function (array $parts): string {
-                return $parts[1] . '_' . \strtolower($parts[2]);
+                return $parts[1] . '_' . strtolower($parts[2]);
             },
             $text
         ));

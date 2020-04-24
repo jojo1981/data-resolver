@@ -9,8 +9,15 @@
  */
 namespace Jojo1981\DataResolver\Handler\SequenceHandler;
 
+use ArrayIterator;
 use Jojo1981\DataResolver\Handler\Exception\HandlerException;
 use Jojo1981\DataResolver\Handler\SequenceHandlerInterface;
+use Traversable;
+use function array_filter;
+use function array_push;
+use function array_values;
+use function count;
+use function is_array;
 
 /**
  * @package Jojo1981\DataResolver\Handler\SequenceHandler
@@ -28,23 +35,23 @@ class ArraySequenceHandler implements SequenceHandlerInterface
 
     /**
      * @param mixed $data
+     * @return Traversable
      * @throws HandlerException
-     * @return \Traversable
      */
-    public function getIterator($data): \Traversable
+    public function getIterator($data): Traversable
     {
         if (!$this->supports($data)) {
             $this->throwUnsupportedException('getIterator');
         }
 
-        return new \ArrayIterator($data);
+        return new ArrayIterator($data);
     }
 
     /**
      * @param mixed $data
      * @param callable $callback
-     * @throws HandlerException
      * @return mixed
+     * @throws HandlerException
      */
     public function filter($data, callable $callback)
     {
@@ -52,13 +59,13 @@ class ArraySequenceHandler implements SequenceHandlerInterface
             $this->throwUnsupportedException('filter');
         }
 
-        return \array_filter($data, $callback, ARRAY_FILTER_USE_BOTH);
+        return array_filter($data, $callback, ARRAY_FILTER_USE_BOTH);
     }
 
     /**
      * @param mixed $data
-     * @throws HandlerException
      * @return int
+     * @throws HandlerException
      */
     public function count($data): int
     {
@@ -66,14 +73,14 @@ class ArraySequenceHandler implements SequenceHandlerInterface
             $this->throwUnsupportedException('count');
         }
 
-        return \count($data);
+        return count($data);
     }
 
     /**
      * @param mixed $data
      * @param callable $callback
-     * @throws HandlerException
      * @return mixed
+     * @throws HandlerException
      */
     public function flatten($data, callable $callback)
     {
@@ -88,9 +95,9 @@ class ArraySequenceHandler implements SequenceHandlerInterface
                 continue;
             }
 
-            $items = !\is_array($items) ? [$items] : \array_values($items);
+            $items = !is_array($items) ? [$items] : array_values($items);
             if (!empty($items)) {
-                \array_push($result, ...$items);
+                array_push($result, ...$items);
             }
         }
 
@@ -103,7 +110,7 @@ class ArraySequenceHandler implements SequenceHandlerInterface
      */
     private function isIndexedArray($data): bool
     {
-        if (!\is_array($data)) {
+        if (!is_array($data)) {
             return false;
         }
 
@@ -118,8 +125,8 @@ class ArraySequenceHandler implements SequenceHandlerInterface
 
     /**
      * @param string $methodName
-     * @throws HandlerException
      * @return void
+     * @throws HandlerException
      */
     private function throwUnsupportedException(string $methodName): void
     {

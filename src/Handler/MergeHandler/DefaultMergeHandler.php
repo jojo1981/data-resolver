@@ -11,6 +11,11 @@ namespace Jojo1981\DataResolver\Handler\MergeHandler;
 
 use Jojo1981\DataResolver\Handler\MergeHandlerInterface;
 use Jojo1981\DataResolver\Resolver\Context;
+use stdClass;
+use function array_filter;
+use function array_push;
+use function array_reduce;
+use function is_array;
 
 /**
  * @package Jojo1981\DataResolver\Handler\MergeHandler
@@ -28,11 +33,11 @@ class DefaultMergeHandler implements MergeHandlerInterface
             return $this->flattenElements($elements);
         }
 
-        if (\is_array($context->getData())) {
+        if (is_array($context->getData())) {
             return $elements;
         }
 
-        $result = new \stdClass();
+        $result = new stdClass();
         foreach ($elements as $propertyName => $value) {
             $result->$propertyName = $value;
         }
@@ -46,11 +51,11 @@ class DefaultMergeHandler implements MergeHandlerInterface
      */
     private function flattenElements(array $elements): array
     {
-        return \array_reduce(
+        return array_reduce(
             $elements,
             static function (array $result, array $element): array {
                 if (!empty($element)) {
-                    \array_push($result, ...\array_filter($element));
+                    array_push($result, ...array_filter($element));
                 }
 
                 return $result;
@@ -80,7 +85,7 @@ class DefaultMergeHandler implements MergeHandlerInterface
      */
     private function isIndexedArray($array): bool
     {
-        if (!\is_array($array)) {
+        if (!is_array($array)) {
             return false;
         }
 

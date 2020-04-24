@@ -15,8 +15,10 @@ use Jojo1981\DataResolver\Extractor\Exception\ExtractorException;
 use Jojo1981\DataResolver\Handler\Exception\HandlerException;
 use Jojo1981\DataResolver\Predicate\Exception\PredicateException;
 use Jojo1981\DataResolver\Resolver\Context;
+use PHPUnit\Framework\Exception as PHPUnitException;
 use PHPUnit\Framework\ExpectationFailedException;
 use SebastianBergmann\RecursionContext\InvalidArgumentException;
+use stdClass;
 use tests\Jojo1981\DataResolver\Integration\AbstractIntegrationTestCase;
 
 /**
@@ -31,13 +33,14 @@ class CallbackPredicateTest extends AbstractIntegrationTestCase
      *
      * @param mixed $testValue
      * @param bool $expected
+     * @return void
      * @throws ExpectationFailedException
      * @throws ExtractorException
      * @throws HandlerException
      * @throws InvalidArgumentException
      * @throws PredicateException
      * @throws ResolverException
-     * @return void
+     * @throws PHPUnitException
      */
     public function checkCallbackPredicate($testValue, bool $expected): void
     {
@@ -68,7 +71,7 @@ class CallbackPredicateTest extends AbstractIntegrationTestCase
             [-1.2, true],
             [1.2, true],
             [10, true],
-            [new \stdClass(), true],
+            [new stdClass(), true],
             ['text', true],
             ['true', true],
             ['false', true],

@@ -9,6 +9,10 @@
  */
 namespace Jojo1981\DataResolver\Predicate;
 
+use function strlen;
+use function strtolower;
+use function substr;
+
 /**
  * @package Jojo1981\DataResolver\Predicate
  */
@@ -36,7 +40,7 @@ class StringEndsWithPredicate extends AbstractStringPredicate
      */
     protected function performMatch($data): bool
     {
-        return $this->transform(\substr($data, 0 - \strlen($this->suffix))) === $this->transform($this->suffix);
+        return $this->transform(substr($data, 0 - strlen($this->suffix))) === $this->transform($this->suffix);
     }
 
     /**
@@ -45,6 +49,6 @@ class StringEndsWithPredicate extends AbstractStringPredicate
      */
     private function transform(string $text): string
     {
-        return $this->caseSensitive ? $text : \strtolower($text);
+        return $this->caseSensitive ? $text : strtolower($text);
     }
 }

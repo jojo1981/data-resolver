@@ -15,6 +15,9 @@ use Jojo1981\DataResolver\Handler\MergeHandlerInterface;
 use Jojo1981\DataResolver\Handler\PropertyHandlerInterface;
 use Jojo1981\DataResolver\NamingStrategy\NamingStrategyInterface;
 use Jojo1981\DataResolver\Resolver\Context;
+use function array_shift;
+use function count;
+use function get_class;
 
 /**
  * @package Jojo1981\DataResolver\Extractor
@@ -53,9 +56,9 @@ class PropertyExtractor implements ExtractorInterface
 
     /**
      * @param Context $context
-     * @throws HandlerException
-     * @throws ExtractorException
      * @return mixed
+     * @throws ExtractorException
+     * @throws HandlerException
      */
     public function extract(Context $context)
     {
@@ -64,7 +67,7 @@ class PropertyExtractor implements ExtractorInterface
             if (false === $this->canExtract($context->getData(), $propertyName)) {
                 throw new ExtractorException(\sprintf(
                     'Could not extract data with `%s` for property: `%s` at path: `%s`',
-                    \get_class($this),
+                    get_class($this),
                     $propertyName,
                     $context->getPath()
                 ));
@@ -79,8 +82,8 @@ class PropertyExtractor implements ExtractorInterface
             $context->popPathPart();
         }
 
-        if (1 === \count($elements)) {
-            return \array_shift($elements);
+        if (1 === count($elements)) {
+            return array_shift($elements);
         }
 
         return $this->mergeHandlerInterface->merge($context, $elements);
@@ -89,8 +92,8 @@ class PropertyExtractor implements ExtractorInterface
     /**
      * @param mixed $data
      * @param string $propertyName
-     * @throws HandlerException
      * @return bool
+     * @throws HandlerException
      */
     private function canExtract($data, string $propertyName): bool
     {

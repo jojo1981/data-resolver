@@ -9,11 +9,13 @@
  */
 namespace Jojo1981\DataResolver\Exception;
 
+use DomainException;
+
 /**
  * Base exception class for all exception thrown by this library
  *
  * @package Jojo1981\DataResolver\Exception
  */
-class ResolverException extends \DomainException
+final class ResolverException extends DomainException
 {
 }

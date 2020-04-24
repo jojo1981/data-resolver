@@ -22,9 +22,9 @@ class ContextTest extends TestCase
     /**
      * @test
      *
-     * @throws InvalidArgumentException
-     * @throws ExpectationFailedException
      * @return void
+     * @throws ExpectationFailedException
+     * @throws InvalidArgumentException
      */
     public function copyShouldReturnClonedInstance(): void
     {
@@ -38,9 +38,9 @@ class ContextTest extends TestCase
     /**
      * @test
      *
-     * @throws InvalidArgumentException
-     * @throws ExpectationFailedException
      * @return void
+     * @throws ExpectationFailedException
+     * @throws InvalidArgumentException
      */
     public function setAndGetDataShouldWorkAndReturnSelf(): void
     {
@@ -54,9 +54,9 @@ class ContextTest extends TestCase
     /**
      * @test
      *
-     * @throws InvalidArgumentException
-     * @throws ExpectationFailedException
      * @return void
+     * @throws ExpectationFailedException
+     * @throws InvalidArgumentException
      */
     public function setAndGetPathShouldWorkAndReturnSelf(): void
     {
@@ -70,9 +70,9 @@ class ContextTest extends TestCase
     /**
      * @test
      *
-     * @throws InvalidArgumentException
-     * @throws ExpectationFailedException
      * @return void
+     * @throws ExpectationFailedException
+     * @throws InvalidArgumentException
      */
     public function constructWithoutPathShouldBeInitializedWithAnEmptyStringPath(): void
     {
@@ -83,9 +83,9 @@ class ContextTest extends TestCase
     /**
      * @test
      *
-     * @throws InvalidArgumentException
-     * @throws ExpectationFailedException
      * @return void
+     * @throws ExpectationFailedException
+     * @throws InvalidArgumentException
      */
     public function pushAndPopPathPartShouldWorkAndReturnSelf(): void
     {

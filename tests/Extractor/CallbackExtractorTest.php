@@ -32,10 +32,10 @@ class CallbackExtractorTest extends TestCase
     private $copiedContext;
 
     /**
-     * @throws DoubleException
+     * @return void
      * @throws InterfaceNotFoundException
      * @throws ClassNotFoundException
-     * @return void
+     * @throws DoubleException
      */
     protected function setUp(): void
     {
@@ -47,10 +47,10 @@ class CallbackExtractorTest extends TestCase
     /**
      * @test
      *
-     * @throws InvalidArgumentException
+     * @return void
      * @throws ObjectProphecyException
      * @throws ExpectationFailedException
-     * @return void
+     * @throws InvalidArgumentException
      */
     public function extractShouldReturnTheResultFromTheCallback(): void
     {

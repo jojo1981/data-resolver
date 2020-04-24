@@ -13,6 +13,7 @@ use Jojo1981\DataResolver\Extractor\Exception\ExtractorException;
 use Jojo1981\DataResolver\Handler\Exception\HandlerException;
 use Jojo1981\DataResolver\Handler\SequenceHandlerInterface;
 use Jojo1981\DataResolver\Resolver\Context;
+use function get_class;
 
 /**
  * @package Jojo1981\DataResolver\Extractor
@@ -40,9 +41,9 @@ class SumExtractor extends AbstractSequenceExtractor
 
     /**
      * @param Context $context
-     * @throws ExtractorException
-     * @throws HandlerException
      * @return float
+     * @throws HandlerException
+     * @throws ExtractorException
      */
     protected function performExtract(Context $context): float
     {
@@ -51,12 +52,12 @@ class SumExtractor extends AbstractSequenceExtractor
             if (!\is_numeric($item)) {
                 throw new ExtractorException(\sprintf(
                     'Found a NOT numeric item. Could not extract data with `%s` at path: `%s`',
-                    \get_class($this),
+                    get_class($this),
                     $context->getPath()
                 ));
             }
 
-            $sum += (float) $item;
+            $sum += (float)$item;
         }
 
         return $sum;

@@ -48,10 +48,10 @@ class AllExtractor extends AbstractSequenceExtractor
 
     /**
      * @param Context $context
-     * @throws HandlerException
+     * @return mixed
      * @throws ExtractorException
      * @throws PredicateException
-     * @return mixed
+     * @throws HandlerException
      */
     protected function performExtract(Context $context)
     {

@@ -23,9 +23,9 @@ class CallBackPredicateTest extends TestCase
     /**
      * @test
      *
-     * @throws InvalidArgumentException
-     * @throws ExpectationFailedException
      * @return void
+     * @throws ExpectationFailedException
+     * @throws InvalidArgumentException
      */
     public function matchShouldReturnFalseBecauseCallbackWillBeCalledAndReturnFalse(): void
     {
@@ -39,9 +39,9 @@ class CallBackPredicateTest extends TestCase
     /**
      * @test
      *
-     * @throws InvalidArgumentException
-     * @throws ExpectationFailedException
      * @return void
+     * @throws ExpectationFailedException
+     * @throws InvalidArgumentException
      */
     public function matchShouldReturnTrueBecauseCallbackWillBeCalledAndReturnTrue(): void
     {
@@ -55,9 +55,9 @@ class CallBackPredicateTest extends TestCase
     /**
      * @test
      *
-     * @throws InvalidArgumentException
-     * @throws ExpectationFailedException
      * @return void
+     * @throws ExpectationFailedException
+     * @throws InvalidArgumentException
      */
     public function matchShouldReturnFalseBecauseValueReturnedByCallbackIsEvaluatedToFalse(): void
     {
@@ -77,9 +77,9 @@ class CallBackPredicateTest extends TestCase
     /**
      * @test
      *
-     * @throws InvalidArgumentException
-     * @throws ExpectationFailedException
      * @return void
+     * @throws ExpectationFailedException
+     * @throws InvalidArgumentException
      */
     public function matchShouldReturnTrueBecauseValueReturnedByCallbackIsEvaluatedToTrue(): void
     {

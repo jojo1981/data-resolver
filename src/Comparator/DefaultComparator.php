@@ -21,7 +21,7 @@ class DefaultComparator implements ComparatorInterface
     private $comparatorFactory;
 
     /**
-     * @param null|ComparatorFactory $comparatorFactory
+     * @param |ComparatorFactory|null $comparatorFactory
      */
     public function __construct(?ComparatorFactory $comparatorFactory = null)
     {

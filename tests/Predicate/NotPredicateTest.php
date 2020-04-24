@@ -36,10 +36,10 @@ class NotPredicateTest extends TestCase
     private $context;
 
     /**
-     * @throws DoubleException
+     * @return void
      * @throws InterfaceNotFoundException
      * @throws ClassNotFoundException
-     * @return void
+     * @throws DoubleException
      */
     protected function setUp(): void
     {
@@ -50,13 +50,13 @@ class NotPredicateTest extends TestCase
     /**
      * @test
      *
-     * @throws ExtractorException
+     * @return void
      * @throws HandlerException
      * @throws PredicateException
      * @throws ExpectationFailedException
      * @throws InvalidArgumentException
      * @throws ObjectProphecyException
-     * @return void
+     * @throws ExtractorException
      */
     public function matchShouldReturnFalseWhenInjectedPredicateMatchReturnsTrue(): void
     {
@@ -67,13 +67,13 @@ class NotPredicateTest extends TestCase
     /**
      * @test
      *
-     * @throws ExtractorException
+     * @return void
      * @throws HandlerException
      * @throws PredicateException
      * @throws ExpectationFailedException
      * @throws InvalidArgumentException
      * @throws ObjectProphecyException
-     * @return void
+     * @throws ExtractorException
      */
     public function matchShouldReturnTrueWhenInjectedPredicateMatchReturnsFalse(): void
     {
@@ -82,8 +82,8 @@ class NotPredicateTest extends TestCase
     }
 
     /**
-     * @throws ObjectProphecyException
      * @return NotPredicate
+     * @throws ObjectProphecyException
      */
     private function getNotPredicate(): NotPredicate
     {

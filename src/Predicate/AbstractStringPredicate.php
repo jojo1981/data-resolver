@@ -10,6 +10,7 @@
 namespace Jojo1981\DataResolver\Predicate;
 
 use Jojo1981\DataResolver\Resolver\Context;
+use function is_string;
 
 /**
  * @package Jojo1981\DataResolver\Predicate
@@ -24,7 +25,7 @@ abstract class AbstractStringPredicate implements PredicateInterface
     {
         $data = $context->getData();
 
-        return \is_string($data) && $this->performMatch($data);
+        return is_string($data) && $this->performMatch($data);
     }
 
     /**

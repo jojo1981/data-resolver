@@ -11,6 +11,12 @@ namespace Jojo1981\DataResolver\Extractor;
 
 use Jojo1981\DataResolver\Extractor\Exception\ExtractorException;
 use Jojo1981\DataResolver\Resolver\Context;
+use function get_class;
+use function gettype;
+use function is_object;
+use function is_string;
+use function sprintf;
+use function strlen;
 
 /**
  * @package Jojo1981\DataResolver\Extractor
@@ -19,21 +25,21 @@ class StringLengthExtractor implements ExtractorInterface
 {
     /**
      * @param Context $context
-     * @throws ExtractorException
      * @return int
+     * @throws ExtractorException
      */
     public function extract(Context $context): int
     {
         $data = $context->getData();
-        if (!\is_string($data)) {
-            throw new ExtractorException(\sprintf(
+        if (!is_string($data)) {
+            throw new ExtractorException(sprintf(
                 'Could not extract data with `%s` at path: `%s`. Data is not of type string, but of type: %s',
-                \get_class($this),
+                get_class($this),
                 $context->getPath(),
-                \is_object($data) ? \get_class($data) : \gettype($data)
+                is_object($data) ? get_class($data) : gettype($data)
             ));
         }
 
-        return \strlen($data);
+        return strlen($data);
     }
 }

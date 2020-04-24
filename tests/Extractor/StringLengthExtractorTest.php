@@ -13,6 +13,7 @@ use Jojo1981\DataResolver\Extractor\Exception\ExtractorException;
 use Jojo1981\DataResolver\Extractor\StringLengthExtractor;
 use Jojo1981\DataResolver\Resolver\Context;
 use PHPUnit\Framework\ExpectationFailedException;
+use stdClass;
 use tests\Jojo1981\DataResolver\TestCase;
 use Prophecy\Exception\Doubler\ClassNotFoundException;
 use Prophecy\Exception\Doubler\DoubleException;
@@ -30,10 +31,10 @@ class StringLengthExtractorTest extends TestCase
     private $context;
 
     /**
-     * @throws DoubleException
+     * @return void
      * @throws InterfaceNotFoundException
      * @throws ClassNotFoundException
-     * @return void
+     * @throws DoubleException
      */
     protected function setUp(): void
     {
@@ -43,9 +44,9 @@ class StringLengthExtractorTest extends TestCase
     /**
      * @test
      *
-     * @throws ObjectProphecyException
-     * @throws ExtractorException
      * @return void
+     * @throws ExtractorException
+     * @throws ObjectProphecyException
      */
     public function extractShouldThrowAnExceptionBecauseOnlyStringDataIsSupportedTest1(): void
     {
@@ -63,13 +64,13 @@ class StringLengthExtractorTest extends TestCase
     /**
      * @test
      *
-     * @throws ObjectProphecyException
-     * @throws ExtractorException
      * @return void
+     * @throws ExtractorException
+     * @throws ObjectProphecyException
      */
     public function extractShouldThrowAnExceptionBecauseOnlyStringDataIsSupportedTest2(): void
     {
-        $this->context->getData()->willReturn(new \stdClass())->shouldBeCalledOnce();
+        $this->context->getData()->willReturn(new stdClass())->shouldBeCalledOnce();
         $this->context->getPath()->willReturn('my-path')->shouldBeCalledOnce();
 
         $this->expectExceptionObject(new ExtractorException(
@@ -83,11 +84,11 @@ class StringLengthExtractorTest extends TestCase
     /**
      * @test
      *
-     * @throws ObjectProphecyException
+     * @return void
      * @throws ExpectationFailedException
      * @throws InvalidArgumentException
      * @throws ExtractorException
-     * @return void
+     * @throws ObjectProphecyException
      */
     public function extractShouldReturnTheStringLength(): void
     {

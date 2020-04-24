@@ -35,30 +35,26 @@ class CountExtractorTest extends TestCase
     /** @var ObjectProphecy|Context */
     private $originalContext;
 
-    /** @var ObjectProphecy|Context */
-    private $copiedContext;
-
     /**
-     * @throws DoubleException
+     * @return void
      * @throws InterfaceNotFoundException
      * @throws ClassNotFoundException
-     * @return void
+     * @throws DoubleException
      */
     protected function setUp(): void
     {
         $this->sequenceHandler = $this->prophesize(SequenceHandlerInterface::class);
         $this->originalContext = $this->prophesize(Context::class);
-        $this->copiedContext = $this->prophesize(Context::class);
     }
 
     /**
      * @test
      *
-     * @throws HandlerException
+     * @return void
      * @throws ObjectProphecyException
      * @throws PredicateException
      * @throws ExtractorException
-     * @return void
+     * @throws HandlerException
      */
     public function extractShouldThrowAnExceptionBecauseSequenceHandlerDoesNotSupportTheDataFromContext(): void
     {
@@ -74,13 +70,13 @@ class CountExtractorTest extends TestCase
     /**
      * @test
      *
-     * @throws HandlerException
+     * @return void
      * @throws ObjectProphecyException
      * @throws PredicateException
      * @throws ExpectationFailedException
      * @throws InvalidArgumentException
      * @throws ExtractorException
-     * @return void
+     * @throws HandlerException
      */
     public function extractShouldReturnTheResultFromTheSequenceHandlerFilterMethod(): void
     {
@@ -94,8 +90,8 @@ class CountExtractorTest extends TestCase
     }
 
     /**
-     * @throws ObjectProphecyException
      * @return CountExtractor
+     * @throws ObjectProphecyException
      */
     private function getCountExtractor(): CountExtractor
     {

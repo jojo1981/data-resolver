@@ -37,10 +37,10 @@ class OrPredicate implements PredicateInterface
 
     /**
      * @param Context $context
-     * @throws PredicateException
+     * @return bool
      * @throws ExtractorException
      * @throws HandlerException
-     * @return bool
+     * @throws PredicateException
      */
     public function match(Context $context): bool
     {

@@ -38,10 +38,10 @@ class CompositePropertyHandlerTest extends TestCase
     private $propertyHandler2;
 
     /**
-     * @throws DoubleException
+     * @return void
      * @throws InterfaceNotFoundException
      * @throws ClassNotFoundException
-     * @return void
+     * @throws DoubleException
      */
     protected function setUp(): void
     {
@@ -53,9 +53,9 @@ class CompositePropertyHandlerTest extends TestCase
     /**
      * @test
      *
-     * @throws ObjectProphecyException
-     * @throws HandlerException
      * @return void
+     * @throws HandlerException
+     * @throws ObjectProphecyException
      */
     public function getValueForPropertyNameShouldThrowHandlerExceptionBecauseCalledWithUnsupportedData(): void
     {
@@ -69,15 +69,19 @@ class CompositePropertyHandlerTest extends TestCase
             '`getValueForPropertyName`. You should invoke the `supports` method first!'
         ));
 
-        $this->getCompositePropertyHandler()->getValueForPropertyName($this->namingStrategy->reveal(), $propertyName, $data);
+        $this->getCompositePropertyHandler()->getValueForPropertyName(
+            $this->namingStrategy->reveal(),
+            $propertyName,
+            $data
+        );
     }
 
     /**
      * @test
      *
-     * @throws ObjectProphecyException
-     * @throws HandlerException
      * @return void
+     * @throws HandlerException
+     * @throws ObjectProphecyException
      */
     public function hasValueForPropertyNameShouldThrowHandlerExceptionBecauseCalledWithUnsupportedData(): void
     {
@@ -91,16 +95,20 @@ class CompositePropertyHandlerTest extends TestCase
             '`hasValueForPropertyName`. You should invoke the `supports` method first!'
         ));
 
-        $this->getCompositePropertyHandler()->hasValueForPropertyName($this->namingStrategy->reveal(), $propertyName, $data);
+        $this->getCompositePropertyHandler()->hasValueForPropertyName(
+            $this->namingStrategy->reveal(),
+            $propertyName,
+            $data
+        );
     }
 
     /**
      * @test
      *
-     * @throws ExpectationFailedException
+     * @return void
      * @throws InvalidArgumentException
      * @throws ObjectProphecyException
-     * @return void
+     * @throws ExpectationFailedException
      */
     public function supportShouldReturnFalseWhenThereIsNoHandlerWhichSupportsThePropertyName(): void
     {
@@ -115,10 +123,10 @@ class CompositePropertyHandlerTest extends TestCase
     /**
      * @test
      *
-     * @throws ExpectationFailedException
+     * @return void
      * @throws InvalidArgumentException
      * @throws ObjectProphecyException
-     * @return void
+     * @throws ExpectationFailedException
      */
     public function supportShouldReturnTrueAsSoonAsAHandlerSupportsTheData(): void
     {
@@ -133,69 +141,104 @@ class CompositePropertyHandlerTest extends TestCase
     /**
      * @test
      *
-     * @throws InvalidArgumentException
+     * @return void
      * @throws ObjectProphecyException
      * @throws HandlerException
      * @throws ExpectationFailedException
-     * @return void
+     * @throws InvalidArgumentException
      */
     public function getValueForPropertyNameShouldReturnTheValueFromTheSupportedHandler(): void
     {
         $propertyName = 'my-prop';
         $data = [];
         $this->propertyHandler1->supports($propertyName, $data)->willReturn(true)->shouldBeCalledOnce();
-        $this->propertyHandler1->getValueForPropertyName($this->namingStrategy, $propertyName, $data)->willReturn('FoundData')->shouldBeCalledOnce();
+        $this->propertyHandler1->getValueForPropertyName(
+            $this->namingStrategy,
+            $propertyName,
+            $data
+        )->willReturn('FoundData')->shouldBeCalledOnce();
         $this->propertyHandler2->supports(Argument::any(), Argument::any())->shouldNotBeCalled();
 
 
-        $this->assertEquals('FoundData', $this->getCompositePropertyHandler()->getValueForPropertyName($this->namingStrategy->reveal(), $propertyName, $data));
+        $this->assertEquals(
+            'FoundData',
+            $this->getCompositePropertyHandler()->getValueForPropertyName(
+                $this->namingStrategy->reveal(),
+                $propertyName,
+                $data
+            )
+        );
     }
 
     /**
      * @test
      *
-     * @throws InvalidArgumentException
+     * @return void
      * @throws ObjectProphecyException
      * @throws HandlerException
      * @throws ExpectationFailedException
-     * @return void
+     * @throws InvalidArgumentException
      */
     public function hasValueForPropertyNameShouldReturnFalseWhenTheSupportedHandlerReturnFalse(): void
     {
         $propertyName = 'my-prop';
         $data = [];
         $this->propertyHandler1->supports($propertyName, $data)->willReturn(true)->shouldBeCalledOnce();
-        $this->propertyHandler1->hasValueForPropertyName($this->namingStrategy, $propertyName, $data)->willReturn(false)->shouldBeCalledOnce();
+        $this->propertyHandler1->hasValueForPropertyName(
+            $this->namingStrategy,
+            $propertyName,
+            $data
+        )->willReturn(false)->shouldBeCalledOnce();
         $this->propertyHandler2->supports(Argument::any(), Argument::any())->shouldNotBeCalled();
-        $this->propertyHandler2->hasValueForPropertyName(Argument::any(), Argument::any(), Argument::any())->shouldNotBeCalled();
+        $this->propertyHandler2->hasValueForPropertyName(
+            Argument::any(),
+            Argument::any(),
+            Argument::any()
+        )->shouldNotBeCalled();
 
-        $this->assertFalse($this->getCompositePropertyHandler()->hasValueForPropertyName($this->namingStrategy->reveal(), $propertyName, $data));
+        $this->assertFalse($this->getCompositePropertyHandler()->hasValueForPropertyName(
+            $this->namingStrategy->reveal(),
+            $propertyName,
+            $data
+        ));
     }
 
     /**
      * @test
      *
-     * @throws InvalidArgumentException
+     * @return void
      * @throws ObjectProphecyException
      * @throws HandlerException
      * @throws ExpectationFailedException
-     * @return void
+     * @throws InvalidArgumentException
      */
     public function hasValueForPropertyNameShouldReturnTrueWhenTheSupportedHandlerReturnTrue(): void
     {
         $propertyName = 'my-prop';
         $data = [];
         $this->propertyHandler1->supports($propertyName, $data)->willReturn(false)->shouldBeCalledOnce();
-        $this->propertyHandler1->hasValueForPropertyName(Argument::any(), Argument::any(), Argument::any())->shouldNotBeCalled();
+        $this->propertyHandler1->hasValueForPropertyName(
+            Argument::any(),
+            Argument::any(),
+            Argument::any()
+        )->shouldNotBeCalled();
         $this->propertyHandler2->supports($propertyName, $data)->willReturn(true)->shouldBeCalledOnce();
-        $this->propertyHandler2->hasValueForPropertyName($this->namingStrategy, $propertyName, $data)->willReturn(true)->shouldBeCalledOnce();
+        $this->propertyHandler2->hasValueForPropertyName(
+            $this->namingStrategy,
+            $propertyName,
+            $data
+        )->willReturn(true)->shouldBeCalledOnce();
 
-        $this->assertTrue($this->getCompositePropertyHandler()->hasValueForPropertyName($this->namingStrategy->reveal(), $propertyName, $data));
+        $this->assertTrue($this->getCompositePropertyHandler()->hasValueForPropertyName(
+            $this->namingStrategy->reveal(),
+            $propertyName,
+            $data
+        ));
     }
 
     /**
-     * @throws ObjectProphecyException
      * @return CompositePropertyHandler
+     * @throws ObjectProphecyException
      */
     private function getCompositePropertyHandler(): CompositePropertyHandler
     {

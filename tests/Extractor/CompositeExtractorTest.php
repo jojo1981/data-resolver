@@ -42,10 +42,10 @@ class CompositeExtractorTest extends TestCase
     private $copiedContext;
 
     /**
-     * @throws DoubleException
+     * @return void
      * @throws InterfaceNotFoundException
      * @throws ClassNotFoundException
-     * @return void
+     * @throws DoubleException
      */
     protected function setUp(): void
     {
@@ -58,13 +58,13 @@ class CompositeExtractorTest extends TestCase
     /**
      * @test
      *
-     * @throws ExtractorException
+     * @return void
      * @throws HandlerException
      * @throws PredicateException
      * @throws ExpectationFailedException
      * @throws InvalidArgumentException
      * @throws ObjectProphecyException
-     * @return void
+     * @throws ExtractorException
      */
     public function extractShouldReturnTheResultOfExtractor2WhichGetTheResultOfExtractor1(): void
     {
@@ -77,8 +77,8 @@ class CompositeExtractorTest extends TestCase
     }
 
     /**
-     * @throws ObjectProphecyException
      * @return CompositeExtractor
+     * @throws ObjectProphecyException
      */
     private function getCompositeExtractor(): CompositeExtractor
     {

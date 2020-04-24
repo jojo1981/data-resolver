@@ -39,8 +39,8 @@ class CountExtractor extends AbstractSequenceExtractor
 
     /**
      * @param Context $context
-     * @throws HandlerException
      * @return mixed
+     * @throws HandlerException
      */
     protected function performExtract(Context $context)
     {

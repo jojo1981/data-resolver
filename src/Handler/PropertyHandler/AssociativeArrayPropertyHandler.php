@@ -12,6 +12,7 @@ namespace Jojo1981\DataResolver\Handler\PropertyHandler;
 use Jojo1981\DataResolver\Handler\Exception\HandlerException;
 use Jojo1981\DataResolver\Handler\PropertyHandlerInterface;
 use Jojo1981\DataResolver\NamingStrategy\NamingStrategyInterface;
+use function sprintf;
 
 /**
  * @package Jojo1981\DataResolver\Handler\PropertyHandler
@@ -32,8 +33,8 @@ class AssociativeArrayPropertyHandler implements PropertyHandlerInterface
      * @param NamingStrategyInterface $namingStrategy
      * @param string $propertyName
      * @param mixed $data
-     * @throws HandlerException
      * @return mixed
+     * @throws HandlerException
      */
     public function getValueForPropertyName(NamingStrategyInterface $namingStrategy, string $propertyName, $data)
     {
@@ -51,7 +52,7 @@ class AssociativeArrayPropertyHandler implements PropertyHandlerInterface
             __CLASS__,
             'getValueForPropertyName',
             'hasValueForPropertyName',
-            \sprintf('can not find a value for property name `%s`', $propertyName)
+            sprintf('can not find a value for property name `%s`', $propertyName)
         );
     }
 
@@ -59,8 +60,8 @@ class AssociativeArrayPropertyHandler implements PropertyHandlerInterface
      * @param NamingStrategyInterface $namingStrategy
      * @param string $propertyName
      * @param mixed $data
-     * @throws HandlerException
      * @return bool
+     * @throws HandlerException
      */
     public function hasValueForPropertyName(NamingStrategyInterface $namingStrategy, string $propertyName, $data): bool
     {
@@ -98,8 +99,8 @@ class AssociativeArrayPropertyHandler implements PropertyHandlerInterface
 
     /**
      * @param string $methodName
-     * @throws HandlerException
      * @return void
+     * @throws HandlerException
      */
     private function throwUnsupportedException(string $methodName): void
     {

@@ -22,7 +22,6 @@ if (trait_exists('\Prophecy\PhpUnit\ProphecyTrait')) {
     {
         use ProphecyTrait;
     }
-
 } else {
 
     /**
@@ -30,7 +29,5 @@ if (trait_exists('\Prophecy\PhpUnit\ProphecyTrait')) {
      */
     abstract class TestCase extends BaseTestCase
     {
-
     }
-
 }

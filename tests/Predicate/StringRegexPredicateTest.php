@@ -12,6 +12,7 @@ namespace tests\Jojo1981\DataResolver\Predicate;
 use Jojo1981\DataResolver\Predicate\StringRegexPredicate;
 use Jojo1981\DataResolver\Resolver\Context;
 use PHPUnit\Framework\ExpectationFailedException;
+use stdClass;
 use tests\Jojo1981\DataResolver\TestCase;
 use Prophecy\Exception\Doubler\ClassNotFoundException;
 use Prophecy\Exception\Doubler\DoubleException;
@@ -29,10 +30,10 @@ class StringRegexPredicateTest extends TestCase
     private $context;
 
     /**
-     * @throws DoubleException
+     * @return void
      * @throws InterfaceNotFoundException
      * @throws ClassNotFoundException
-     * @return void
+     * @throws DoubleException
      */
     protected function setUp(): void
     {
@@ -46,17 +47,16 @@ class StringRegexPredicateTest extends TestCase
      * @param string $pattern
      * @param mixed $testData
      * @param bool $expectedResult
-     * @throws ObjectProphecyException
+     * @return void
      * @throws ExpectationFailedException
      * @throws InvalidArgumentException
-     * @return void
+     * @throws ObjectProphecyException
      */
     public function matchShouldReturnExpectedResult(
         string $pattern,
         $testData,
         bool $expectedResult
-    ): void
-    {
+    ): void {
         $this->context->getData()->willReturn($testData)->shouldBeCalledOnce();
         $this->assertEquals(
             $expectedResult,
@@ -65,7 +65,7 @@ class StringRegexPredicateTest extends TestCase
     }
 
     /**
-     * @return array
+     * @return array[]
      */
     public function getTestData(): array
     {
@@ -73,7 +73,7 @@ class StringRegexPredicateTest extends TestCase
             ['/text/', true, false],
             ['/text/', false, false],
             ['/text/', null, false],
-            ['/text/', new \stdClass(), false],
+            ['/text/', new stdClass(), false],
             ['/text/', [], false],
             ['/text/', [1, 2, 3], false],
             ['/text/', ['key' => 'value'], false],
@@ -84,7 +84,7 @@ class StringRegexPredicateTest extends TestCase
             ['/text/', true, false],
             ['/text/', false, false],
             ['/text/', null, false],
-            ['/text/', new \stdClass(), false],
+            ['/text/', new stdClass(), false],
             ['/text/', [], false],
             ['/text/', [1, 2, 3], false],
             ['/text/', ['key' => 'value'], false],

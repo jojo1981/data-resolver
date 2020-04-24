@@ -12,13 +12,23 @@ namespace Jojo1981\DataResolver\Handler\PropertyHandler;
 use Jojo1981\DataResolver\Handler\Exception\HandlerException;
 use Jojo1981\DataResolver\Handler\PropertyHandlerInterface;
 use Jojo1981\DataResolver\NamingStrategy\NamingStrategyInterface;
+use ReflectionClass;
+use ReflectionException;
+use ReflectionMethod;
+use ReflectionProperty;
+use stdClass;
+use function array_key_exists;
+use function defined;
+use function get_class;
+use function get_object_vars;
+use function is_object;
 
 /**
  * @package Jojo1981\DataResolver\Handler\PropertyHandler
  */
 class ObjectPropertyHandler implements PropertyHandlerInterface
 {
-    /** @var \ReflectionClass[] */
+    /** @var ReflectionClass[] */
     private $reflectionClasses = [];
 
     /**
@@ -28,15 +38,15 @@ class ObjectPropertyHandler implements PropertyHandlerInterface
      */
     public function supports(string $propertyName, $data): bool
     {
-        return \is_object($data);
+        return is_object($data);
     }
 
     /**
      * @param NamingStrategyInterface $namingStrategy
      * @param string $propertyName
      * @param mixed $data
-     * @throws HandlerException
      * @return mixed
+     * @throws HandlerException
      */
     public function getValueForPropertyName(NamingStrategyInterface $namingStrategy, string $propertyName, $data)
     {
@@ -44,10 +54,10 @@ class ObjectPropertyHandler implements PropertyHandlerInterface
             $this->throwUnsupportedException('getValueForPropertyName');
         }
 
-        if ($data instanceof \stdClass) {
-            $objectVars = \get_object_vars($data);
+        if ($data instanceof stdClass) {
+            $objectVars = get_object_vars($data);
             foreach ($namingStrategy->getPropertyNames($propertyName) as $propName) {
-                if (\array_key_exists($propName, $objectVars)) {
+                if (array_key_exists($propName, $objectVars)) {
                     return $objectVars[$propName];
                 }
             }
@@ -74,8 +84,8 @@ class ObjectPropertyHandler implements PropertyHandlerInterface
      * @param NamingStrategyInterface $namingStrategy
      * @param string $propertyName
      * @param mixed $data
-     * @throws HandlerException
      * @return bool
+     * @throws HandlerException
      */
     public function hasValueForPropertyName(NamingStrategyInterface $namingStrategy, string $propertyName, $data): bool
     {
@@ -83,10 +93,10 @@ class ObjectPropertyHandler implements PropertyHandlerInterface
             $this->throwUnsupportedException('hasValueForPropertyName');
         }
 
-        if ($data instanceof \stdClass) {
-            $objectVars = \get_object_vars($data);
+        if ($data instanceof stdClass) {
+            $objectVars = get_object_vars($data);
             foreach ($namingStrategy->getPropertyNames($propertyName) as $propName) {
-                if (\array_key_exists($propName, $objectVars)) {
+                if (array_key_exists($propName, $objectVars)) {
                     return true;
                 }
             }
@@ -110,17 +120,17 @@ class ObjectPropertyHandler implements PropertyHandlerInterface
 
     /**
      * @param string $methodName
-     * @param \ReflectionClass $reflectionClass
-     * @return null|\ReflectionMethod
+     * @param ReflectionClass $reflectionClass
+     * @return ReflectionMethod|null
      */
-    private function getPublicMethod(string $methodName, \ReflectionClass $reflectionClass): ?\ReflectionMethod
+    private function getPublicMethod(string $methodName, ReflectionClass $reflectionClass): ?ReflectionMethod
     {
         try {
             $method = $reflectionClass->getMethod($methodName);
             if ($method->isPublic()) {
                 return $method;
             }
-        } catch (\ReflectionException $exception) {
+        } catch (ReflectionException $exception) {
             // nothing to do, just catch
         }
 
@@ -129,17 +139,17 @@ class ObjectPropertyHandler implements PropertyHandlerInterface
 
     /**
      * @param string $propertyName
-     * @param \ReflectionClass $reflectionClass
-     * @return null|\ReflectionProperty
+     * @param ReflectionClass $reflectionClass
+     * @return ReflectionProperty|null
      */
-    private function getPublicProperty(string $propertyName, \ReflectionClass $reflectionClass): ?\ReflectionProperty
+    private function getPublicProperty(string $propertyName, ReflectionClass $reflectionClass): ?ReflectionProperty
     {
         try {
             $property = $reflectionClass->getProperty($propertyName);
             if ($property->isPublic()) {
                 return $property;
             }
-        } catch (\ReflectionException $exception) {
+        } catch (ReflectionException $exception) {
             // nothing to do, just catch
         }
 
@@ -149,18 +159,18 @@ class ObjectPropertyHandler implements PropertyHandlerInterface
     /**
      *
      * @param object $data
+     * @return ReflectionClass
      * @throws HandlerException
-     * @return \ReflectionClass
      */
-    private function getReflectionClass($data): \ReflectionClass
+    private function getReflectionClass($data): ReflectionClass
     {
-        $className = \get_class($data);
-        if (!\array_key_exists($className, $this->reflectionClasses)) {
+        $className = get_class($data);
+        if (!array_key_exists($className, $this->reflectionClasses)) {
             try {
-                $this->reflectionClasses[$className] = new \ReflectionClass(
-                    \defined('FAKE_REFLECTION_EXCEPTION') ? 'A\Non\Existing\Class' : $data
+                $this->reflectionClasses[$className] = new ReflectionClass(
+                    defined('FAKE_REFLECTION_EXCEPTION') ? 'A\Non\Existing\Class' : $data
                 );
-            } catch (\ReflectionException $exception) {
+            } catch (ReflectionException $exception) {
                 throw HandlerException::couldNotGetReflection($exception);
             }
         }
@@ -170,8 +180,8 @@ class ObjectPropertyHandler implements PropertyHandlerInterface
 
     /**
      * @param string $methodName
-     * @throws HandlerException
      * @return void
+     * @throws HandlerException
      */
     private function throwUnsupportedException(string $methodName): void
     {

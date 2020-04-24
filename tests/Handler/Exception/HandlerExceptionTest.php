@@ -11,6 +11,7 @@ namespace tests\Jojo1981\DataResolver\Handler\Exception;
 
 use Jojo1981\DataResolver\Handler\Exception\HandlerException;
 use PHPUnit\Framework\ExpectationFailedException;
+use ReflectionException;
 use tests\Jojo1981\DataResolver\TestCase;
 use SebastianBergmann\RecursionContext\InvalidArgumentException;
 
@@ -28,9 +29,9 @@ class HandlerExceptionTest extends TestCase
      * @param string $invokedMethodName
      * @param string $assertMethodName
      * @param string|null $extraMessage
-     * @throws ExpectationFailedException
-     * @throws InvalidArgumentException
      * @return void
+     * @throws InvalidArgumentException
+     * @throws ExpectationFailedException
      */
     public function IllegalMethodInvocationShouldReturnHandlerException(
         string $exceptionMessage,
@@ -38,8 +39,7 @@ class HandlerExceptionTest extends TestCase
         string $invokedMethodName,
         string $assertMethodName,
         ?string $extraMessage = null
-    ): void
-    {
+    ): void {
         $this->assertEquals(
             new HandlerException($exceptionMessage),
             HandlerException::IllegalMethodInvocation($className, $invokedMethodName, $assertMethodName, $extraMessage)
@@ -49,13 +49,13 @@ class HandlerExceptionTest extends TestCase
     /**
      * @test
      *
-     * @throws InvalidArgumentException
-     * @throws ExpectationFailedException
      * @return void
+     * @throws ExpectationFailedException
+     * @throws InvalidArgumentException
      */
     public function couldNotGetReflectionShouldReturnHandlerException(): void
     {
-        $reflectionException = new \ReflectionException();
+        $reflectionException = new ReflectionException();
         $expectedResult = new HandlerException('Can not get reflection', 0, $reflectionException);
         $actualResult = HandlerException::couldNotGetReflection($reflectionException);
 

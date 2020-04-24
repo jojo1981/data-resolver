@@ -31,10 +31,10 @@ class LessThanPredicateTest extends TestCase
     private $comparator;
 
     /**
-     * @throws DoubleException
+     * @return void
      * @throws InterfaceNotFoundException
      * @throws ClassNotFoundException
-     * @return void
+     * @throws DoubleException
      */
     protected function setUp(): void
     {
@@ -46,10 +46,10 @@ class LessThanPredicateTest extends TestCase
     /**
      * @test
      *
-     * @throws InvalidArgumentException
+     * @return void
      * @throws ObjectProphecyException
      * @throws ExpectationFailedException
-     * @return void
+     * @throws InvalidArgumentException
      */
     public function matchShouldReturnTrueFromComparator(): void
     {
@@ -62,10 +62,10 @@ class LessThanPredicateTest extends TestCase
     /**
      * @test
      *
-     * @throws InvalidArgumentException
+     * @return void
      * @throws ObjectProphecyException
      * @throws ExpectationFailedException
-     * @return void
+     * @throws InvalidArgumentException
      */
     public function matchShouldReturnFalseFromComparator(): void
     {
@@ -77,8 +77,8 @@ class LessThanPredicateTest extends TestCase
 
     /**
      * @param mixed $referenceValue
-     * @throws ObjectProphecyException
      * @return LessThanPredicate
+     * @throws ObjectProphecyException
      */
     private function getLessThanPredicate($referenceValue): LessThanPredicate
     {

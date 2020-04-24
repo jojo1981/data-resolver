@@ -43,10 +43,10 @@ class AndPredicateTest extends TestCase
     private $copiedContext;
 
     /**
-     * @throws DoubleException
+     * @return void
      * @throws InterfaceNotFoundException
      * @throws ClassNotFoundException
-     * @return void
+     * @throws DoubleException
      */
     protected function setUp(): void
     {
@@ -59,13 +59,13 @@ class AndPredicateTest extends TestCase
     /**
      * @test
      *
-     * @throws ExtractorException
+     * @return void
      * @throws HandlerException
      * @throws PredicateException
      * @throws ExpectationFailedException
      * @throws InvalidArgumentException
      * @throws ObjectProphecyException
-     * @return void
+     * @throws ExtractorException
      */
     public function matchShouldReturnFalseBecauseLeftPredicateReturnFalseAndRightPredicateShouldNotBeCalled(): void
     {
@@ -79,13 +79,13 @@ class AndPredicateTest extends TestCase
     /**
      * @test
      *
-     * @throws ExtractorException
+     * @return void
      * @throws HandlerException
      * @throws PredicateException
      * @throws ExpectationFailedException
      * @throws InvalidArgumentException
      * @throws ObjectProphecyException
-     * @return void
+     * @throws ExtractorException
      */
     public function matchShouldReturnFalseBecauseLeftPredicateReturnTrueAndRightPredicateReturnFalse(): void
     {
@@ -99,13 +99,13 @@ class AndPredicateTest extends TestCase
     /**
      * @test
      *
-     * @throws ExtractorException
+     * @return void
      * @throws HandlerException
      * @throws PredicateException
      * @throws ExpectationFailedException
      * @throws InvalidArgumentException
      * @throws ObjectProphecyException
-     * @return void
+     * @throws ExtractorException
      */
     public function matchShouldReturnTrueBecauseLeftPredicateAndRightPredicateReturnTrue(): void
     {
@@ -117,8 +117,8 @@ class AndPredicateTest extends TestCase
     }
 
     /**
-     * @throws ObjectProphecyException
      * @return AndPredicate
+     * @throws ObjectProphecyException
      */
     private function getAndPredicate(): AndPredicate
     {

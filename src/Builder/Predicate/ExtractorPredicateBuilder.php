@@ -325,8 +325,7 @@ class ExtractorPredicateBuilder
      */
     private function getConditionalPredicateBuilder(
         PredicateBuilderInterface $predicateBuilder
-    ): ConditionalPredicateBuilder
-    {
+    ): ConditionalPredicateBuilder {
         return $this->predicateBuilderFactory->getConditionalPredicateBuilder(
             $this->extractorBuilder,
             $predicateBuilder

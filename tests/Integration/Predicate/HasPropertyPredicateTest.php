@@ -11,9 +11,14 @@ namespace tests\Jojo1981\DataResolver\Integration\Predicate;
 
 use Jojo1981\DataResolver\Builder\Predicate\ConditionalPredicateBuilder;
 use Jojo1981\DataResolver\Exception\ResolverException;
+use Jojo1981\DataResolver\Extractor\Exception\ExtractorException;
+use Jojo1981\DataResolver\Handler\Exception\HandlerException;
+use Jojo1981\DataResolver\Predicate\Exception\PredicateException;
 use Jojo1981\DataResolver\Resolver\Context;
+use PHPUnit\Framework\Exception as PHPUnitException;
 use PHPUnit\Framework\ExpectationFailedException;
 use SebastianBergmann\RecursionContext\InvalidArgumentException;
+use stdClass;
 use tests\Jojo1981\DataResolver\Integration\AbstractIntegrationTestCase;
 
 /**
@@ -25,10 +30,14 @@ class HasPropertyPredicateTest extends AbstractIntegrationTestCase
      * @test
      * @coversNothing
      *
-     * @throws ExpectationFailedException
+     * @return void
      * @throws InvalidArgumentException
      * @throws ResolverException
-     * @return void
+     * @throws ExtractorException
+     * @throws HandlerException
+     * @throws PredicateException
+     * @throws PHPUnitException
+     * @throws ExpectationFailedException
      */
     public function checkHasProperty(): void
     {
@@ -37,7 +46,7 @@ class HasPropertyPredicateTest extends AbstractIntegrationTestCase
         $predicate = $predicateBuilder->build();
 
         $data1 = [];
-        $data2 = new \stdClass();
+        $data2 = new stdClass();
 
         $this->assertFalse($predicate->match(new Context($data1)));
         $this->assertFalse($predicate->match(new Context($data2)));

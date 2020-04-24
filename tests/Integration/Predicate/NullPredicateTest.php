@@ -11,9 +11,14 @@ namespace tests\Jojo1981\DataResolver\Integration\Predicate;
 
 use Jojo1981\DataResolver\Builder\Predicate\ConditionalPredicateBuilder;
 use Jojo1981\DataResolver\Exception\ResolverException;
+use Jojo1981\DataResolver\Extractor\Exception\ExtractorException;
+use Jojo1981\DataResolver\Handler\Exception\HandlerException;
+use Jojo1981\DataResolver\Predicate\Exception\PredicateException;
 use Jojo1981\DataResolver\Resolver\Context;
+use PHPUnit\Framework\Exception as PHPUnitException;
 use PHPUnit\Framework\ExpectationFailedException;
 use SebastianBergmann\RecursionContext\InvalidArgumentException;
+use stdClass;
 use tests\Jojo1981\DataResolver\Integration\AbstractIntegrationTestCase;
 
 /**
@@ -25,10 +30,14 @@ class NullPredicateTest extends AbstractIntegrationTestCase
      * @test
      * @coversNothing
      *
-     * @throws ExpectationFailedException
+     * @return void
      * @throws InvalidArgumentException
      * @throws ResolverException
-     * @return void
+     * @throws ExtractorException
+     * @throws HandlerException
+     * @throws PredicateException
+     * @throws PHPUnitException
+     * @throws ExpectationFailedException
      */
     public function checkIsNullPredicate(): void
     {
@@ -46,7 +55,7 @@ class NullPredicateTest extends AbstractIntegrationTestCase
         $this->assertFalse($predicate->match(new Context(-1.2)));
         $this->assertFalse($predicate->match(new Context(1.2)));
         $this->assertFalse($predicate->match(new Context(10)));
-        $this->assertFalse($predicate->match(new Context(new \stdClass())));
+        $this->assertFalse($predicate->match(new Context(new stdClass())));
         $this->assertFalse($predicate->match(new Context('text')));
         $this->assertFalse($predicate->match(new Context('true')));
         $this->assertFalse($predicate->match(new Context('false')));
@@ -65,10 +74,14 @@ class NullPredicateTest extends AbstractIntegrationTestCase
      * @test
      * @coversNothing
      *
-     * @throws ExpectationFailedException
-     * @throws InvalidArgumentException
-     * @throws ResolverException
      * @return void
+     * @throws ExtractorException
+     * @throws HandlerException
+     * @throws InvalidArgumentException
+     * @throws PHPUnitException
+     * @throws PredicateException
+     * @throws ResolverException
+     * @throws ExpectationFailedException
      */
     public function checkIsNotNullPredicate(): void
     {
@@ -86,7 +99,7 @@ class NullPredicateTest extends AbstractIntegrationTestCase
         $this->assertTrue($predicate->match(new Context(-1.2)));
         $this->assertTrue($predicate->match(new Context(1.2)));
         $this->assertTrue($predicate->match(new Context(10)));
-        $this->assertTrue($predicate->match(new Context(new \stdClass())));
+        $this->assertTrue($predicate->match(new Context(new stdClass())));
         $this->assertTrue($predicate->match(new Context('text')));
         $this->assertTrue($predicate->match(new Context('true')));
         $this->assertTrue($predicate->match(new Context('false')));

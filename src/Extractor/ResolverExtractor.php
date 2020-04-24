@@ -33,10 +33,10 @@ class ResolverExtractor implements ExtractorInterface
 
     /**
      * @param Context $context
-     * @throws ExtractorException
+     * @return mixed
      * @throws PredicateException
      * @throws HandlerException
-     * @return mixed
+     * @throws ExtractorException
      */
     public function extract(Context $context)
     {

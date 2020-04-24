@@ -18,6 +18,7 @@ use Jojo1981\DataResolver\Resolver\Context;
 use PHPUnit\Framework\Exception as PHPUnitException;
 use PHPUnit\Framework\ExpectationFailedException;
 use SebastianBergmann\RecursionContext\InvalidArgumentException;
+use stdClass;
 use tests\Jojo1981\DataResolver\Integration\AbstractIntegrationTestCase;
 
 /**
@@ -85,10 +86,10 @@ class InPredicateTest extends AbstractIntegrationTestCase
      */
     public function checkInPredicateWithObjects(): void
     {
-        $item1 = new \stdClass();
+        $item1 = new stdClass();
         $item1->name = 'item1';
 
-        $item3 = new \stdClass();
+        $item3 = new stdClass();
         $item3->name = 'item3';
 
         $predicateBuilder = $this->getResolverBuilderFactory()->where()->in([$item1, $item3]);
@@ -98,11 +99,11 @@ class InPredicateTest extends AbstractIntegrationTestCase
         $this->assertTrue($predicate->match(new Context($item1)));
         $this->assertTrue($predicate->match(new Context($item3)));
 
-        $item2 = new \stdClass();
+        $item2 = new stdClass();
         $item2->name = 'item2';
         $this->assertFalse($predicate->match(new Context($item2)));
 
-        $item4 = new \stdClass();
+        $item4 = new stdClass();
         $item4->name = 'item1';
         $this->assertTrue($predicate->match(new Context($item4)));
 
@@ -125,10 +126,10 @@ class InPredicateTest extends AbstractIntegrationTestCase
      */
     public function checkNotInPredicateWithObjects(): void
     {
-        $item1 = new \stdClass();
+        $item1 = new stdClass();
         $item1->name = 'item1';
 
-        $item3 = new \stdClass();
+        $item3 = new stdClass();
         $item3->name = 'item3';
 
         $predicateBuilder = $this->getResolverBuilderFactory()->where()->notIn([$item1, $item3]);
@@ -138,11 +139,11 @@ class InPredicateTest extends AbstractIntegrationTestCase
         $this->assertFalse($predicate->match(new Context($item1)));
         $this->assertFalse($predicate->match(new Context($item3)));
 
-        $item2 = new \stdClass();
+        $item2 = new stdClass();
         $item2->name = 'item2';
         $this->assertTrue($predicate->match(new Context($item2)));
 
-        $item4 = new \stdClass();
+        $item4 = new stdClass();
         $item4->name = 'item1';
         $this->assertFalse($predicate->match(new Context($item4)));
 

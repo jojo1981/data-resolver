@@ -9,6 +9,7 @@
  */
 namespace tests\Jojo1981\DataResolver\Extractor;
 
+use ArrayIterator;
 use Jojo1981\DataResolver\Extractor\Exception\ExtractorException;
 use Jojo1981\DataResolver\Extractor\SomeExtractor;
 use Jojo1981\DataResolver\Handler\Exception\HandlerException;
@@ -44,10 +45,10 @@ class SomeExtractorTest extends TestCase
     private $copiedContext;
 
     /**
-     * @throws DoubleException
+     * @return void
      * @throws InterfaceNotFoundException
      * @throws ClassNotFoundException
-     * @return void
+     * @throws DoubleException
      */
     protected function setUp(): void
     {
@@ -62,11 +63,11 @@ class SomeExtractorTest extends TestCase
     /**
      * @test
      *
-     * @throws HandlerException
+     * @return void
      * @throws ObjectProphecyException
      * @throws PredicateException
      * @throws ExtractorException
-     * @return void
+     * @throws HandlerException
      */
     public function extractShouldThrowAnExceptionBecauseSequenceHandlerDoesNotSupportTheDataFromContext(): void
     {
@@ -76,7 +77,7 @@ class SomeExtractorTest extends TestCase
 
         $this->expectExceptionObject(
             new ExtractorException('Could not extract data with `' . SomeExtractor::class . '` at path: `my-path`')
-         );
+        );
 
         $this->getSomeExtractor()->extract($this->originalContext->reveal());
     }
@@ -84,13 +85,13 @@ class SomeExtractorTest extends TestCase
     /**
      * @test
      *
-     * @throws ExtractorException
+     * @return void
      * @throws HandlerException
      * @throws InvalidArgumentException
      * @throws ObjectProphecyException
      * @throws PredicateException
      * @throws ExpectationFailedException
-     * @return void
+     * @throws ExtractorException
      */
     public function extractShouldReturnFalseWhenSequenceHandlerGetIteratorReturnAnEmptyIterator(): void
     {
@@ -98,7 +99,7 @@ class SomeExtractorTest extends TestCase
         $this->originalContext->getPath()->shouldNotBeCalled();
         $this->copiedContext->setData(Argument::any())->shouldNotBeCalled();
         $this->sequenceHandler->supports('my-data')->willReturn(true)->shouldBeCalledOnce();
-        $this->sequenceHandler->getIterator('my-data')->willReturn(new \ArrayIterator())->shouldBeCalledOnce();
+        $this->sequenceHandler->getIterator('my-data')->willReturn(new ArrayIterator())->shouldBeCalledOnce();
         $this->originalContext->copy()->shouldNotBeCalled();
 
         $this->assertFalse($this->getSomeExtractor()->extract($this->originalContext->reveal()));
@@ -107,13 +108,13 @@ class SomeExtractorTest extends TestCase
     /**
      * @test
      *
-     * @throws ExtractorException
+     * @return void
      * @throws HandlerException
      * @throws InvalidArgumentException
      * @throws ObjectProphecyException
      * @throws PredicateException
      * @throws ExpectationFailedException
-     * @return void
+     * @throws ExtractorException
      */
     public function extractShouldReturnTrueWhenAnItemIsMatchedByThePredicate(): void
     {
@@ -137,13 +138,13 @@ class SomeExtractorTest extends TestCase
     /**
      * @test
      *
-     * @throws ExtractorException
+     * @return void
      * @throws HandlerException
      * @throws InvalidArgumentException
      * @throws ObjectProphecyException
      * @throws PredicateException
      * @throws ExpectationFailedException
-     * @return void
+     * @throws ExtractorException
      */
     public function extractShouldReturnFalseWhenNoItemIsMatchedByThePredicate(): void
     {
@@ -167,8 +168,8 @@ class SomeExtractorTest extends TestCase
     }
 
     /**
-     * @throws ObjectProphecyException
      * @return SomeExtractor
+     * @throws ObjectProphecyException
      */
     private function getSomeExtractor(): SomeExtractor
     {
@@ -176,10 +177,10 @@ class SomeExtractorTest extends TestCase
     }
 
     /**
-     * @return \ArrayIterator
+     * @return ArrayIterator
      */
-    private function getTestIterator(): \ArrayIterator
+    private function getTestIterator(): ArrayIterator
     {
-        return new \ArrayIterator(['key1' => 'value1', 'key2' => 'value2', 'key3' => 'value3']);
+        return new ArrayIterator(['key1' => 'value1', 'key2' => 'value2', 'key3' => 'value3']);
     }
 }

@@ -22,9 +22,9 @@ class StringHelperTest extends TestCase
     /**
      * @test
      *
-     * @throws InvalidArgumentException
-     * @throws ExpectationFailedException
      * @return void
+     * @throws ExpectationFailedException
+     * @throws InvalidArgumentException
      */
     public function toCamelCaseShouldReturnTheStringPassedConvertedToCamelCase(): void
     {
@@ -41,9 +41,9 @@ class StringHelperTest extends TestCase
     /**
      * @test
      *
-     * @throws InvalidArgumentException
-     * @throws ExpectationFailedException
      * @return void
+     * @throws ExpectationFailedException
+     * @throws InvalidArgumentException
      */
     public function camelToSnakeCaseShouldReturnTheStringPassedConvertedToSnakeCase(): void
     {

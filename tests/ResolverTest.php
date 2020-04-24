@@ -16,14 +16,15 @@ use Jojo1981\DataResolver\Predicate\Exception\PredicateException;
 use Jojo1981\DataResolver\Resolver;
 use Jojo1981\DataResolver\Resolver\Context;
 use PHPUnit\Framework\ExpectationFailedException;
-use tests\Jojo1981\DataResolver\TestCase;
 use Prophecy\Argument;
 use Prophecy\Exception\Doubler\ClassNotFoundException;
 use Prophecy\Exception\Doubler\DoubleException;
 use Prophecy\Exception\Doubler\InterfaceNotFoundException;
+use Prophecy\Exception\InvalidArgumentException as ProphecyInvalidArgumentException;
 use Prophecy\Exception\Prophecy\ObjectProphecyException;
 use Prophecy\Prophecy\ObjectProphecy;
 use SebastianBergmann\RecursionContext\InvalidArgumentException;
+use function array_key_exists;
 
 /**
  * @package tests\Jojo1981\DataResolver
@@ -40,10 +41,10 @@ class ResolverTest extends TestCase
     private $extractor2;
 
     /**
-     * @throws DoubleException
+     * @return void
      * @throws InterfaceNotFoundException
      * @throws ClassNotFoundException
-     * @return void
+     * @throws DoubleException
      */
     protected function setUp(): void
     {
@@ -55,29 +56,29 @@ class ResolverTest extends TestCase
     /**
      * @test
      *
-     * @throws HandlerException
+     * @return void
      * @throws PredicateException
      * @throws ExpectationFailedException
      * @throws InvalidArgumentException
      * @throws ExtractorException
-     * @return void
+     * @throws HandlerException
      */
     public function resolverWithoutExtractorsShouldSimplyReturnTheDataWhichIsGivenToTheResolveMethod(): void
     {
         $data = ['key' => 'value'];
-        $this->assertSame($data, ( new Resolver([]))->resolve($data));
+        $this->assertSame($data, (new Resolver([]))->resolve($data));
     }
 
     /**
      * @test
      *
-     * @throws ExtractorException
+     * @return void
      * @throws HandlerException
      * @throws InvalidArgumentException
      * @throws ObjectProphecyException
      * @throws PredicateException
      * @throws ExpectationFailedException
-     * @return void
+     * @throws ExtractorException
      */
     public function resolverWithoutExtractorsShouldSimplyReturnTheDataFromThePassedContext(): void
     {
@@ -89,13 +90,13 @@ class ResolverTest extends TestCase
     /**
      * @test
      *
-     * @throws ExtractorException
+     * @return void
      * @throws HandlerException
      * @throws InvalidArgumentException
      * @throws ObjectProphecyException
      * @throws PredicateException
      * @throws ExpectationFailedException
-     * @return void
+     * @throws ExtractorException
      */
     public function resolverWithPassingContextToTheResolveMethodShouldUpdateContextAndPassItToTheExtractors(): void
     {
@@ -109,16 +110,17 @@ class ResolverTest extends TestCase
     /**
      * @test
      *
+     * @return void
      * @throws ExtractorException
      * @throws HandlerException
      * @throws InvalidArgumentException
      * @throws ObjectProphecyException
      * @throws PredicateException
+     * @throws ProphecyInvalidArgumentException
      * @throws ExpectationFailedException
-     * @return void
      */
-    public function resolverWithPassingDataToTheResolveMethodShouldTransformItIntoAContextObjectAnPassItToTheExtractors(): void
-    {
+    public function resolverWithPassingDataToTheResolveMethodShouldTransformItIntoAContextObjectAnPassItToTheExtractors(
+    ): void {
         $this->extractor1->extract(Argument::that(static function ($arg): bool {
             return (
                 $arg instanceof Context
@@ -130,19 +132,18 @@ class ResolverTest extends TestCase
         $this->extractor2->extract(Argument::that(static function ($arg): bool {
             return (
                 $arg instanceof Context
-                && \array_key_exists('key1', $arg->getData())
+                && array_key_exists('key1', $arg->getData())
                 && 'value1' === $arg->getData()['key1']
                 && 'root' === $arg->getPath()
             );
-
         }))->willReturn('last-result')->shouldBeCalledOnce();
 
         $this->assertEquals('last-result', $this->getResolver()->resolve('just-some-data'));
     }
 
     /**
-     * @throws ObjectProphecyException
      * @return Resolver
+     * @throws ObjectProphecyException
      */
     private function getResolver(): Resolver
     {

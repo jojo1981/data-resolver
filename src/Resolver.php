@@ -20,7 +20,7 @@ use function array_walk;
  * @api
  * @package Jojo1981\DataResolver\Resolver
  */
-class Resolver
+final class Resolver
 {
     /** @var ExtractorInterface[] */
     private $extractors = [];

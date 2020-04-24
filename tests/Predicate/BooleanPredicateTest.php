@@ -12,6 +12,7 @@ namespace tests\Jojo1981\DataResolver\Predicate;
 use Jojo1981\DataResolver\Predicate\BooleanPredicate;
 use Jojo1981\DataResolver\Resolver\Context;
 use PHPUnit\Framework\ExpectationFailedException;
+use stdClass;
 use tests\Jojo1981\DataResolver\TestCase;
 use Prophecy\Exception\Doubler\ClassNotFoundException;
 use Prophecy\Exception\Doubler\DoubleException;
@@ -29,10 +30,10 @@ class BooleanPredicateTest extends TestCase
     private $context;
 
     /**
-     * @throws DoubleException
+     * @return void
      * @throws InterfaceNotFoundException
      * @throws ClassNotFoundException
-     * @return void
+     * @throws DoubleException
      */
     protected function setUp(): void
     {
@@ -45,10 +46,10 @@ class BooleanPredicateTest extends TestCase
      *
      * @param mixed $value
      * @param array $expected
-     * @throws ObjectProphecyException
+     * @return void
      * @throws ExpectationFailedException
      * @throws InvalidArgumentException
-     * @return void
+     * @throws ObjectProphecyException
      */
     public function matchShouldReturnTheCorrectValueForIsTrue($value, array $expected): void
     {
@@ -63,10 +64,10 @@ class BooleanPredicateTest extends TestCase
      *
      * @param mixed $value
      * @param array $expected
-     * @throws ObjectProphecyException
+     * @return void
      * @throws ExpectationFailedException
      * @throws InvalidArgumentException
-     * @return void
+     * @throws ObjectProphecyException
      */
     public function matchShouldReturnTheCorrectValueForIsTruly($value, array $expected): void
     {
@@ -81,10 +82,10 @@ class BooleanPredicateTest extends TestCase
      *
      * @param mixed $value
      * @param array $expected
-     * @throws ObjectProphecyException
+     * @return void
      * @throws ExpectationFailedException
      * @throws InvalidArgumentException
-     * @return void
+     * @throws ObjectProphecyException
      */
     public function matchShouldReturnTheCorrectValueForIsFalse($value, array $expected): void
     {
@@ -99,20 +100,23 @@ class BooleanPredicateTest extends TestCase
      *
      * @param mixed $value
      * @param array $expected
-     * @throws ObjectProphecyException
+     * @return void
      * @throws ExpectationFailedException
      * @throws InvalidArgumentException
-     * @return void
+     * @throws ObjectProphecyException
      */
     public function matchShouldReturnTheCorrectValueForIsFalsely($value, array $expected): void
     {
         $this->context->getData()->willReturn($value)->shouldBeCalledOnce();
 
-        $this->assertEquals($expected['isFalsely'], (new BooleanPredicate(false, false))->match($this->context->reveal()));
+        $this->assertEquals(
+            $expected['isFalsely'],
+            (new BooleanPredicate(false, false))->match($this->context->reveal())
+        );
     }
 
     /**
-     * @return array
+     * @return array[]
      */
     public function getTestData(): array
     {
@@ -133,12 +137,24 @@ class BooleanPredicateTest extends TestCase
             ['value' => 'true', ['isTrue' => false, 'isTruly' => true, 'isFalse' => false, 'isFalsely' => false]],
             ['value' => 'false', ['isTrue' => false, 'isTruly' => true, 'isFalse' => false, 'isFalsely' => false]],
             ['value' => null, ['isTrue' => false, 'isTruly' => false, 'isFalse' => false, 'isFalsely' => true]],
-            ['value' => new \stdClass(), ['isTrue' => false, 'isTruly' => true, 'isFalse' => false, 'isFalsely' => false]],
+            [
+                'value' => new stdClass(),
+                ['isTrue' => false, 'isTruly' => true, 'isFalse' => false, 'isFalsely' => false]
+            ],
             ['value' => [], ['isTrue' => false, 'isTruly' => false, 'isFalse' => false, 'isFalsely' => true]],
             ['value' => [1, 2, 3], ['isTrue' => false, 'isTruly' => true, 'isFalse' => false, 'isFalsely' => false]],
-            ['value' => ['zero', 'one', 'two'], ['isTrue' => false, 'isTruly' => true, 'isFalse' => false, 'isFalsely' => false]],
-            ['value' => [1 => 'one', 2 => 'two'], ['isTrue' => false, 'isTruly' => true, 'isFalse' => false, 'isFalsely' => false]],
-            ['value' => ['one' => 1, 'two' => 2, 'three' => 3], ['isTrue' => false, 'isTruly' => true, 'isFalse' => false, 'isFalsely' => false]]
+            [
+                'value' => ['zero', 'one', 'two'],
+                ['isTrue' => false, 'isTruly' => true, 'isFalse' => false, 'isFalsely' => false]
+            ],
+            [
+                'value' => [1 => 'one', 2 => 'two'],
+                ['isTrue' => false, 'isTruly' => true, 'isFalse' => false, 'isFalsely' => false]
+            ],
+            [
+                'value' => ['one' => 1, 'two' => 2, 'three' => 3],
+                ['isTrue' => false, 'isTruly' => true, 'isFalse' => false, 'isFalsely' => false]
+            ]
         ];
     }
 }
