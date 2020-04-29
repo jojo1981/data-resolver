@@ -44,4 +44,3 @@ class CountPredicate implements PredicateInterface
         return $this->sequenceHandler->count($context->getData()) === $this->expectedCount;
     }
 }
-

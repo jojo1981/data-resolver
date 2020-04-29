@@ -11,7 +11,7 @@ namespace Jojo1981\DataResolver;
 
 use Jojo1981\DataResolver\Comparator\ComparatorInterface;
 use Jojo1981\DataResolver\Comparator\DefaultComparator;
-use Jojo1981\DataResolver\Exception\ResolverException;
+use Jojo1981\DataResolver\Factory\Exception\FactoryException;
 use Jojo1981\DataResolver\Factory\ExtractorBuilderFactory;
 use Jojo1981\DataResolver\Factory\PredicateBuilderFactory;
 use Jojo1981\DataResolver\Factory\ResolverBuilderFactory;
@@ -69,7 +69,7 @@ class Factory
 
     /**
      * @return $this
-     * @throws ResolverException
+     * @throws FactoryException
      */
     public function useDefaultPropertyHandlers(): self
     {
@@ -83,7 +83,7 @@ class Factory
 
     /**
      * @return $this
-     * @throws ResolverException
+     * @throws FactoryException
      */
     public function useDefaultSequenceHandlers(): self
     {
@@ -98,7 +98,7 @@ class Factory
     /**
      * @param PropertyHandlerInterface $propertyHandler
      * @return $this
-     * @throws ResolverException
+     * @throws FactoryException
      */
     public function registerPropertyHandler(PropertyHandlerInterface $propertyHandler): self
     {
@@ -113,7 +113,7 @@ class Factory
     /**
      * @param SequenceHandlerInterface $sequenceHandler
      * @return $this
-     * @throws ResolverException
+     * @throws FactoryException
      */
     public function registerSequenceHandler(SequenceHandlerInterface $sequenceHandler): self
     {
@@ -128,7 +128,7 @@ class Factory
     /**
      * @param NamingStrategyInterface $namingStrategy
      * @return $this
-     * @throws ResolverException
+     * @throws FactoryException
      */
     public function setNamingStrategy(NamingStrategyInterface $namingStrategy): self
     {
@@ -141,7 +141,7 @@ class Factory
     /**
      * @param MergeHandlerInterface $mergeHandler
      * @return $this
-     * @throws ResolverException
+     * @throws FactoryException
      */
     public function setMergeHandler(MergeHandlerInterface $mergeHandler): self
     {
@@ -154,7 +154,7 @@ class Factory
     /**
      * @param ComparatorInterface $comparator
      * @return $this
-     * @throws ResolverException
+     * @throws FactoryException
      */
     public function setComparator(ComparatorInterface $comparator): self
     {
@@ -285,12 +285,12 @@ class Factory
 
     /**
      * @return void
-     * @throws ResolverException
+     * @throws FactoryException
      */
     private function assertNotFrozen(): void
     {
         if ($this->isFrozen) {
-            throw new ResolverException(
+            throw new FactoryException(
                 'Can not modify the factory while it\'s frozen. The factory gets frozen when the factory has already ' .
                 'build a resolver builder factory'
             );

@@ -14,6 +14,6 @@ use Jojo1981\DataResolver\Exception\ResolverException;
 /**
  * @package Jojo1981\DataResolver\Predicate\Exception
  */
-class PredicateException extends ResolverException
+final class PredicateException extends ResolverException
 {
 }

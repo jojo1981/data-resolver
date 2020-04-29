@@ -15,7 +15,7 @@ use Jojo1981\DataResolver\Builder\Predicate\NotPredicateBuilder;
 use Jojo1981\DataResolver\Builder\Predicate\OrPredicateBuilder;
 use Jojo1981\DataResolver\Builder\PredicateBuilderInterface;
 use Jojo1981\DataResolver\Builder\ResolverBuilder;
-use Jojo1981\DataResolver\Exception\ResolverException;
+use Jojo1981\DataResolver\Factory\Exception\FactoryException;
 use Jojo1981\DataResolver\Resolver;
 use function strpos;
 use function trim;
@@ -153,7 +153,7 @@ class ResolverBuilderFactory
     /**
      * @param string|ResolverBuilder|null $arg
      * @return ExtractorPredicateBuilder
-     * @throws ResolverException
+     * @throws FactoryException
      */
     public function where($arg = null): ExtractorPredicateBuilder
     {
@@ -173,7 +173,7 @@ class ResolverBuilderFactory
             );
         }
 
-        throw new ResolverException(\sprintf(
+        throw new FactoryException(\sprintf(
             'Invalid argument given for method `where`, should be of type string or an instance of %s',
             ResolverBuilder::class
         ));

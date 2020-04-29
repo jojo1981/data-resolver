@@ -16,6 +16,6 @@ use DomainException;
  *
  * @package Jojo1981\DataResolver\Exception
  */
-final class ResolverException extends DomainException
+abstract class ResolverException extends DomainException
 {
 }

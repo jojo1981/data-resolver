@@ -17,7 +17,7 @@ use ReflectionException;
  *
  * @package Jojo1981\DataResolver\Handler\Exception
  */
-class HandlerException extends ResolverException
+final class HandlerException extends ResolverException
 {
     /**
      * @param string $className
