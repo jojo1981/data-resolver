@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /*
  * This file is part of the jojo1981/data-resolver package
  *
@@ -9,6 +9,7 @@
  */
 namespace tests\Jojo1981\DataResolver\Predicate;
 
+use Exception;
 use Jojo1981\DataResolver\Extractor\Exception\ExtractorException;
 use Jojo1981\DataResolver\Extractor\ExtractorInterface;
 use Jojo1981\DataResolver\Handler\Exception\HandlerException;
@@ -17,7 +18,6 @@ use Jojo1981\DataResolver\Predicate\ExtractorPredicate;
 use Jojo1981\DataResolver\Predicate\PredicateInterface;
 use Jojo1981\DataResolver\Resolver\Context;
 use PHPUnit\Framework\ExpectationFailedException;
-use tests\Jojo1981\DataResolver\TestCase;
 use Prophecy\Argument;
 use Prophecy\Exception\Doubler\ClassNotFoundException;
 use Prophecy\Exception\Doubler\DoubleException;
@@ -25,6 +25,7 @@ use Prophecy\Exception\Doubler\InterfaceNotFoundException;
 use Prophecy\Exception\Prophecy\ObjectProphecyException;
 use Prophecy\Prophecy\ObjectProphecy;
 use SebastianBergmann\RecursionContext\InvalidArgumentException;
+use tests\Jojo1981\DataResolver\TestCase;
 
 /**
  * @package tests\Jojo1981\DataResolver\Predicate
@@ -70,7 +71,7 @@ class ExtractorPredicateTest extends TestCase
      */
     public function matchShouldReturnFalseBecauseTheTheExtractorThrowsAnException(): void
     {
-        $this->predicate->match($this->copiedContext)->willThrow(\Exception::class)->shouldBeCalled();
+        $this->predicate->match($this->copiedContext)->willThrow(Exception::class)->shouldBeCalled();
 
         $this->assertFalse($this->getExtractorPredicate()->match($this->originalContext->reveal()));
     }

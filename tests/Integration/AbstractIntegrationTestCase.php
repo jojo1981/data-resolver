@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /*
  * This file is part of the jojo1981/data-resolver package
  *
@@ -18,8 +18,8 @@ use tests\Jojo1981\DataResolver\TestCase;
  */
 abstract class AbstractIntegrationTestCase extends TestCase
 {
-    /** @var ResolverBuilderFactory */
-    private $resolverBuilderFactory;
+    /** @var ResolverBuilderFactory|null */
+    private ?ResolverBuilderFactory $resolverBuilderFactory = null;
 
     /**
      * @return ResolverBuilderFactory

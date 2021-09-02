@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /*
  * This file is part of the jojo1981/data-resolver package
  *
@@ -20,10 +20,10 @@ use Jojo1981\DataResolver\Resolver\Context;
 class AndPredicate implements PredicateInterface
 {
     /** @var PredicateInterface */
-    private $leftPredicate;
+    private PredicateInterface $leftPredicate;
 
     /** @var PredicateInterface */
-    private $rightPredicate;
+    private PredicateInterface $rightPredicate;
 
     /**
      * @param PredicateInterface $leftPredicate

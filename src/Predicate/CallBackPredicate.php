@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /*
  * This file is part of the jojo1981/data-resolver package
  *
@@ -10,6 +10,7 @@
 namespace Jojo1981\DataResolver\Predicate;
 
 use Jojo1981\DataResolver\Resolver\Context;
+use function call_user_func;
 
 /**
  * @package Jojo1981\DataResolver\Predicate
@@ -33,6 +34,6 @@ class CallBackPredicate implements PredicateInterface
      */
     public function match(Context $context): bool
     {
-        return (bool)\call_user_func($this->callback, $context->getData());
+        return (bool) call_user_func($this->callback, $context->getData());
     }
 }

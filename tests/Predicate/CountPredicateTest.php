@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /*
  * This file is part of the jojo1981/data-resolver package
  *
@@ -54,17 +54,16 @@ class CountPredicateTest extends TestCase
     {
         $this->sequenceHandler->count('text1')->willReturn(1)->shouldBeCalledOnce();
         $this->sequenceHandler->count('text2')->willReturn(4)->shouldBeCalledOnce();
-        $this->assertTrue($this->getIsEmptyPredicate(1)->match(new Context('text1')));
-        $this->assertFalse($this->getIsEmptyPredicate(1)->match(new Context('text2')));
+        $this->assertTrue($this->getIsEmptyPredicate()->match(new Context('text1')));
+        $this->assertFalse($this->getIsEmptyPredicate()->match(new Context('text2')));
     }
 
     /**
-     * @param int $expectedCount
      * @return CountPredicate
      * @throws ObjectProphecyException
      */
-    private function getIsEmptyPredicate(int $expectedCount): CountPredicate
+    private function getIsEmptyPredicate(): CountPredicate
     {
-        return new CountPredicate($this->sequenceHandler->reveal(), $expectedCount);
+        return new CountPredicate($this->sequenceHandler->reveal(), 1);
     }
 }

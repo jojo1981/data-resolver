@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /*
  * This file is part of the jojo1981/data-resolver package
  *
@@ -9,6 +9,7 @@
  */
 namespace Jojo1981\DataResolver\Predicate;
 
+use Exception;
 use Jojo1981\DataResolver\Extractor\HasPropertyExtractor;
 use Jojo1981\DataResolver\Resolver\Context;
 
@@ -18,7 +19,7 @@ use Jojo1981\DataResolver\Resolver\Context;
 class HasPropertyPredicate implements PredicateInterface
 {
     /** @var HasPropertyExtractor */
-    private $extractor;
+    private HasPropertyExtractor $extractor;
 
     /**
      * @param HasPropertyExtractor $extractor
@@ -36,7 +37,7 @@ class HasPropertyPredicate implements PredicateInterface
     {
         try {
             return $this->extractor->extract($context);
-        } catch (\Exception $exception) {
+        } catch (Exception $exception) {
             return false;
         }
     }

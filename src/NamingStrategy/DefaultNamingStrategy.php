@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /*
  * This file is part of the jojo1981/data-resolver package
  *
@@ -10,6 +10,7 @@
 namespace Jojo1981\DataResolver\NamingStrategy;
 
 use Jojo1981\DataResolver\Helper\StringHelper;
+use function array_unique;
 use function array_values;
 
 /**
@@ -23,7 +24,7 @@ class DefaultNamingStrategy implements NamingStrategyInterface
      */
     public function getPropertyNames(string $propertyName): array
     {
-        return array_values(\array_unique([
+        return array_values(array_unique([
             StringHelper::toSnakeCase($propertyName),
             StringHelper::toCamelCase($propertyName)
         ]));

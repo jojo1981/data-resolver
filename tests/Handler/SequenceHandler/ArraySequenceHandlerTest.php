@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /*
  * This file is part of the jojo1981/data-resolver package
  *
@@ -14,9 +14,9 @@ use Jojo1981\DataResolver\Handler\Exception\HandlerException;
 use Jojo1981\DataResolver\Handler\SequenceHandler\ArraySequenceHandler;
 use PHPUnit\Framework\Exception as PHPUnitException;
 use PHPUnit\Framework\ExpectationFailedException;
+use SebastianBergmann\RecursionContext\InvalidArgumentException;
 use stdClass;
 use tests\Jojo1981\DataResolver\TestCase;
-use SebastianBergmann\RecursionContext\InvalidArgumentException;
 
 /**
  * @package tests\Jojo1981\DataResolver\Handler\SequenceHandler

@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /*
  * This file is part of the jojo1981/data-resolver package
  *
@@ -12,6 +12,10 @@ namespace Jojo1981\DataResolver\Handler\PropertyHandler;
 use Jojo1981\DataResolver\Handler\Exception\HandlerException;
 use Jojo1981\DataResolver\Handler\PropertyHandlerInterface;
 use Jojo1981\DataResolver\NamingStrategy\NamingStrategyInterface;
+use function array_key_exists;
+use function array_keys;
+use function is_array;
+use function is_string;
 use function sprintf;
 
 /**
@@ -43,7 +47,7 @@ class AssociativeArrayPropertyHandler implements PropertyHandlerInterface
         }
 
         foreach ($namingStrategy->getPropertyNames($propertyName) as $propName) {
-            if (\array_key_exists($propName, $data)) {
+            if (array_key_exists($propName, $data)) {
                 return $data[$propName];
             }
         }
@@ -70,7 +74,7 @@ class AssociativeArrayPropertyHandler implements PropertyHandlerInterface
         }
 
         foreach ($namingStrategy->getPropertyNames($propertyName) as $propName) {
-            if (\array_key_exists($propName, $data)) {
+            if (array_key_exists($propName, $data)) {
                 return true;
             }
         }
@@ -84,12 +88,12 @@ class AssociativeArrayPropertyHandler implements PropertyHandlerInterface
      */
     private function isAssociativeArray($data): bool
     {
-        if (!\is_array($data)) {
+        if (!is_array($data)) {
             return false;
         }
 
-        foreach (\array_keys($data) as $key) {
-            if (!\is_string($key)) {
+        foreach (array_keys($data) as $key) {
+            if (!is_string($key)) {
                 return false;
             }
         }

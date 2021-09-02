@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /*
  * This file is part of the jojo1981/data-resolver package
  *
@@ -29,7 +29,7 @@ use function is_object;
 class ObjectPropertyHandler implements PropertyHandlerInterface
 {
     /** @var ReflectionClass[] */
-    private $reflectionClasses = [];
+    private array $reflectionClasses = [];
 
     /**
      * @param string $propertyName
@@ -46,6 +46,7 @@ class ObjectPropertyHandler implements PropertyHandlerInterface
      * @param string $propertyName
      * @param mixed $data
      * @return mixed
+     * @throws ReflectionException
      * @throws HandlerException
      */
     public function getValueForPropertyName(NamingStrategyInterface $namingStrategy, string $propertyName, $data)
@@ -162,7 +163,7 @@ class ObjectPropertyHandler implements PropertyHandlerInterface
      * @return ReflectionClass
      * @throws HandlerException
      */
-    private function getReflectionClass($data): ReflectionClass
+    private function getReflectionClass(object $data): ReflectionClass
     {
         $className = get_class($data);
         if (!array_key_exists($className, $this->reflectionClasses)) {

@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /*
  * This file is part of the jojo1981/data-resolver package
  *
@@ -11,6 +11,7 @@ namespace Jojo1981\DataResolver\Handler\Exception;
 
 use Jojo1981\DataResolver\Exception\ResolverException;
 use ReflectionException;
+use function sprintf;
 
 /**
  * Base exception class for when exceptions occur during the handling process
@@ -32,7 +33,7 @@ final class HandlerException extends ResolverException
         string $assertMethodName,
         ?string $extraMessage = null
     ): HandlerException {
-        return new static(\sprintf(
+        return new self(sprintf(
             'The `%s`%s. Illegal invocation of method `%s`. You should invoke the `%s` method first!',
             $className,
             null !== $extraMessage ? ' ' . $extraMessage : '',
@@ -47,6 +48,6 @@ final class HandlerException extends ResolverException
      */
     public static function couldNotGetReflection(ReflectionException $reflectionException): HandlerException
     {
-        return new static('Can not get reflection', 0, $reflectionException);
+        return new self('Can not get reflection', 0, $reflectionException);
     }
 }

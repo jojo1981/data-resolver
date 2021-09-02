@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /*
  * This file is part of the jojo1981/data-resolver package
  *
@@ -9,6 +9,7 @@
  */
 namespace tests\Jojo1981\DataResolver\Extractor;
 
+use Exception;
 use Jojo1981\DataResolver\Extractor\Exception\ExtractorException;
 use Jojo1981\DataResolver\Extractor\FilterExtractor;
 use Jojo1981\DataResolver\Handler\Exception\HandlerException;
@@ -17,15 +18,17 @@ use Jojo1981\DataResolver\Predicate\Exception\PredicateException;
 use Jojo1981\DataResolver\Predicate\PredicateInterface;
 use Jojo1981\DataResolver\Resolver\Context;
 use PHPUnit\Framework\ExpectationFailedException;
-use Prophecy\Exception\InvalidArgumentException as ProphecyInvalidArgumentException;
-use tests\Jojo1981\DataResolver\TestCase;
 use Prophecy\Argument;
 use Prophecy\Exception\Doubler\ClassNotFoundException;
 use Prophecy\Exception\Doubler\DoubleException;
 use Prophecy\Exception\Doubler\InterfaceNotFoundException;
+use Prophecy\Exception\InvalidArgumentException as ProphecyInvalidArgumentException;
 use Prophecy\Exception\Prophecy\ObjectProphecyException;
 use Prophecy\Prophecy\ObjectProphecy;
 use SebastianBergmann\RecursionContext\InvalidArgumentException;
+use tests\Jojo1981\DataResolver\TestCase;
+use function call_user_func;
+use function is_callable;
 
 /**
  * @package tests\Jojo1981\DataResolver\Extractor
@@ -100,11 +103,11 @@ class FilterExtractorTest extends TestCase
         $this->copiedContext->setData('my-value-1')->willReturn($this->copiedContext)->shouldBeCalledOnce();
 
         $this->sequenceHandler->supports('my-data')->willReturn(true)->shouldBeCalledOnce();
-        $this->predicate->match($this->copiedContext)->willThrow(\Exception::class)->shouldBeCalledOnce();
+        $this->predicate->match($this->copiedContext)->willThrow(Exception::class)->shouldBeCalledOnce();
 
         $this->sequenceHandler->filter('my-data', Argument::that(function ($arg): bool {
-            if (\is_callable($arg)) {
-                $this->assertFalse(\call_user_func($arg, 'my-value-1'));
+            if (is_callable($arg)) {
+                $this->assertFalse(call_user_func($arg, 'my-value-1'));
 
                 return true;
             }
@@ -139,9 +142,9 @@ class FilterExtractorTest extends TestCase
         $this->predicate->match($this->copiedContext)->willReturn(false, true)->shouldBeCalledTimes(2);
 
         $this->sequenceHandler->filter('my-data', Argument::that(function ($arg): bool {
-            if (\is_callable($arg)) {
-                $this->assertFalse(\call_user_func($arg, 'my-value-1'));
-                $this->assertTrue(\call_user_func($arg, 'my-value-2'));
+            if (is_callable($arg)) {
+                $this->assertFalse(call_user_func($arg, 'my-value-1'));
+                $this->assertTrue(call_user_func($arg, 'my-value-2'));
 
                 return true;
             }

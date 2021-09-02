@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /*
  * This file is part of the jojo1981/data-resolver package
  *
@@ -19,10 +19,10 @@ use Jojo1981\DataResolver\Extractor\ExtractorInterface;
 class CompositeExtractorBuilder implements ExtractorBuilderInterface
 {
     /** @var ExtractorInterface */
-    private $extractor1;
+    private ExtractorInterface $extractor1;
 
     /** @var ExtractorInterface */
-    private $extractor2;
+    private ExtractorInterface $extractor2;
 
     /**
      * @param ExtractorInterface $extractor1

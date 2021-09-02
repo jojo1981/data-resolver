@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /*
  * This file is part of the jojo1981/data-resolver package
  *
@@ -20,10 +20,10 @@ use Jojo1981\DataResolver\Handler\SequenceHandlerInterface;
 class FlattenExtractorBuilder implements ExtractorBuilderInterface
 {
     /** @var SequenceHandlerInterface */
-    private $sequenceHandler;
+    private SequenceHandlerInterface $sequenceHandler;
 
     /** @var ExtractorInterface */
-    private $extractor;
+    private ExtractorInterface $extractor;
 
     /**
      * @param SequenceHandlerInterface $sequenceHandler

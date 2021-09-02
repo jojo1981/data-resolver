@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /*
  * This file is part of the jojo1981/data-resolver package
  *
@@ -14,10 +14,12 @@ use Jojo1981\DataResolver\Handler\Exception\HandlerException;
 use Jojo1981\DataResolver\Handler\SequenceHandlerInterface;
 use Traversable;
 use function array_filter;
+use function array_keys;
 use function array_push;
 use function array_values;
 use function count;
 use function is_array;
+use function is_numeric;
 
 /**
  * @package Jojo1981\DataResolver\Handler\SequenceHandler
@@ -79,10 +81,10 @@ class ArraySequenceHandler implements SequenceHandlerInterface
     /**
      * @param mixed $data
      * @param callable $callback
-     * @return mixed
+     * @return array
      * @throws HandlerException
      */
-    public function flatten($data, callable $callback)
+    public function flatten($data, callable $callback): array
     {
         if (!$this->supports($data)) {
             $this->throwUnsupportedException('flatten');
@@ -114,8 +116,8 @@ class ArraySequenceHandler implements SequenceHandlerInterface
             return false;
         }
 
-        foreach (\array_keys($data) as $key) {
-            if (!\is_numeric($key)) {
+        foreach (array_keys($data) as $key) {
+            if (!is_numeric($key)) {
                 return false;
             }
         }

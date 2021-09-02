@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /*
  * This file is part of the jojo1981/data-resolver package
  *
@@ -19,7 +19,7 @@ use Jojo1981\DataResolver\Resolver\Context;
 class CountExtractor extends AbstractSequenceExtractor
 {
     /** @var SequenceHandlerInterface */
-    private $sequenceHandler;
+    private SequenceHandlerInterface $sequenceHandler;
 
     /**
      * @param SequenceHandlerInterface $sequenceHandler
@@ -39,10 +39,10 @@ class CountExtractor extends AbstractSequenceExtractor
 
     /**
      * @param Context $context
-     * @return mixed
+     * @return int
      * @throws HandlerException
      */
-    protected function performExtract(Context $context)
+    protected function performExtract(Context $context): int
     {
         return $this->sequenceHandler->count($context->getData());
     }

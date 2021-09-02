@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /*
  * This file is part of the jojo1981/data-resolver package
  *
@@ -27,6 +27,7 @@ use Jojo1981\DataResolver\Handler\SequenceHandlerInterface;
 use Jojo1981\DataResolver\NamingStrategy\DefaultNamingStrategy;
 use Jojo1981\DataResolver\NamingStrategy\NamingStrategyInterface;
 use function array_push;
+use function in_array;
 
 /**
  * @api
@@ -34,38 +35,38 @@ use function array_push;
  */
 class Factory
 {
-    /** @var ExtractorBuilderFactory */
-    private $extractorBuilderFactory;
+    /** @var ExtractorBuilderFactory|null */
+    private ?ExtractorBuilderFactory $extractorBuilderFactory = null;
 
-    /** @var PredicateBuilderFactory */
-    private $predicateBuilderFactory;
+    /** @var PredicateBuilderFactory|null */
+    private ?PredicateBuilderFactory $predicateBuilderFactory = null;
 
-    /** @var ResolverBuilderFactory */
-    private $resolverBuilderFactory;
+    /** @var ResolverBuilderFactory|null */
+    private ?ResolverBuilderFactory $resolverBuilderFactory = null;
 
-    /** @var PropertyHandlerInterface */
-    private $propertyHandler;
+    /** @var PropertyHandlerInterface|null */
+    private ?PropertyHandlerInterface $propertyHandler = null;
 
-    /** @var SequenceHandlerInterface */
-    private $sequenceHandler;
+    /** @var SequenceHandlerInterface|null */
+    private ?SequenceHandlerInterface $sequenceHandler = null;
 
-    /** @var MergeHandlerInterface */
-    private $mergeHandler;
+    /** @var MergeHandlerInterface|null */
+    private ?MergeHandlerInterface $mergeHandler = null;
 
-    /** @var ComparatorInterface */
-    private $comparator;
+    /** @var ComparatorInterface|null */
+    private ?ComparatorInterface $comparator = null;
 
     /** @var bool */
-    private $isFrozen = false;
+    private bool $isFrozen = false;
 
-    /** @var NamingStrategyInterface */
-    private $namingStrategy;
+    /** @var NamingStrategyInterface|null */
+    private ?NamingStrategyInterface $namingStrategy = null;
 
     /** @var PropertyHandlerInterface[] */
-    private $propertyHandlers = [];
+    private array $propertyHandlers = [];
 
     /** @var SequenceHandlerInterface[] */
-    private $sequenceHandlers = [];
+    private array $sequenceHandlers = [];
 
     /**
      * @return $this
@@ -103,7 +104,7 @@ class Factory
     public function registerPropertyHandler(PropertyHandlerInterface $propertyHandler): self
     {
         $this->assertNotFrozen();
-        if (!\in_array($propertyHandler, $this->propertyHandlers, true)) {
+        if (!in_array($propertyHandler, $this->propertyHandlers, true)) {
             $this->propertyHandlers[] = $propertyHandler;
         }
 
@@ -118,7 +119,7 @@ class Factory
     public function registerSequenceHandler(SequenceHandlerInterface $sequenceHandler): self
     {
         $this->assertNotFrozen();
-        if (!\in_array($sequenceHandler, $this->sequenceHandlers, true)) {
+        if (!in_array($sequenceHandler, $this->sequenceHandlers, true)) {
             $this->sequenceHandlers[] = $sequenceHandler;
         }
 

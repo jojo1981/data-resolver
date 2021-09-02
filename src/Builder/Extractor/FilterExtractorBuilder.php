@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /*
  * This file is part of the jojo1981/data-resolver package
  *
@@ -12,7 +12,6 @@ namespace Jojo1981\DataResolver\Builder\Extractor;
 use Jojo1981\DataResolver\Builder\ExtractorBuilderInterface;
 use Jojo1981\DataResolver\Extractor\ExtractorInterface;
 use Jojo1981\DataResolver\Extractor\FilterExtractor;
-use Jojo1981\DataResolver\Extractor\FindExtractor;
 use Jojo1981\DataResolver\Handler\SequenceHandlerInterface;
 use Jojo1981\DataResolver\Predicate\PredicateInterface;
 
@@ -22,10 +21,10 @@ use Jojo1981\DataResolver\Predicate\PredicateInterface;
 class FilterExtractorBuilder implements ExtractorBuilderInterface
 {
     /** @var SequenceHandlerInterface */
-    private $sequenceHandler;
+    private SequenceHandlerInterface $sequenceHandler;
 
     /** @var PredicateInterface */
-    private $predicate;
+    private PredicateInterface $predicate;
 
     /**
      * @param SequenceHandlerInterface $sequenceHandler

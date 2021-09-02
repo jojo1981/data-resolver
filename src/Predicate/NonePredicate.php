@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /*
  * This file is part of the jojo1981/data-resolver package
  *
@@ -15,6 +15,7 @@ use Jojo1981\DataResolver\Handler\SequenceHandlerInterface;
 use Jojo1981\DataResolver\Predicate\Exception\PredicateException;
 use Jojo1981\DataResolver\Resolver\Context;
 use function get_class;
+use function sprintf;
 
 /**
  * @package Jojo1981\DataResolver\Predicate
@@ -22,10 +23,10 @@ use function get_class;
 class NonePredicate implements PredicateInterface
 {
     /** @var SequenceHandlerInterface */
-    private $sequenceHandler;
+    private SequenceHandlerInterface $sequenceHandler;
 
     /** @var PredicateInterface */
-    private $predicate;
+    private PredicateInterface $predicate;
 
     /**
      * @param SequenceHandlerInterface $sequenceHandler
@@ -47,7 +48,7 @@ class NonePredicate implements PredicateInterface
     public function match(Context $context): bool
     {
         if (!$this->sequenceHandler->supports($context->getData())) {
-            throw new PredicateException(\sprintf(
+            throw new PredicateException(sprintf(
                 'Could not match data with `%s` at path: `%s`',
                 get_class($this),
                 $context->getPath()

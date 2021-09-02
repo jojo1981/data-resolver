@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /*
  * This file is part of the jojo1981/data-resolver package
  *
@@ -19,10 +19,10 @@ use Jojo1981\DataResolver\Predicate\StringContainsPredicate;
 class StringContainsPredicateBuilder implements PredicateBuilderInterface
 {
     /** @var string */
-    private $subString;
+    private string $subString;
 
     /** @var bool */
-    private $caseSensitive;
+    private bool $caseSensitive;
 
     /**
      * @param string $subString

@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /*
  * This file is part of the jojo1981/data-resolver package
  *
@@ -23,13 +23,13 @@ use Jojo1981\DataResolver\Factory\PredicateBuilderFactory;
 class ExtractorPredicateBuilder
 {
     /** @var PredicateBuilderFactory */
-    private $predicateBuilderFactory;
+    private PredicateBuilderFactory $predicateBuilderFactory;
 
     /** @var ExtractorBuilderFactory */
-    private $extractorBuilderFactory;
+    private ExtractorBuilderFactory $extractorBuilderFactory;
 
     /** @var ExtractorBuilderInterface */
-    private $extractorBuilder;
+    private ExtractorBuilderInterface $extractorBuilder;
 
     /**
      * @param PredicateBuilderFactory $predicateBuilderFactory
@@ -258,7 +258,7 @@ class ExtractorPredicateBuilder
     }
 
     /**
-     * @param mixed[] $expectedValues
+     * @param array $expectedValues
      * @return ConditionalPredicateBuilder
      */
     public function in(array $expectedValues): ConditionalPredicateBuilder

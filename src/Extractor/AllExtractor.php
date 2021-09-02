@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /*
  * This file is part of the jojo1981/data-resolver package
  *
@@ -23,10 +23,10 @@ use Jojo1981\DataResolver\Resolver\Context;
 class AllExtractor extends AbstractSequenceExtractor
 {
     /** @var SequenceHandlerInterface */
-    private $sequenceHandler;
+    private SequenceHandlerInterface $sequenceHandler;
 
     /** @var PredicateInterface */
-    private $predicate;
+    private PredicateInterface $predicate;
 
     /**
      * @param SequenceHandlerInterface $sequenceHandler
@@ -48,12 +48,12 @@ class AllExtractor extends AbstractSequenceExtractor
 
     /**
      * @param Context $context
-     * @return mixed
+     * @return bool
      * @throws ExtractorException
      * @throws PredicateException
      * @throws HandlerException
      */
-    protected function performExtract(Context $context)
+    protected function performExtract(Context $context): bool
     {
         foreach ($this->sequenceHandler->getIterator($context->getData()) as $key => $value) {
             $match = $this->predicate->match($context->copy()->pushPathPart($key)->setData($value));

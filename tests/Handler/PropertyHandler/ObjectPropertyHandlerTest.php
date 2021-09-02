@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /*
  * This file is part of the jojo1981/data-resolver package
  *
@@ -13,32 +13,42 @@ use Jojo1981\DataResolver\Handler\Exception\HandlerException;
 use Jojo1981\DataResolver\Handler\PropertyHandler\ObjectPropertyHandler;
 use Jojo1981\DataResolver\NamingStrategy\NamingStrategyInterface;
 use PHPUnit\Framework\ExpectationFailedException;
-use stdClass;
-use tests\Jojo1981\DataResolver\TestCase;
 use Prophecy\Argument;
 use Prophecy\Exception\Doubler\ClassNotFoundException;
 use Prophecy\Exception\Doubler\DoubleException;
 use Prophecy\Exception\Doubler\InterfaceNotFoundException;
 use Prophecy\Exception\Prophecy\ObjectProphecyException;
 use Prophecy\Prophecy\ObjectProphecy;
+use ReflectionException;
 use SebastianBergmann\RecursionContext\InvalidArgumentException;
+use stdClass;
+use tests\Jojo1981\DataResolver\TestCase;
 use function define;
 
 /**
  * @package tests\Jojo1981\DataResolver\Handler\PropertyHandler
  */
-class TestEntity
+final class TestEntity
 {
-    public $myProp;
+    /** @var string */
+    public string $myProp;
 
-    private $myName;
+    /** @var string */
+    private string $myName;
 
-    public function getMyName()
+    /**
+     * @return string
+     */
+    public function getMyName(): string
     {
         return $this->myName;
     }
 
-    public function setMyName($myName): void
+    /**
+     * @param string $myName
+     * @return void
+     */
+    public function setMyName(string $myName): void
     {
         $this->myName = $myName;
     }
@@ -102,6 +112,7 @@ class ObjectPropertyHandlerTest extends TestCase
      * @runInSeparateProcess
      *
      * @return void
+     * @throws ReflectionException
      * @throws HandlerException
      * @throws ObjectProphecyException
      */
@@ -141,6 +152,7 @@ class ObjectPropertyHandlerTest extends TestCase
      * @test
      *
      * @return void
+     * @throws ReflectionException
      * @throws HandlerException
      * @throws ObjectProphecyException
      */
@@ -162,6 +174,7 @@ class ObjectPropertyHandlerTest extends TestCase
      * @test
      *
      * @return void
+     * @throws ReflectionException
      * @throws InvalidArgumentException
      * @throws ObjectProphecyException
      * @throws ExpectationFailedException
@@ -186,6 +199,7 @@ class ObjectPropertyHandlerTest extends TestCase
      * @test
      *
      * @return void
+     * @throws ReflectionException
      * @throws InvalidArgumentException
      * @throws ObjectProphecyException
      * @throws ExpectationFailedException
@@ -216,6 +230,7 @@ class ObjectPropertyHandlerTest extends TestCase
      * @test
      *
      * @return void
+     * @throws ReflectionException
      * @throws InvalidArgumentException
      * @throws ObjectProphecyException
      * @throws ExpectationFailedException
@@ -240,6 +255,7 @@ class ObjectPropertyHandlerTest extends TestCase
      * @test
      *
      * @return void
+     * @throws ReflectionException
      * @throws InvalidArgumentException
      * @throws ObjectProphecyException
      * @throws ExpectationFailedException
@@ -267,6 +283,7 @@ class ObjectPropertyHandlerTest extends TestCase
      * @test
      *
      * @return void
+     * @throws ReflectionException
      * @throws InvalidArgumentException
      * @throws ObjectProphecyException
      * @throws ExpectationFailedException

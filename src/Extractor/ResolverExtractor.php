@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /*
  * This file is part of the jojo1981/data-resolver package
  *
@@ -12,8 +12,8 @@ namespace Jojo1981\DataResolver\Extractor;
 use Jojo1981\DataResolver\Extractor\Exception\ExtractorException;
 use Jojo1981\DataResolver\Handler\Exception\HandlerException;
 use Jojo1981\DataResolver\Predicate\Exception\PredicateException;
-use Jojo1981\DataResolver\Resolver\Context;
 use Jojo1981\DataResolver\Resolver;
+use Jojo1981\DataResolver\Resolver\Context;
 
 /**
  * @package Jojo1981\DataResolver\Extractor
@@ -21,7 +21,7 @@ use Jojo1981\DataResolver\Resolver;
 class ResolverExtractor implements ExtractorInterface
 {
     /** @var Resolver */
-    private $resolver;
+    private Resolver $resolver;
 
     /**
      * @param Resolver $resolver

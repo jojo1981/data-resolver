@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /*
  * This file is part of the jojo1981/data-resolver package
  *
@@ -18,10 +18,10 @@ use Jojo1981\DataResolver\Predicate\StringEndsWithPredicate;
  */
 class StringEndsWithPredicateBuilder implements PredicateBuilderInterface
 {
-    private $suffix;
+    private string $suffix;
 
     /** @var bool */
-    private $caseSensitive;
+    private bool $caseSensitive;
 
     /**
      * @param string $suffix

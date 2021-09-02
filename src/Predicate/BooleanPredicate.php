@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /*
  * This file is part of the jojo1981/data-resolver package
  *
@@ -17,10 +17,10 @@ use Jojo1981\DataResolver\Resolver\Context;
 class BooleanPredicate implements PredicateInterface
 {
     /** @var bool */
-    private $expected;
+    private bool $expected;
 
     /** @var bool */
-    private $strict;
+    private bool $strict;
 
     /**
      * @param bool $expected

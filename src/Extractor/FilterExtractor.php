@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /*
  * This file is part of the jojo1981/data-resolver package
  *
@@ -9,6 +9,7 @@
  */
 namespace Jojo1981\DataResolver\Extractor;
 
+use Exception;
 use Jojo1981\DataResolver\Handler\Exception\HandlerException;
 use Jojo1981\DataResolver\Handler\SequenceHandlerInterface;
 use Jojo1981\DataResolver\Predicate\PredicateInterface;
@@ -20,10 +21,10 @@ use Jojo1981\DataResolver\Resolver\Context;
 class FilterExtractor extends AbstractSequenceExtractor
 {
     /** @var SequenceHandlerInterface */
-    private $sequenceHandler;
+    private SequenceHandlerInterface $sequenceHandler;
 
     /** @var PredicateInterface */
-    private $predicate;
+    private PredicateInterface $predicate;
 
     /**
      * @param SequenceHandlerInterface $sequenceHandler
@@ -55,7 +56,7 @@ class FilterExtractor extends AbstractSequenceExtractor
             function ($value) use ($context): bool {
                 try {
                     return $this->predicate->match($context->copy()->setData($value));
-                } catch (\Exception $exception) {
+                } catch (Exception $exception) {
                     return false;
                 }
             }

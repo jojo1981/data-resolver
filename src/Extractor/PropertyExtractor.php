@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /*
  * This file is part of the jojo1981/data-resolver package
  *
@@ -18,6 +18,7 @@ use Jojo1981\DataResolver\Resolver\Context;
 use function array_shift;
 use function count;
 use function get_class;
+use function sprintf;
 
 /**
  * @package Jojo1981\DataResolver\Extractor
@@ -25,16 +26,16 @@ use function get_class;
 class PropertyExtractor implements ExtractorInterface
 {
     /** @var NamingStrategyInterface */
-    private $namingStrategy;
+    private NamingStrategyInterface $namingStrategy;
 
     /** @var PropertyHandlerInterface */
-    private $propertyHandler;
+    private PropertyHandlerInterface $propertyHandler;
 
     /** @var MergeHandlerInterface */
-    private $mergeHandlerInterface;
+    private MergeHandlerInterface $mergeHandlerInterface;
 
     /** @var string[] */
-    private $propertyNames;
+    private array $propertyNames;
 
     /**
      * @param NamingStrategyInterface $namingStrategy
@@ -65,7 +66,7 @@ class PropertyExtractor implements ExtractorInterface
         $elements = [];
         foreach ($this->propertyNames as $propertyName) {
             if (false === $this->canExtract($context->getData(), $propertyName)) {
-                throw new ExtractorException(\sprintf(
+                throw new ExtractorException(sprintf(
                     'Could not extract data with `%s` for property: `%s` at path: `%s`',
                     get_class($this),
                     $propertyName,

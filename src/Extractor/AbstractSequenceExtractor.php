@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /*
  * This file is part of the jojo1981/data-resolver package
  *
@@ -15,6 +15,7 @@ use Jojo1981\DataResolver\Handler\SequenceHandlerInterface;
 use Jojo1981\DataResolver\Predicate\Exception\PredicateException;
 use Jojo1981\DataResolver\Resolver\Context;
 use function get_class;
+use function sprintf;
 
 /**
  * @package Jojo1981\DataResolver\Extractor
@@ -31,7 +32,7 @@ abstract class AbstractSequenceExtractor implements ExtractorInterface
     final public function extract(Context $context)
     {
         if (!$this->getSequenceHandler()->supports($context->getData())) {
-            throw new ExtractorException(\sprintf(
+            throw new ExtractorException(sprintf(
                 'Could not extract data with `%s` at path: `%s`',
                 get_class($this),
                 $context->getPath()

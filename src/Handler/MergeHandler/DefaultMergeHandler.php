@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /*
  * This file is part of the jojo1981/data-resolver package
  *
@@ -13,9 +13,11 @@ use Jojo1981\DataResolver\Handler\MergeHandlerInterface;
 use Jojo1981\DataResolver\Resolver\Context;
 use stdClass;
 use function array_filter;
+use function array_keys;
 use function array_push;
 use function array_reduce;
 use function is_array;
+use function is_numeric;
 
 /**
  * @package Jojo1981\DataResolver\Handler\MergeHandler
@@ -25,7 +27,7 @@ class DefaultMergeHandler implements MergeHandlerInterface
     /**
      * @param Context $context
      * @param array $elements
-     * @return mixed
+     * @return array|stdClass
      */
     public function merge(Context $context, array $elements)
     {
@@ -89,8 +91,8 @@ class DefaultMergeHandler implements MergeHandlerInterface
             return false;
         }
 
-        foreach (\array_keys($array) as $key) {
-            if (!\is_numeric($key)) {
+        foreach (array_keys($array) as $key) {
+            if (!is_numeric($key)) {
                 return false;
             }
         }

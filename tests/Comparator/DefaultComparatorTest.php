@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /*
  * This file is part of the jojo1981/data-resolver package
  *
@@ -11,8 +11,6 @@ namespace tests\Jojo1981\DataResolver\Comparator;
 
 use Jojo1981\DataResolver\Comparator\DefaultComparator;
 use PHPUnit\Framework\ExpectationFailedException;
-use stdClass;
-use tests\Jojo1981\DataResolver\TestCase;
 use Prophecy\Exception\Doubler\ClassNotFoundException;
 use Prophecy\Exception\Doubler\DoubleException;
 use Prophecy\Exception\Doubler\InterfaceNotFoundException;
@@ -21,7 +19,10 @@ use Prophecy\Prophecy\ObjectProphecy;
 use SebastianBergmann\Comparator\Comparator;
 use SebastianBergmann\Comparator\ComparisonFailure;
 use SebastianBergmann\Comparator\Factory as ComparatorFactory;
+use SebastianBergmann\Comparator\RuntimeException;
 use SebastianBergmann\RecursionContext\InvalidArgumentException;
+use stdClass;
+use tests\Jojo1981\DataResolver\TestCase;
 
 /**
  * @package tests\Jojo1981\DataResolver\Comparator
@@ -50,6 +51,7 @@ class DefaultComparatorTest extends TestCase
      * @test
      *
      * @return void
+     * @throws RuntimeException
      * @throws ObjectProphecyException
      * @throws ExpectationFailedException
      * @throws InvalidArgumentException
@@ -64,6 +66,7 @@ class DefaultComparatorTest extends TestCase
      * @test
      *
      * @return void
+     * @throws RuntimeException
      * @throws InvalidArgumentException
      * @throws ObjectProphecyException
      * @throws ComparisonFailure
@@ -80,6 +83,7 @@ class DefaultComparatorTest extends TestCase
      * @test
      *
      * @return void
+     * @throws RuntimeException
      * @throws InvalidArgumentException
      * @throws ObjectProphecyException
      * @throws ComparisonFailure
@@ -96,6 +100,7 @@ class DefaultComparatorTest extends TestCase
      * @test
      *
      * @return void
+     * @throws RuntimeException
      * @throws ExpectationFailedException
      * @throws InvalidArgumentException
      */
@@ -112,6 +117,7 @@ class DefaultComparatorTest extends TestCase
      * @test
      *
      * @return void
+     * @throws RuntimeException
      * @throws ExpectationFailedException
      * @throws InvalidArgumentException
      */

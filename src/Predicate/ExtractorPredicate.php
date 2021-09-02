@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /*
  * This file is part of the jojo1981/data-resolver package
  *
@@ -9,6 +9,7 @@
  */
 namespace Jojo1981\DataResolver\Predicate;
 
+use Exception;
 use Jojo1981\DataResolver\Extractor\ExtractorInterface;
 use Jojo1981\DataResolver\Resolver\Context;
 
@@ -18,10 +19,10 @@ use Jojo1981\DataResolver\Resolver\Context;
 class ExtractorPredicate implements PredicateInterface
 {
     /** @var ExtractorInterface */
-    private $extractor;
+    private ExtractorInterface $extractor;
 
     /** @var PredicateInterface */
-    private $predicate;
+    private PredicateInterface $predicate;
 
     /**
      * @param ExtractorInterface $extractor
@@ -41,7 +42,7 @@ class ExtractorPredicate implements PredicateInterface
     {
         try {
             return $this->predicate->match($context->copy()->setData($this->extractor->extract($context)));
-        } catch (\Exception $exception) {
+        } catch (Exception $exception) {
             return false;
         }
     }

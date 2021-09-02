@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /*
  * This file is part of the jojo1981/data-resolver package
  *
@@ -44,13 +44,13 @@ use Jojo1981\DataResolver\Handler\SequenceHandlerInterface;
 class PredicateBuilderFactory
 {
     /** @var ExtractorBuilderFactory */
-    private $extractorBuilderFactory;
+    private ExtractorBuilderFactory $extractorBuilderFactory;
 
     /** @var SequenceHandlerInterface */
-    private $sequenceHandler;
+    private SequenceHandlerInterface $sequenceHandler;
 
     /** @var ComparatorInterface */
-    private $comparator;
+    private ComparatorInterface $comparator;
 
     /**
      * @param ExtractorBuilderFactory $extractorBuilderFactory
@@ -176,7 +176,7 @@ class PredicateBuilderFactory
     }
 
     /**
-     * @param mixed[] $expectedValues
+     * @param array $expectedValues
      * @return InPredicateBuilder
      */
     public function getInPredicateBuilder(array $expectedValues): InPredicateBuilder

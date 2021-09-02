@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /*
  * This file is part of the jojo1981/data-resolver package
  *
@@ -9,17 +9,18 @@
  */
 namespace tests\Jojo1981\DataResolver\Predicate;
 
+use Exception;
 use Jojo1981\DataResolver\Extractor\HasPropertyExtractor;
 use Jojo1981\DataResolver\Predicate\HasPropertyPredicate;
 use Jojo1981\DataResolver\Resolver\Context;
 use PHPUnit\Framework\ExpectationFailedException;
-use tests\Jojo1981\DataResolver\TestCase;
 use Prophecy\Exception\Doubler\ClassNotFoundException;
 use Prophecy\Exception\Doubler\DoubleException;
 use Prophecy\Exception\Doubler\InterfaceNotFoundException;
 use Prophecy\Exception\Prophecy\ObjectProphecyException;
 use Prophecy\Prophecy\ObjectProphecy;
 use SebastianBergmann\RecursionContext\InvalidArgumentException;
+use tests\Jojo1981\DataResolver\TestCase;
 
 /**
  * @package tests\Jojo1981\DataResolver\Predicate
@@ -54,7 +55,7 @@ class HasPropertyPredicateTest extends TestCase
      */
     public function matchShouldReturnFalseWhenExtractorThrowsAnException(): void
     {
-        $this->hasPropertyExtractor->extract($this->context)->willThrow(\Exception::class)->shouldBeCalledOnce();
+        $this->hasPropertyExtractor->extract($this->context)->willThrow(Exception::class)->shouldBeCalledOnce();
         $this->assertFalse($this->getHasPropertyPredicate()->match($this->context->reveal()));
     }
 
@@ -69,7 +70,7 @@ class HasPropertyPredicateTest extends TestCase
     public function matchShouldReturnFalseWhenWhenExtractorReturnsFalse(): void
     {
         $this->hasPropertyExtractor->extract($this->context)->willReturn(false)->shouldBeCalledOnce();
-        $this->assertFalse($this->getHasPropertyPredicate('propertyName')->match($this->context->reveal()));
+        $this->assertFalse($this->getHasPropertyPredicate()->match($this->context->reveal()));
     }
 
     /**
@@ -83,7 +84,7 @@ class HasPropertyPredicateTest extends TestCase
     public function matchShouldReturnTrueWhenWhenExtractorReturnsTrue(): void
     {
         $this->hasPropertyExtractor->extract($this->context)->willReturn(true)->shouldBeCalledOnce();
-        $this->assertTrue($this->getHasPropertyPredicate('propertyName')->match($this->context->reveal()));
+        $this->assertTrue($this->getHasPropertyPredicate()->match($this->context->reveal()));
     }
 
     /**

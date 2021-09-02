@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /*
  * This file is part of the jojo1981/data-resolver package
  *
@@ -18,10 +18,10 @@ use function mb_strpos;
 class StringContainsPredicate extends AbstractStringPredicate
 {
     /** @var string */
-    private $subString;
+    private string $subString;
 
     /** @var bool */
-    private $caseSensitive;
+    private bool $caseSensitive;
 
     /**
      * @param string $subString

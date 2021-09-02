@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /*
  * This file is part of the jojo1981/data-resolver package
  *
@@ -23,16 +23,16 @@ use Jojo1981\DataResolver\NamingStrategy\NamingStrategyInterface;
 class PropertyExtractorBuilder implements ExtractorBuilderInterface
 {
     /** @var NamingStrategyInterface */
-    private $namingStrategy;
+    private NamingStrategyInterface $namingStrategy;
 
     /** @var PropertyHandlerInterface */
-    private $propertyHandler;
+    private PropertyHandlerInterface $propertyHandler;
 
     /** @var MergeHandlerInterface */
-    private $mergeHandler;
+    private MergeHandlerInterface $mergeHandler;
 
     /** @var string[] */
-    private $propertyNames;
+    private array $propertyNames;
 
     /**
      * @param NamingStrategyInterface $namingStrategy

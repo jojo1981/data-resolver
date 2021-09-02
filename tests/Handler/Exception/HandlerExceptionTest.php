@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /*
  * This file is part of the jojo1981/data-resolver package
  *
@@ -12,8 +12,8 @@ namespace tests\Jojo1981\DataResolver\Handler\Exception;
 use Jojo1981\DataResolver\Handler\Exception\HandlerException;
 use PHPUnit\Framework\ExpectationFailedException;
 use ReflectionException;
-use tests\Jojo1981\DataResolver\TestCase;
 use SebastianBergmann\RecursionContext\InvalidArgumentException;
+use tests\Jojo1981\DataResolver\TestCase;
 
 /**
  * @package tests\Jojo1981\DataResolver\Handler\Exception

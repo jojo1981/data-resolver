@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /*
  * This file is part of the jojo1981/data-resolver package
  *
@@ -11,6 +11,7 @@ namespace Jojo1981\DataResolver\Comparator;
 
 use SebastianBergmann\Comparator\ComparisonFailure;
 use SebastianBergmann\Comparator\Factory as ComparatorFactory;
+use SebastianBergmann\Comparator\RuntimeException;
 
 /**
  * @package Jojo1981\DataResolver\Comparator
@@ -18,10 +19,10 @@ use SebastianBergmann\Comparator\Factory as ComparatorFactory;
 class DefaultComparator implements ComparatorInterface
 {
     /** @var ComparatorFactory */
-    private $comparatorFactory;
+    private ComparatorFactory $comparatorFactory;
 
     /**
-     * @param |ComparatorFactory|null $comparatorFactory
+     * @param ComparatorFactory|null $comparatorFactory
      */
     public function __construct(?ComparatorFactory $comparatorFactory = null)
     {
@@ -32,6 +33,8 @@ class DefaultComparator implements ComparatorInterface
      * @param mixed $referenceValue
      * @param mixed $toCompareValue
      * @return bool
+     * @throws RuntimeException
+     * @throws RuntimeException
      */
     public function isEqual($referenceValue, $toCompareValue): bool
     {

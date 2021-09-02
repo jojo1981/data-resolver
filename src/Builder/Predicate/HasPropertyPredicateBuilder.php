@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /*
  * This file is part of the jojo1981/data-resolver package
  *
@@ -20,7 +20,7 @@ use Jojo1981\DataResolver\Predicate\PredicateInterface;
 class HasPropertyPredicateBuilder implements PredicateBuilderInterface
 {
     /** @var HasPropertyExtractor */
-    private $extractor;
+    private HasPropertyExtractor $extractor;
 
     /**
      * @param HasPropertyExtractor $extractor

@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /*
  * This file is part of the jojo1981/data-resolver package
  *
@@ -13,17 +13,17 @@ use Jojo1981\DataResolver\Builder\Extractor\AllExtractorBuilder;
 use Jojo1981\DataResolver\Builder\Extractor\CallbackExtractorBuilder;
 use Jojo1981\DataResolver\Builder\Extractor\CompositeExtractorBuilder;
 use Jojo1981\DataResolver\Builder\Extractor\CountExtractorBuilder;
+use Jojo1981\DataResolver\Builder\Extractor\FilterExtractorBuilder;
+use Jojo1981\DataResolver\Builder\Extractor\FindExtractorBuilder;
+use Jojo1981\DataResolver\Builder\Extractor\FlattenExtractorBuilder;
 use Jojo1981\DataResolver\Builder\Extractor\HasPropertyExtractorBuilder;
 use Jojo1981\DataResolver\Builder\Extractor\NoneExtractorBuilder;
+use Jojo1981\DataResolver\Builder\Extractor\PropertyExtractorBuilder;
+use Jojo1981\DataResolver\Builder\Extractor\ResolverExtractorBuilder;
 use Jojo1981\DataResolver\Builder\Extractor\SomeExtractorBuilder;
 use Jojo1981\DataResolver\Builder\Extractor\StringLengthExtractorBuilder;
 use Jojo1981\DataResolver\Builder\Extractor\SumExtractorBuilder;
 use Jojo1981\DataResolver\Builder\ExtractorBuilderInterface;
-use Jojo1981\DataResolver\Builder\Extractor\FilterExtractorBuilder;
-use Jojo1981\DataResolver\Builder\Extractor\FindExtractorBuilder;
-use Jojo1981\DataResolver\Builder\Extractor\FlattenExtractorBuilder;
-use Jojo1981\DataResolver\Builder\Extractor\PropertyExtractorBuilder;
-use Jojo1981\DataResolver\Builder\Extractor\ResolverExtractorBuilder;
 use Jojo1981\DataResolver\Builder\PredicateBuilderInterface;
 use Jojo1981\DataResolver\Builder\ResolverBuilder;
 use Jojo1981\DataResolver\Handler\MergeHandlerInterface;
@@ -39,16 +39,16 @@ use function array_merge;
 class ExtractorBuilderFactory
 {
     /** @var NamingStrategyInterface */
-    private $namingStrategy;
+    private NamingStrategyInterface $namingStrategy;
 
     /** @var PropertyHandlerInterface */
-    private $propertyHandler;
+    private PropertyHandlerInterface $propertyHandler;
 
     /** @var SequenceHandlerInterface */
-    private $sequenceHandler;
+    private SequenceHandlerInterface $sequenceHandler;
 
     /** @var MergeHandlerInterface */
-    private $mergeHandler;
+    private MergeHandlerInterface $mergeHandler;
 
     /**
      * @param NamingStrategyInterface $namingStrategy

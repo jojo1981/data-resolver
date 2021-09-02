@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /*
  * This file is part of the jojo1981/data-resolver package
  *
@@ -22,10 +22,10 @@ use Jojo1981\DataResolver\Predicate\PredicateInterface;
 class SomeExtractorBuilder implements ExtractorBuilderInterface
 {
     /** @var SequenceHandlerInterface */
-    private $sequenceHandler;
+    private SequenceHandlerInterface $sequenceHandler;
 
     /** @var PredicateInterface */
-    private $predicate;
+    private PredicateInterface $predicate;
 
     /**
      * @param SequenceHandlerInterface $sequenceHandler

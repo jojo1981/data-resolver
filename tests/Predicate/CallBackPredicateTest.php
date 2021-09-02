@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /*
  * This file is part of the jojo1981/data-resolver package
  *
@@ -12,8 +12,8 @@ namespace tests\Jojo1981\DataResolver\Predicate;
 use Jojo1981\DataResolver\Predicate\CallBackPredicate;
 use Jojo1981\DataResolver\Resolver\Context;
 use PHPUnit\Framework\ExpectationFailedException;
-use tests\Jojo1981\DataResolver\TestCase;
 use SebastianBergmann\RecursionContext\InvalidArgumentException;
+use tests\Jojo1981\DataResolver\TestCase;
 
 /**
  * @package tests\Jojo1981\DataResolver\Predicate
@@ -30,7 +30,7 @@ class CallBackPredicateTest extends TestCase
     public function matchShouldReturnFalseBecauseCallbackWillBeCalledAndReturnFalse(): void
     {
         $called = false;
-        $callback = $this->buildCallback($called, 'my-data', false);
+        $callback = $this->buildCallback($called, false);
 
         $this->assertFalse((new CallBackPredicate($callback))->match(new Context('my-data')));
         $this->assertTrue($called, 'Expect callback to be called once, not called at all');
@@ -46,7 +46,7 @@ class CallBackPredicateTest extends TestCase
     public function matchShouldReturnTrueBecauseCallbackWillBeCalledAndReturnTrue(): void
     {
         $called = false;
-        $callback = $this->buildCallback($called, 'my-data', true);
+        $callback = $this->buildCallback($called, true);
 
         $this->assertTrue((new CallBackPredicate($callback))->match(new Context('my-data')));
         $this->assertTrue($called, 'Expect callback to be called once, not called at all');
@@ -62,13 +62,13 @@ class CallBackPredicateTest extends TestCase
     public function matchShouldReturnFalseBecauseValueReturnedByCallbackIsEvaluatedToFalse(): void
     {
         $called = false;
-        $callback = $this->buildCallback($called, 'my-data', '');
+        $callback = $this->buildCallback($called, '');
 
         $this->assertFalse((new CallBackPredicate($callback))->match(new Context('my-data')));
         $this->assertTrue($called, 'Expect callback to be called once, not called at all');
 
         $called = false;
-        $callback = $this->buildCallback($called, 'my-data', null);
+        $callback = $this->buildCallback($called, null);
 
         $this->assertFalse((new CallBackPredicate($callback))->match(new Context('my-data')));
         $this->assertTrue($called, 'Expect callback to be called once, not called at all');
@@ -84,7 +84,7 @@ class CallBackPredicateTest extends TestCase
     public function matchShouldReturnTrueBecauseValueReturnedByCallbackIsEvaluatedToTrue(): void
     {
         $called = false;
-        $callback = $this->buildCallback($called, 'my-data', 'yes');
+        $callback = $this->buildCallback($called, 'yes');
 
         $this->assertTrue((new CallBackPredicate($callback))->match(new Context('my-data')));
         $this->assertTrue($called, 'Expect callback to be called once, not called at all');
@@ -92,12 +92,13 @@ class CallBackPredicateTest extends TestCase
 
     /**
      * @param bool $called
-     * @param $expectedValue
-     * @param $returnValue
+     * @param mixed $returnValue
      * @return callable
      */
-    private function buildCallback(bool &$called, $expectedValue, $returnValue): callable
+    private function buildCallback(bool &$called, $returnValue): callable
     {
+        $expectedValue = 'my-data';
+
         return function ($value) use (&$called, $expectedValue, $returnValue) {
             if (true === $called) {
                 $this->fail('Expect callback to only be called once');

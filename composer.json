@@ -20,16 +20,16 @@
   "prefer-stable": true,
   "minimum-stability": "dev",
   "require": {
-    "php": "^7.1",
-    "sebastian/comparator": "^3.0|^4.0"
+    "php": "^7.4|^8.0",
+    "sebastian/comparator": "^4.0"
   },
   "require-dev": {
     "ext-json": "*",
     "dg/bypass-finals": "^1.1",
     "friendsofphp/php-cs-fixer": "^2.16",
     "php-coveralls/php-coveralls": "^2.1",
-    "phpspec/prophecy-phpunit": "^1.0|^2.0",
-    "phpunit/phpunit": "^7.5|^9.0",
+    "phpspec/prophecy-phpunit": "^2.0",
+    "phpunit/phpunit": "^9.0",
     "roave/security-advisories": "dev-master"
   },
   "suggest": {
@@ -50,14 +50,14 @@
     "sort-packages": true
   },
   "scripts": {
-    "test": "./bin/phpunit",
+    "test": "bin/phpunit",
     "cs-fix": [
-      "./bin/php-cs-fixer fix ./src --rules=@PSR2 --using-cache=no",
-      "./bin/php-cs-fixer fix ./tests --rules=@PSR2 --using-cache=no"
+      "bin/php-cs-fixer fix ./src --rules=@PSR2 --using-cache=no",
+      "bin/php-cs-fixer fix ./tests --rules=@PSR2 --using-cache=no"
     ],
     "cs-check": [
-      "./bin/php-cs-fixer fix ./src --dry-run --diff --diff-format=udiff --rules=@PSR2 --using-cache=no",
-      "./bin/php-cs-fixer fix ./tests --dry-run --diff --diff-format=udiff --rules=@PSR2 --using-cache=no"
+      "bin/php-cs-fixer fix ./src --dry-run --diff --diff-format=udiff --rules=@PSR2 --using-cache=no",
+      "bin/php-cs-fixer fix ./tests --dry-run --diff --diff-format=udiff --rules=@PSR2 --using-cache=no"
     ]
   }
 }

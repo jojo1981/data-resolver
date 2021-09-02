@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /*
  * This file is part of the jojo1981/data-resolver package
  *
@@ -20,7 +20,7 @@ use function array_walk;
 class CompositeSequenceHandler implements SequenceHandlerInterface
 {
     /** @var SequenceHandlerInterface[] */
-    private $handlers = [];
+    private array $handlers = [];
 
     /**
      * @param SequenceHandlerInterface[] $handlers

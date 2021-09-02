@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /*
  * This file is part of the jojo1981/data-resolver package
  *
@@ -19,14 +19,14 @@ use Jojo1981\DataResolver\Predicate\PredicateInterface;
  */
 class InPredicateBuilder implements PredicateBuilderInterface
 {
-    /** @var mixed[] */
-    private $expectedValues;
+    /** @var array */
+    private array $expectedValues;
 
     /** @var ComparatorInterface */
-    private $comparator;
+    private ComparatorInterface $comparator;
 
     /**
-     * @param mixed[] $expectedValues
+     * @param array $expectedValues
      * @param ComparatorInterface $comparator
      */
     public function __construct(array $expectedValues, ComparatorInterface $comparator)

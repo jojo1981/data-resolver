@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /*
  * This file is part of the jojo1981/data-resolver package
  *
@@ -19,10 +19,10 @@ use Jojo1981\DataResolver\Predicate\StringStartsWithPredicate;
 class StringStartsWithPredicateBuilder implements PredicateBuilderInterface
 {
     /** @var string */
-    private $prefix;
+    private string $prefix;
 
     /** @var bool */
-    private $caseSensitive;
+    private bool $caseSensitive;
 
     /**
      * @param string $prefix

@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /*
  * This file is part of the jojo1981/data-resolver package
  *
@@ -17,6 +17,10 @@ use Jojo1981\DataResolver\Builder\PredicateBuilderInterface;
 use Jojo1981\DataResolver\Builder\ResolverBuilder;
 use Jojo1981\DataResolver\Factory\Exception\FactoryException;
 use Jojo1981\DataResolver\Resolver;
+use function array_shift;
+use function explode;
+use function is_string;
+use function sprintf;
 use function strpos;
 use function trim;
 
@@ -27,10 +31,10 @@ use function trim;
 class ResolverBuilderFactory
 {
     /** @var ExtractorBuilderFactory */
-    private $extractorBuilderFactory;
+    private ExtractorBuilderFactory $extractorBuilderFactory;
 
     /** @var PredicateBuilderFactory */
-    private $predicateBuilderFactory;
+    private PredicateBuilderFactory $predicateBuilderFactory;
 
     /**
      * @param ExtractorBuilderFactory $extractorBuilderFactory
@@ -163,7 +167,7 @@ class ResolverBuilderFactory
             );
         }
 
-        if (\is_string($arg)) {
+        if (is_string($arg)) {
             return $this->getExtractorPredicateBuilderForPropertyName($arg);
         }
 
@@ -173,7 +177,7 @@ class ResolverBuilderFactory
             );
         }
 
-        throw new FactoryException(\sprintf(
+        throw new FactoryException(sprintf(
             'Invalid argument given for method `where`, should be of type string or an instance of %s',
             ResolverBuilder::class
         ));
@@ -225,7 +229,7 @@ class ResolverBuilderFactory
             );
         }
 
-        return $this->getExtractorPredicateBuilderForPropertyNames(\explode('.', $propertyName));
+        return $this->getExtractorPredicateBuilderForPropertyNames(explode('.', $propertyName));
     }
 
     /**
@@ -235,8 +239,8 @@ class ResolverBuilderFactory
     private function getExtractorPredicateBuilderForPropertyNames(array $propertyNames): ExtractorPredicateBuilder
     {
         $extractorBuilder = $this->extractorBuilderFactory->getCompositeExtractorBuilder(
-            $this->extractorBuilderFactory->getPropertyExtractorBuilder(\array_shift($propertyNames)),
-            $this->extractorBuilderFactory->getPropertyExtractorBuilder(\array_shift($propertyNames))
+            $this->extractorBuilderFactory->getPropertyExtractorBuilder(array_shift($propertyNames)),
+            $this->extractorBuilderFactory->getPropertyExtractorBuilder(array_shift($propertyNames))
         );
 
         foreach ($propertyNames as $propertyName) {

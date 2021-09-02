@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /*
  * This file is part of the jojo1981/data-resolver package
  *
@@ -19,7 +19,7 @@ use Jojo1981\DataResolver\Predicate\StringRegexPredicate;
 class StringRegexPredicateBuilder implements PredicateBuilderInterface
 {
     /** @var string */
-    private $pattern;
+    private string $pattern;
 
     /**
      * @param string $pattern

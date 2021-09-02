@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /*
  * This file is part of the jojo1981/data-resolver package
  *
@@ -14,6 +14,8 @@ use Jojo1981\DataResolver\Handler\Exception\HandlerException;
 use Jojo1981\DataResolver\Handler\SequenceHandlerInterface;
 use Jojo1981\DataResolver\Resolver\Context;
 use function get_class;
+use function is_numeric;
+use function sprintf;
 
 /**
  * @package Jojo1981\DataResolver\Extractor
@@ -21,7 +23,7 @@ use function get_class;
 class SumExtractor extends AbstractSequenceExtractor
 {
     /** @var SequenceHandlerInterface */
-    private $sequenceHandler;
+    private SequenceHandlerInterface $sequenceHandler;
 
     /**
      * @param SequenceHandlerInterface $sequenceHandler
@@ -49,8 +51,8 @@ class SumExtractor extends AbstractSequenceExtractor
     {
         $sum = 0.0;
         foreach ($this->sequenceHandler->getIterator($context->getData()) as $item) {
-            if (!\is_numeric($item)) {
-                throw new ExtractorException(\sprintf(
+            if (!is_numeric($item)) {
+                throw new ExtractorException(sprintf(
                     'Found a NOT numeric item. Could not extract data with `%s` at path: `%s`',
                     get_class($this),
                     $context->getPath()
