@@ -52,12 +52,12 @@ final class Context
     }
 
     /**
-     * @param string $pathPart
+     * @param int|string $pathPart
      * @return $this
      */
-    public function pushPathPart(string $pathPart): self
+    public function pushPathPart($pathPart): self
     {
-        $this->pathParts[] = $pathPart;
+        $this->pathParts[] = (string) $pathPart;
 
         return $this;
     }
