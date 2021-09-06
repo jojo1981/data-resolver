@@ -12,24 +12,27 @@ namespace tests\Jojo1981\DataResolver\Extractor;
 use Jojo1981\DataResolver\Extractor\CallbackExtractor;
 use Jojo1981\DataResolver\Resolver\Context;
 use PHPUnit\Framework\ExpectationFailedException;
+use PHPUnit\Framework\TestCase;
 use Prophecy\Exception\Doubler\ClassNotFoundException;
 use Prophecy\Exception\Doubler\DoubleException;
 use Prophecy\Exception\Doubler\InterfaceNotFoundException;
 use Prophecy\Exception\Prophecy\ObjectProphecyException;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
 use SebastianBergmann\RecursionContext\InvalidArgumentException;
-use tests\Jojo1981\DataResolver\TestCase;
 
 /**
  * @package tests\Jojo1981\DataResolver\Extractor
  */
-class CallbackExtractorTest extends TestCase
+final class CallbackExtractorTest extends TestCase
 {
-    /** @var ObjectProphecy|Context */
-    private $originalContext;
+    use ProphecyTrait;
 
     /** @var ObjectProphecy|Context */
-    private $copiedContext;
+    private ObjectProphecy $originalContext;
+
+    /** @var ObjectProphecy|Context */
+    private ObjectProphecy $copiedContext;
 
     /**
      * @return void

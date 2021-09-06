@@ -1,4 +1,5 @@
-<?php declare(strict_types=1);
+<?php
+declare(strict_types=1);
 /*
  * This file is part of the jojo1981/data-resolver package
  *
@@ -11,13 +12,13 @@ namespace tests\Jojo1981\DataResolver\Helper;
 
 use Jojo1981\DataResolver\Helper\StringHelper;
 use PHPUnit\Framework\ExpectationFailedException;
+use PHPUnit\Framework\TestCase;
 use SebastianBergmann\RecursionContext\InvalidArgumentException;
-use tests\Jojo1981\DataResolver\TestCase;
 
 /**
  * @package tests\Jojo1981\DataResolver\Helper
  */
-class StringHelperTest extends TestCase
+final class StringHelperTest extends TestCase
 {
     /**
      * @test

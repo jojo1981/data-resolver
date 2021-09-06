@@ -17,34 +17,37 @@ use Jojo1981\DataResolver\Handler\SequenceHandlerInterface;
 use Jojo1981\DataResolver\Predicate\Exception\PredicateException;
 use Jojo1981\DataResolver\Resolver\Context;
 use PHPUnit\Framework\ExpectationFailedException;
+use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Prophecy\Exception\Doubler\ClassNotFoundException;
 use Prophecy\Exception\Doubler\DoubleException;
 use Prophecy\Exception\Doubler\InterfaceNotFoundException;
 use Prophecy\Exception\InvalidArgumentException as ProphecyInvalidArgumentException;
 use Prophecy\Exception\Prophecy\ObjectProphecyException;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
 use SebastianBergmann\RecursionContext\InvalidArgumentException;
-use tests\Jojo1981\DataResolver\TestCase;
 use function call_user_func;
 use function is_callable;
 
 /**
  * @package tests\Jojo1981\DataResolver\Extractor
  */
-class FlattenExtractorTest extends TestCase
+final class FlattenExtractorTest extends TestCase
 {
+    use ProphecyTrait;
+
     /** @var ObjectProphecy|SequenceHandlerInterface */
-    private $sequenceHandler;
+    private ObjectProphecy $sequenceHandler;
 
     /** @var ObjectProphecy|ExtractorInterface */
-    private $extractor;
+    private ObjectProphecy $extractor;
 
     /** @var ObjectProphecy|Context */
-    private $originalContext;
+    private ObjectProphecy $originalContext;
 
     /** @var ObjectProphecy|Context */
-    private $copiedContext;
+    private ObjectProphecy $copiedContext;
 
     /**
      * @return void

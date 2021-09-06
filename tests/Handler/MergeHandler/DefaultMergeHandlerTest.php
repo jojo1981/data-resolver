@@ -12,14 +12,14 @@ namespace tests\Jojo1981\DataResolver\Handler\MergeHandler;
 use Jojo1981\DataResolver\Handler\MergeHandler\DefaultMergeHandler;
 use Jojo1981\DataResolver\Resolver\Context;
 use PHPUnit\Framework\ExpectationFailedException;
+use PHPUnit\Framework\TestCase;
 use SebastianBergmann\RecursionContext\InvalidArgumentException;
 use stdClass;
-use tests\Jojo1981\DataResolver\TestCase;
 
 /**
  * @package tests\Jojo1981\DataResolver\Handler\MergeHandler
  */
-class DefaultMergeHandlerTest extends TestCase
+final class DefaultMergeHandlerTest extends TestCase
 {
     /**
      * @test

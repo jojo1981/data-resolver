@@ -11,14 +11,14 @@ namespace tests\Jojo1981\DataResolver\Handler\Exception;
 
 use Jojo1981\DataResolver\Handler\Exception\HandlerException;
 use PHPUnit\Framework\ExpectationFailedException;
+use PHPUnit\Framework\TestCase;
 use ReflectionException;
 use SebastianBergmann\RecursionContext\InvalidArgumentException;
-use tests\Jojo1981\DataResolver\TestCase;
 
 /**
  * @package tests\Jojo1981\DataResolver\Handler\Exception
  */
-class HandlerExceptionTest extends TestCase
+final class HandlerExceptionTest extends TestCase
 {
     /**
      * @test

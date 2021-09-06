@@ -24,7 +24,7 @@ use function json_decode;
 /**
  * @package tests\Jojo1981\DataResolver\Integration\Resolver
  */
-class ComposeTest extends AbstractIntegrationTestCase
+final class ComposeTest extends AbstractIntegrationTestCase
 {
     /**
      * @test

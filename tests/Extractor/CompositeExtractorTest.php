@@ -16,30 +16,33 @@ use Jojo1981\DataResolver\Handler\Exception\HandlerException;
 use Jojo1981\DataResolver\Predicate\Exception\PredicateException;
 use Jojo1981\DataResolver\Resolver\Context;
 use PHPUnit\Framework\ExpectationFailedException;
+use PHPUnit\Framework\TestCase;
 use Prophecy\Exception\Doubler\ClassNotFoundException;
 use Prophecy\Exception\Doubler\DoubleException;
 use Prophecy\Exception\Doubler\InterfaceNotFoundException;
 use Prophecy\Exception\Prophecy\ObjectProphecyException;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
 use SebastianBergmann\RecursionContext\InvalidArgumentException;
-use tests\Jojo1981\DataResolver\TestCase;
 
 /**
  * @package tests\Jojo1981\DataResolver\Extractor
  */
-class CompositeExtractorTest extends TestCase
+final class CompositeExtractorTest extends TestCase
 {
-    /** @var ObjectProphecy|ExtractorInterface */
-    private $extractor1;
+    use ProphecyTrait;
 
     /** @var ObjectProphecy|ExtractorInterface */
-    private $extractor2;
+    private ObjectProphecy $extractor1;
+
+    /** @var ObjectProphecy|ExtractorInterface */
+    private ObjectProphecy $extractor2;
 
     /** @var ObjectProphecy|Context */
-    private $originalContext;
+    private ObjectProphecy $originalContext;
 
     /** @var ObjectProphecy|Context */
-    private $copiedContext;
+    private ObjectProphecy $copiedContext;
 
     /**
      * @return void

@@ -14,21 +14,24 @@ use Jojo1981\DataResolver\Handler\SequenceHandlerInterface;
 use Jojo1981\DataResolver\Predicate\CountPredicate;
 use Jojo1981\DataResolver\Resolver\Context;
 use PHPUnit\Framework\ExpectationFailedException as PHPUnitExpectationFailedException;
+use PHPUnit\Framework\TestCase;
 use Prophecy\Exception\Doubler\ClassNotFoundException;
 use Prophecy\Exception\Doubler\DoubleException;
 use Prophecy\Exception\Doubler\InterfaceNotFoundException;
 use Prophecy\Exception\Prophecy\ObjectProphecyException;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
 use SebastianBergmann\RecursionContext\InvalidArgumentException as SebastianBergmannInvalidArgumentException;
-use tests\Jojo1981\DataResolver\TestCase;
 
 /**
  * @package tests\Jojo1981\DataResolver\Predicate
  */
-class CountPredicateTest extends TestCase
+final class CountPredicateTest extends TestCase
 {
+    use ProphecyTrait;
+
     /** @var ObjectProphecy|SequenceHandlerInterface */
-    private $sequenceHandler;
+    private ObjectProphecy $sequenceHandler;
 
     /**
      * @return void

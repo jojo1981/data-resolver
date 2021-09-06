@@ -11,13 +11,13 @@ namespace tests\Jojo1981\DataResolver\NamingStrategy;
 
 use Jojo1981\DataResolver\NamingStrategy\DefaultNamingStrategy;
 use PHPUnit\Framework\ExpectationFailedException;
+use PHPUnit\Framework\TestCase;
 use SebastianBergmann\RecursionContext\InvalidArgumentException;
-use tests\Jojo1981\DataResolver\TestCase;
 
 /**
  * @package tests\Jojo1981\DataResolver\NamingStrategy
  */
-class DefaultNamingStrategyTest extends TestCase
+final class DefaultNamingStrategyTest extends TestCase
 {
     /** @var DefaultNamingStrategy */
     private DefaultNamingStrategy $namingStrategy;

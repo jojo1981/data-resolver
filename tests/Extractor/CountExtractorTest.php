@@ -16,24 +16,27 @@ use Jojo1981\DataResolver\Handler\SequenceHandlerInterface;
 use Jojo1981\DataResolver\Predicate\Exception\PredicateException;
 use Jojo1981\DataResolver\Resolver\Context;
 use PHPUnit\Framework\ExpectationFailedException;
+use PHPUnit\Framework\TestCase;
 use Prophecy\Exception\Doubler\ClassNotFoundException;
 use Prophecy\Exception\Doubler\DoubleException;
 use Prophecy\Exception\Doubler\InterfaceNotFoundException;
 use Prophecy\Exception\Prophecy\ObjectProphecyException;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
 use SebastianBergmann\RecursionContext\InvalidArgumentException;
-use tests\Jojo1981\DataResolver\TestCase;
 
 /**
  * @package tests\Jojo1981\DataResolver\Extractor
  */
-class CountExtractorTest extends TestCase
+final class CountExtractorTest extends TestCase
 {
+    use ProphecyTrait;
+
     /** @var ObjectProphecy|SequenceHandlerInterface */
-    private $sequenceHandler;
+    private ObjectProphecy $sequenceHandler;
 
     /** @var ObjectProphecy|Context */
-    private $originalContext;
+    private ObjectProphecy $originalContext;
 
     /**
      * @return void

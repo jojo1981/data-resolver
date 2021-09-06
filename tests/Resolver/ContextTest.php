@@ -11,13 +11,13 @@ namespace tests\Jojo1981\DataResolver\Resolver;
 
 use Jojo1981\DataResolver\Resolver\Context;
 use PHPUnit\Framework\ExpectationFailedException;
+use PHPUnit\Framework\TestCase;
 use SebastianBergmann\RecursionContext\InvalidArgumentException;
-use tests\Jojo1981\DataResolver\TestCase;
 
 /**
  * @package tests\Jojo1981\DataResolver\Resolver
  */
-class ContextTest extends TestCase
+final class ContextTest extends TestCase
 {
     /**
      * @test

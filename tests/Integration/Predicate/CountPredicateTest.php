@@ -23,7 +23,7 @@ use tests\Jojo1981\DataResolver\Integration\AbstractIntegrationTestCase;
 /**
  * @package tests\Jojo1981\DataResolver\Integration\Predicate
  */
-class CountPredicateTest extends AbstractIntegrationTestCase
+final class CountPredicateTest extends AbstractIntegrationTestCase
 {
     /**
      * @test

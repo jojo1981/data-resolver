@@ -14,14 +14,14 @@ use Jojo1981\DataResolver\Handler\Exception\HandlerException;
 use Jojo1981\DataResolver\Handler\SequenceHandler\ArraySequenceHandler;
 use PHPUnit\Framework\Exception as PHPUnitException;
 use PHPUnit\Framework\ExpectationFailedException;
+use PHPUnit\Framework\TestCase;
 use SebastianBergmann\RecursionContext\InvalidArgumentException;
 use stdClass;
-use tests\Jojo1981\DataResolver\TestCase;
 
 /**
  * @package tests\Jojo1981\DataResolver\Handler\SequenceHandler
  */
-class ArraySequenceHandlerTest extends TestCase
+final class ArraySequenceHandlerTest extends TestCase
 {
     /**
      * @test

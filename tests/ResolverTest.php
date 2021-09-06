@@ -16,12 +16,14 @@ use Jojo1981\DataResolver\Predicate\Exception\PredicateException;
 use Jojo1981\DataResolver\Resolver;
 use Jojo1981\DataResolver\Resolver\Context;
 use PHPUnit\Framework\ExpectationFailedException;
+use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Prophecy\Exception\Doubler\ClassNotFoundException;
 use Prophecy\Exception\Doubler\DoubleException;
 use Prophecy\Exception\Doubler\InterfaceNotFoundException;
 use Prophecy\Exception\InvalidArgumentException as ProphecyInvalidArgumentException;
 use Prophecy\Exception\Prophecy\ObjectProphecyException;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
 use SebastianBergmann\RecursionContext\InvalidArgumentException;
 use function array_key_exists;
@@ -29,16 +31,18 @@ use function array_key_exists;
 /**
  * @package tests\Jojo1981\DataResolver
  */
-class ResolverTest extends TestCase
+final class ResolverTest extends TestCase
 {
+    use ProphecyTrait;
+
     /** @var ObjectProphecy|Context */
-    private $context;
+    private ObjectProphecy $context;
 
     /** @var ObjectProphecy|ExtractorInterface */
-    private $extractor1;
+    private ObjectProphecy $extractor1;
 
     /** @var ObjectProphecy|ExtractorInterface */
-    private $extractor2;
+    private ObjectProphecy $extractor2;
 
     /**
      * @return void
@@ -119,8 +123,8 @@ class ResolverTest extends TestCase
      * @throws ProphecyInvalidArgumentException
      * @throws ExpectationFailedException
      */
-    public function resolverWithPassingDataToTheResolveMethodShouldTransformItIntoAContextObjectAnPassItToTheExtractors(
-    ): void {
+    public function resolverWithPassingDataToTheResolveMethodShouldTransformItIntoAContextObjectAnPassItToTheExtractors(): void
+    {
         $this->extractor1->extract(Argument::that(static function ($arg): bool {
             return (
                 $arg instanceof Context

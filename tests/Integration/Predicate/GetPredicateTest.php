@@ -22,7 +22,7 @@ use tests\Jojo1981\DataResolver\Integration\AbstractIntegrationTestCase;
 /**
  * @package tests\Jojo1981\DataResolver\Integration\Predicate
  */
-class GetPredicateTest extends AbstractIntegrationTestCase
+final class GetPredicateTest extends AbstractIntegrationTestCase
 {
     /**
      * @test

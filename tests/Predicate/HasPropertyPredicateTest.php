@@ -14,24 +14,27 @@ use Jojo1981\DataResolver\Extractor\HasPropertyExtractor;
 use Jojo1981\DataResolver\Predicate\HasPropertyPredicate;
 use Jojo1981\DataResolver\Resolver\Context;
 use PHPUnit\Framework\ExpectationFailedException;
+use PHPUnit\Framework\TestCase;
 use Prophecy\Exception\Doubler\ClassNotFoundException;
 use Prophecy\Exception\Doubler\DoubleException;
 use Prophecy\Exception\Doubler\InterfaceNotFoundException;
 use Prophecy\Exception\Prophecy\ObjectProphecyException;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
 use SebastianBergmann\RecursionContext\InvalidArgumentException;
-use tests\Jojo1981\DataResolver\TestCase;
 
 /**
  * @package tests\Jojo1981\DataResolver\Predicate
  */
-class HasPropertyPredicateTest extends TestCase
+final class HasPropertyPredicateTest extends TestCase
 {
+    use ProphecyTrait;
+
     /** @var ObjectProphecy|HasPropertyExtractor */
-    private $hasPropertyExtractor;
+    private ObjectProphecy $hasPropertyExtractor;
 
     /** @var ObjectProphecy|Context */
-    private $context;
+    private ObjectProphecy $context;
 
     /**
      * @return void

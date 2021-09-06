@@ -16,24 +16,27 @@ use Jojo1981\DataResolver\Predicate\NotPredicate;
 use Jojo1981\DataResolver\Predicate\PredicateInterface;
 use Jojo1981\DataResolver\Resolver\Context;
 use PHPUnit\Framework\ExpectationFailedException;
+use PHPUnit\Framework\TestCase;
 use Prophecy\Exception\Doubler\ClassNotFoundException;
 use Prophecy\Exception\Doubler\DoubleException;
 use Prophecy\Exception\Doubler\InterfaceNotFoundException;
 use Prophecy\Exception\Prophecy\ObjectProphecyException;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
 use SebastianBergmann\RecursionContext\InvalidArgumentException;
-use tests\Jojo1981\DataResolver\TestCase;
 
 /**
  * @package tests\Jojo1981\DataResolver\Predicate
  */
-class NotPredicateTest extends TestCase
+final class NotPredicateTest extends TestCase
 {
+    use ProphecyTrait;
+
     /** @var ObjectProphecy|PredicateInterface */
-    private $predicate;
+    private ObjectProphecy $predicate;
 
     /** @var ObjectProphecy|Context */
-    private $context;
+    private ObjectProphecy $context;
 
     /**
      * @return void

@@ -11,10 +11,12 @@ namespace tests\Jojo1981\DataResolver\Comparator;
 
 use Jojo1981\DataResolver\Comparator\DefaultComparator;
 use PHPUnit\Framework\ExpectationFailedException;
+use PHPUnit\Framework\TestCase;
 use Prophecy\Exception\Doubler\ClassNotFoundException;
 use Prophecy\Exception\Doubler\DoubleException;
 use Prophecy\Exception\Doubler\InterfaceNotFoundException;
 use Prophecy\Exception\Prophecy\ObjectProphecyException;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
 use SebastianBergmann\Comparator\Comparator;
 use SebastianBergmann\Comparator\ComparisonFailure;
@@ -22,18 +24,19 @@ use SebastianBergmann\Comparator\Factory as ComparatorFactory;
 use SebastianBergmann\Comparator\RuntimeException;
 use SebastianBergmann\RecursionContext\InvalidArgumentException;
 use stdClass;
-use tests\Jojo1981\DataResolver\TestCase;
 
 /**
  * @package tests\Jojo1981\DataResolver\Comparator
  */
-class DefaultComparatorTest extends TestCase
+final class DefaultComparatorTest extends TestCase
 {
+    use ProphecyTrait;
+
     /** @var ComparatorFactory|ObjectProphecy */
-    private $comparatorFactory;
+    private ObjectProphecy $comparatorFactory;
 
     /** @var Comparator|ObjectProphecy */
-    private $comparator;
+    private ObjectProphecy $comparator;
 
     /**
      * @return void

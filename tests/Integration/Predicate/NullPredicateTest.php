@@ -24,7 +24,7 @@ use tests\Jojo1981\DataResolver\Integration\AbstractIntegrationTestCase;
 /**
  * @package tests\Jojo1981\DataResolver\Integration\Predicate
  */
-class NullPredicateTest extends AbstractIntegrationTestCase
+final class NullPredicateTest extends AbstractIntegrationTestCase
 {
     /**
      * @test

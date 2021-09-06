@@ -16,28 +16,31 @@ use Jojo1981\DataResolver\Handler\PropertyHandlerInterface;
 use Jojo1981\DataResolver\NamingStrategy\NamingStrategyInterface;
 use Jojo1981\DataResolver\Resolver\Context;
 use PHPUnit\Framework\ExpectationFailedException;
+use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Prophecy\Exception\Doubler\ClassNotFoundException;
 use Prophecy\Exception\Doubler\DoubleException;
 use Prophecy\Exception\Doubler\InterfaceNotFoundException;
 use Prophecy\Exception\Prophecy\ObjectProphecyException;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
 use SebastianBergmann\RecursionContext\InvalidArgumentException;
-use tests\Jojo1981\DataResolver\TestCase;
 
 /**
  * @package tests\Jojo1981\DataResolver\Extractor
  */
-class HasPropertyExtractorTest extends TestCase
+final class HasPropertyExtractorTest extends TestCase
 {
+    use ProphecyTrait;
+
     /** @var ObjectProphecy|NamingStrategyInterface */
-    private $namingStrategy;
+    private ObjectProphecy $namingStrategy;
 
     /** @var ObjectProphecy|PropertyHandlerInterface */
-    private $propertyHandler;
+    private ObjectProphecy $propertyHandler;
 
     /** @var ObjectProphecy|Context */
-    private $context;
+    private ObjectProphecy $context;
 
     /**
      * @return void

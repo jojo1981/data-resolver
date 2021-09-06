@@ -17,33 +17,36 @@ use Jojo1981\DataResolver\Handler\PropertyHandlerInterface;
 use Jojo1981\DataResolver\NamingStrategy\NamingStrategyInterface;
 use Jojo1981\DataResolver\Resolver\Context;
 use PHPUnit\Framework\ExpectationFailedException;
+use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Prophecy\Exception\Doubler\ClassNotFoundException;
 use Prophecy\Exception\Doubler\DoubleException;
 use Prophecy\Exception\Doubler\InterfaceNotFoundException;
 use Prophecy\Exception\Prophecy\ObjectProphecyException;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
 use SebastianBergmann\RecursionContext\InvalidArgumentException;
 use stdClass;
-use tests\Jojo1981\DataResolver\TestCase;
 use function array_merge;
 
 /**
  * @package tests\Jojo1981\DataResolver\Extractor
  */
-class PropertyExtractorTest extends TestCase
+final class PropertyExtractorTest extends TestCase
 {
+    use ProphecyTrait;
+
     /** @var ObjectProphecy|NamingStrategyInterface */
-    private $namingStrategy;
+    private ObjectProphecy $namingStrategy;
 
     /** @var ObjectProphecy|PropertyHandlerInterface */
-    private $propertyHandler;
+    private ObjectProphecy $propertyHandler;
 
     /** @var ObjectProphecy|MergeHandlerInterface */
-    private $mergeHandler;
+    private ObjectProphecy $mergeHandler;
 
     /** @var ObjectProphecy|Context */
-    private $context;
+    private ObjectProphecy $context;
 
     /**
      * @return void

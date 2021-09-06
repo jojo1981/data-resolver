@@ -14,26 +14,29 @@ use Jojo1981\DataResolver\Handler\Exception\HandlerException;
 use Jojo1981\DataResolver\Handler\SequenceHandler\CompositeSequenceHandler;
 use Jojo1981\DataResolver\Handler\SequenceHandlerInterface;
 use PHPUnit\Framework\ExpectationFailedException;
+use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Prophecy\Exception\Doubler\ClassNotFoundException;
 use Prophecy\Exception\Doubler\DoubleException;
 use Prophecy\Exception\Doubler\InterfaceNotFoundException;
 use Prophecy\Exception\Prophecy\ObjectProphecyException;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
 use SebastianBergmann\RecursionContext\InvalidArgumentException;
 use stdClass;
-use tests\Jojo1981\DataResolver\TestCase;
 
 /**
  * @package tests\Jojo1981\DataResolver\Handler\SequenceHandler
  */
-class CompositeSequenceHandlerTest extends TestCase
+final class CompositeSequenceHandlerTest extends TestCase
 {
-    /** @var ObjectProphecy|SequenceHandlerInterface */
-    private $sequenceHandler1;
+    use ProphecyTrait;
 
     /** @var ObjectProphecy|SequenceHandlerInterface */
-    private $sequenceHandler2;
+    private ObjectProphecy $sequenceHandler1;
+
+    /** @var ObjectProphecy|SequenceHandlerInterface */
+    private ObjectProphecy $sequenceHandler2;
 
     /**
      * @return void

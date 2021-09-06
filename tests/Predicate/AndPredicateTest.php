@@ -16,31 +16,34 @@ use Jojo1981\DataResolver\Predicate\Exception\PredicateException;
 use Jojo1981\DataResolver\Predicate\PredicateInterface;
 use Jojo1981\DataResolver\Resolver\Context;
 use PHPUnit\Framework\ExpectationFailedException;
+use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Prophecy\Exception\Doubler\ClassNotFoundException;
 use Prophecy\Exception\Doubler\DoubleException;
 use Prophecy\Exception\Doubler\InterfaceNotFoundException;
 use Prophecy\Exception\Prophecy\ObjectProphecyException;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
 use SebastianBergmann\RecursionContext\InvalidArgumentException;
-use tests\Jojo1981\DataResolver\TestCase;
 
 /**
  * @package tests\Jojo1981\DataResolver\Predicate
  */
-class AndPredicateTest extends TestCase
+final class AndPredicateTest extends TestCase
 {
-    /** @var ObjectProphecy|PredicateInterface */
-    private $leftPredicate;
+    use ProphecyTrait;
 
     /** @var ObjectProphecy|PredicateInterface */
-    private $rightPredicate;
+    private ObjectProphecy $leftPredicate;
+
+    /** @var ObjectProphecy|PredicateInterface */
+    private ObjectProphecy $rightPredicate;
 
     /** @var ObjectProphecy|Context */
-    private $originalContext;
+    private ObjectProphecy $originalContext;
 
     /** @var ObjectProphecy|Context */
-    private $copiedContext;
+    private ObjectProphecy $copiedContext;
 
     /**
      * @return void
