@@ -15,7 +15,7 @@ use function call_user_func;
 /**
  * @package Jojo1981\DataResolver\Extractor
  */
-class CallbackExtractor implements ExtractorInterface
+final class CallbackExtractor implements ExtractorInterface
 {
     /** @var callable */
     private $callback;

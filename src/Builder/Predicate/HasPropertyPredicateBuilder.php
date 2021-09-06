@@ -17,7 +17,7 @@ use Jojo1981\DataResolver\Predicate\PredicateInterface;
 /**
  * @package Jojo1981\DataResolver\Builder\Predicate
  */
-class HasPropertyPredicateBuilder implements PredicateBuilderInterface
+final class HasPropertyPredicateBuilder implements PredicateBuilderInterface
 {
     /** @var HasPropertyExtractor */
     private HasPropertyExtractor $extractor;

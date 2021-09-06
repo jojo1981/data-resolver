@@ -17,7 +17,7 @@ use Jojo1981\DataResolver\Predicate\PredicateInterface;
  * @api
  * @package Jojo1981\DataResolver\Builder\Predicate
  */
-class OrPredicateBuilder implements PredicateBuilderInterface
+final class OrPredicateBuilder implements PredicateBuilderInterface
 {
     /** @var PredicateInterface */
     private PredicateInterface $leftPredicate;

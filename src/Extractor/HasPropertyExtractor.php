@@ -17,7 +17,7 @@ use Jojo1981\DataResolver\Resolver\Context;
 /**
  * @package Jojo1981\DataResolver\Extractor
  */
-class HasPropertyExtractor implements ExtractorInterface
+final class HasPropertyExtractor implements ExtractorInterface
 {
     /** @var PropertyHandlerInterface */
     private PropertyHandlerInterface $propertyHandler;

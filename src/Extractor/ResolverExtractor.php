@@ -18,7 +18,7 @@ use Jojo1981\DataResolver\Resolver\Context;
 /**
  * @package Jojo1981\DataResolver\Extractor
  */
-class ResolverExtractor implements ExtractorInterface
+final class ResolverExtractor implements ExtractorInterface
 {
     /** @var Resolver */
     private Resolver $resolver;

@@ -16,7 +16,7 @@ use Jojo1981\DataResolver\Predicate\StringEndsWithPredicate;
 /**
  * @package Jojo1981\DataResolver\Builder\Predicate
  */
-class StringEndsWithPredicateBuilder implements PredicateBuilderInterface
+final class StringEndsWithPredicateBuilder implements PredicateBuilderInterface
 {
     private string $suffix;
 

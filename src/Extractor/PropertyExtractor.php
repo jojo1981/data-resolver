@@ -23,7 +23,7 @@ use function sprintf;
 /**
  * @package Jojo1981\DataResolver\Extractor
  */
-class PropertyExtractor implements ExtractorInterface
+final class PropertyExtractor implements ExtractorInterface
 {
     /** @var NamingStrategyInterface */
     private NamingStrategyInterface $namingStrategy;

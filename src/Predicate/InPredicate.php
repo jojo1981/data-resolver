@@ -16,7 +16,7 @@ use Jojo1981\DataResolver\Resolver\Context;
 /**
  * @package Jojo1981\DataResolver\Predicate
  */
-class InPredicate implements PredicateInterface
+final class InPredicate implements PredicateInterface
 {
     /** @var array */
     private array $expectedValues;

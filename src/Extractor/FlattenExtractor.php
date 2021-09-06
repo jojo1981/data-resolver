@@ -16,7 +16,7 @@ use Jojo1981\DataResolver\Resolver\Context;
 /**
  * @package Jojo1981\DataResolver\Extractor
  */
-class FlattenExtractor extends AbstractSequenceExtractor
+final class FlattenExtractor extends AbstractSequenceExtractor
 {
     /** @var SequenceHandlerInterface */
     private SequenceHandlerInterface $sequenceHandler;

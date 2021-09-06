@@ -41,7 +41,7 @@ use Jojo1981\DataResolver\Handler\SequenceHandlerInterface;
  * @internal
  * @package Jojo1981\DataResolver\Factory
  */
-class PredicateBuilderFactory
+final class PredicateBuilderFactory
 {
     /** @var ExtractorBuilderFactory */
     private ExtractorBuilderFactory $extractorBuilderFactory;

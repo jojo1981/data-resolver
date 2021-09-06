@@ -17,7 +17,7 @@ use Jojo1981\DataResolver\Predicate\PredicateInterface;
 /**
  * @package Jojo1981\DataResolver\Builder\Predicate
  */
-class EqualsPredicateBuilder implements PredicateBuilderInterface
+final class EqualsPredicateBuilder implements PredicateBuilderInterface
 {
     /** @var ComparatorInterface */
     private ComparatorInterface $comparator;

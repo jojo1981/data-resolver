@@ -17,7 +17,7 @@ use Jojo1981\DataResolver\Handler\SequenceHandlerInterface;
 /**
  * @package Jojo1981\DataResolver\Builder\Extractor
  */
-class FlattenExtractorBuilder implements ExtractorBuilderInterface
+final class FlattenExtractorBuilder implements ExtractorBuilderInterface
 {
     /** @var SequenceHandlerInterface */
     private SequenceHandlerInterface $sequenceHandler;

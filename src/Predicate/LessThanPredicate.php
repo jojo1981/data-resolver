@@ -15,7 +15,7 @@ use Jojo1981\DataResolver\Resolver\Context;
 /**
  * @package Jojo1981\DataResolver\Predicate
  */
-class LessThanPredicate implements PredicateInterface
+final class LessThanPredicate implements PredicateInterface
 {
     /** @var ComparatorInterface */
     private ComparatorInterface $comparator;

@@ -20,7 +20,7 @@ use function sprintf;
 /**
  * @package Jojo1981\DataResolver\Predicate
  */
-class AllPredicate implements PredicateInterface
+final class AllPredicate implements PredicateInterface
 {
     /** @var SequenceHandlerInterface */
     private SequenceHandlerInterface $sequenceHandler;

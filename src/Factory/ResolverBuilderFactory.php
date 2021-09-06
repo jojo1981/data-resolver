@@ -28,7 +28,7 @@ use function trim;
  * @api
  * @package Jojo1981\DataResolver\Factory
  */
-class ResolverBuilderFactory
+final class ResolverBuilderFactory
 {
     /** @var ExtractorBuilderFactory */
     private ExtractorBuilderFactory $extractorBuilderFactory;

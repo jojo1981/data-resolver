@@ -21,7 +21,7 @@ use function strlen;
 /**
  * @package Jojo1981\DataResolver\Extractor
  */
-class StringLengthExtractor implements ExtractorInterface
+final class StringLengthExtractor implements ExtractorInterface
 {
     /**
      * @param Context $context

@@ -16,7 +16,7 @@ use Jojo1981\DataResolver\Extractor\StringLengthExtractor;
 /**
  * @package Jojo1981\DataResolver\Builder\Extractor
  */
-class StringLengthExtractorBuilder implements ExtractorBuilderInterface
+final class StringLengthExtractorBuilder implements ExtractorBuilderInterface
 {
     /**
      * @return StringLengthExtractor

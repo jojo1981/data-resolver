@@ -16,7 +16,7 @@ use Jojo1981\DataResolver\Resolver\Context;
 /**
  * @package Jojo1981\DataResolver\Predicate
  */
-class IsEmptyPredicate implements PredicateInterface
+final class IsEmptyPredicate implements PredicateInterface
 {
     /** @var SequenceHandlerInterface */
     private SequenceHandlerInterface $sequenceHandler;

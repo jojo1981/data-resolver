@@ -20,7 +20,7 @@ use Jojo1981\DataResolver\Resolver\Context;
 /**
  * @package Jojo1981\DataResolver\Extractor
  */
-class AllExtractor extends AbstractSequenceExtractor
+final class AllExtractor extends AbstractSequenceExtractor
 {
     /** @var SequenceHandlerInterface */
     private SequenceHandlerInterface $sequenceHandler;

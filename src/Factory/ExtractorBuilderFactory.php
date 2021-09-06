@@ -36,7 +36,7 @@ use function array_merge;
  * @internal
  * @package Jojo1981\DataResolver\Factory
  */
-class ExtractorBuilderFactory
+final class ExtractorBuilderFactory
 {
     /** @var NamingStrategyInterface */
     private NamingStrategyInterface $namingStrategy;

@@ -20,7 +20,7 @@ use Jojo1981\DataResolver\NamingStrategy\NamingStrategyInterface;
  * @internal
  * @package Jojo1981\DataResolver\Builder\Extractor
  */
-class PropertyExtractorBuilder implements ExtractorBuilderInterface
+final class PropertyExtractorBuilder implements ExtractorBuilderInterface
 {
     /** @var NamingStrategyInterface */
     private NamingStrategyInterface $namingStrategy;

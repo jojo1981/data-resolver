@@ -14,7 +14,7 @@ use Jojo1981\DataResolver\Resolver\Context;
 /**
  * @package Jojo1981\DataResolver\Predicate
  */
-class NullPredicate implements PredicateInterface
+final class NullPredicate implements PredicateInterface
 {
     /**
      * @param Context $context

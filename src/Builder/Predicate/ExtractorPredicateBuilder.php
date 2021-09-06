@@ -20,7 +20,7 @@ use Jojo1981\DataResolver\Factory\PredicateBuilderFactory;
  * @api
  * @package Jojo1981\DataResolver\Builder\Predicate
  */
-class ExtractorPredicateBuilder
+final class ExtractorPredicateBuilder
 {
     /** @var PredicateBuilderFactory */
     private PredicateBuilderFactory $predicateBuilderFactory;

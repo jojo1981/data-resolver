@@ -19,7 +19,7 @@ use Jojo1981\DataResolver\Predicate\PredicateInterface;
  * @api
  * @package Jojo1981\DataResolver\Builder\Predicate
  */
-class ConditionalPredicateBuilder implements PredicateBuilderInterface
+final class ConditionalPredicateBuilder implements PredicateBuilderInterface
 {
     /** @var PredicateBuilderFactory */
     private PredicateBuilderFactory $predicateBuilderFactory;

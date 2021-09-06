@@ -17,7 +17,7 @@ use Jojo1981\DataResolver\Handler\SequenceHandlerInterface;
 /**
  * @package Jojo1981\DataResolver\Builder\Extractor
  */
-class CountExtractorBuilder implements ExtractorBuilderInterface
+final class CountExtractorBuilder implements ExtractorBuilderInterface
 {
     /** @var SequenceHandlerInterface */
     private SequenceHandlerInterface $sequenceHandler;

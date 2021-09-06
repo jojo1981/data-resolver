@@ -16,7 +16,7 @@ use Jojo1981\DataResolver\Predicate\StringRegexPredicate;
 /**
  * @package Jojo1981\DataResolver\Builder\Predicate
  */
-class StringRegexPredicateBuilder implements PredicateBuilderInterface
+final class StringRegexPredicateBuilder implements PredicateBuilderInterface
 {
     /** @var string */
     private string $pattern;

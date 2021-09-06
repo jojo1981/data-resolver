@@ -17,7 +17,7 @@ use Jojo1981\DataResolver\Resolver;
 /**
  * @package Jojo1981\DataResolver\Builder\Extractor
  */
-class ResolverExtractorBuilder implements ExtractorBuilderInterface
+final class ResolverExtractorBuilder implements ExtractorBuilderInterface
 {
     /** @var Resolver */
     private Resolver $resolver;

@@ -16,7 +16,7 @@ use Jojo1981\DataResolver\Extractor\ExtractorInterface;
 /**
  * @package Jojo1981\DataResolver\Builder\Extractor
  */
-class CompositeExtractorBuilder implements ExtractorBuilderInterface
+final class CompositeExtractorBuilder implements ExtractorBuilderInterface
 {
     /** @var ExtractorInterface */
     private ExtractorInterface $extractor1;

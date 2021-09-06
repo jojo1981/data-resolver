@@ -16,7 +16,7 @@ use function array_values;
 /**
  * @package Jojo1981\DataResolver\NamingStrategy
  */
-class DefaultNamingStrategy implements NamingStrategyInterface
+final class DefaultNamingStrategy implements NamingStrategyInterface
 {
     /**
      * @param string $propertyName

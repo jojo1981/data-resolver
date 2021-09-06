@@ -17,7 +17,7 @@ use function strpos;
 /**
  * @package Jojo1981\DataResolver\Resolver
  */
-class Context
+final class Context
 {
     /** @var mixed */
     private $data;

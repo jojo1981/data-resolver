@@ -16,7 +16,7 @@ use SebastianBergmann\Comparator\RuntimeException;
 /**
  * @package Jojo1981\DataResolver\Comparator
  */
-class DefaultComparator implements ComparatorInterface
+final class DefaultComparator implements ComparatorInterface
 {
     /** @var ComparatorFactory */
     private ComparatorFactory $comparatorFactory;

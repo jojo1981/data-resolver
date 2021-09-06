@@ -19,7 +19,7 @@ use Jojo1981\DataResolver\Predicate\PredicateInterface;
 /**
  * @package Jojo1981\DataResolver\Builder\Extractor
  */
-class SomeExtractorBuilder implements ExtractorBuilderInterface
+final class SomeExtractorBuilder implements ExtractorBuilderInterface
 {
     /** @var SequenceHandlerInterface */
     private SequenceHandlerInterface $sequenceHandler;

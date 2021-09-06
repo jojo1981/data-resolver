@@ -16,7 +16,7 @@ use Jojo1981\DataResolver\Predicate\PredicateInterface;
 /**
  * @package Jojo1981\DataResolver\Builder\Predicate
  */
-class NullPredicateBuilder implements PredicateBuilderInterface
+final class NullPredicateBuilder implements PredicateBuilderInterface
 {
     /**
      * @return NullPredicate

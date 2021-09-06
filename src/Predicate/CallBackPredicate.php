@@ -15,7 +15,7 @@ use function call_user_func;
 /**
  * @package Jojo1981\DataResolver\Predicate
  */
-class CallBackPredicate implements PredicateInterface
+final class CallBackPredicate implements PredicateInterface
 {
     /** @var callable */
     private $callback;

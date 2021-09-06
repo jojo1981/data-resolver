@@ -18,7 +18,7 @@ use Jojo1981\DataResolver\NamingStrategy\NamingStrategyInterface;
 /**
  * @package Jojo1981\DataResolver\Builder\Extractor
  */
-class HasPropertyExtractorBuilder implements ExtractorBuilderInterface
+final class HasPropertyExtractorBuilder implements ExtractorBuilderInterface
 {
     /** @var PropertyHandlerInterface */
     private PropertyHandlerInterface $propertyHandler;

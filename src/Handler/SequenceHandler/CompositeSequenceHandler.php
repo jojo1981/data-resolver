@@ -17,7 +17,7 @@ use function array_walk;
 /**
  * @package Jojo1981\DataResolver\Handler\SequenceHandler
  */
-class CompositeSequenceHandler implements SequenceHandlerInterface
+final class CompositeSequenceHandler implements SequenceHandlerInterface
 {
     /** @var SequenceHandlerInterface[] */
     private array $handlers = [];

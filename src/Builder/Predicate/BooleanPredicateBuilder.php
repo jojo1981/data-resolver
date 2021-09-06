@@ -16,7 +16,7 @@ use Jojo1981\DataResolver\Predicate\PredicateInterface;
 /**
  * @package Jojo1981\DataResolver\Builder\Predicate
  */
-class BooleanPredicateBuilder implements PredicateBuilderInterface
+final class BooleanPredicateBuilder implements PredicateBuilderInterface
 {
     /** @var bool */
     private bool $expected;

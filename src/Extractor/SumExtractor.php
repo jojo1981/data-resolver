@@ -20,7 +20,7 @@ use function sprintf;
 /**
  * @package Jojo1981\DataResolver\Extractor
  */
-class SumExtractor extends AbstractSequenceExtractor
+final class SumExtractor extends AbstractSequenceExtractor
 {
     /** @var SequenceHandlerInterface */
     private SequenceHandlerInterface $sequenceHandler;

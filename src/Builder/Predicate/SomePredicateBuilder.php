@@ -17,7 +17,7 @@ use Jojo1981\DataResolver\Predicate\SomePredicate;
 /**
  * @package Jojo1981\DataResolver\Builder\Predicate
  */
-class SomePredicateBuilder implements PredicateBuilderInterface
+final class SomePredicateBuilder implements PredicateBuilderInterface
 {
     /** @var SequenceHandlerInterface */
     private SequenceHandlerInterface $sequenceHandler;

@@ -16,7 +16,7 @@ use function substr;
 /**
  * @package Jojo1981\DataResolver\Predicate
  */
-class StringEndsWithPredicate extends AbstractStringPredicate
+final class StringEndsWithPredicate extends AbstractStringPredicate
 {
     /** @var string */
     private string $suffix;

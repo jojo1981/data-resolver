@@ -16,7 +16,7 @@ use Jojo1981\DataResolver\Extractor\ExtractorInterface;
 /**
  * @package Jojo1981\DataResolver\Builder\Extractor
  */
-class CallbackExtractorBuilder implements ExtractorBuilderInterface
+final class CallbackExtractorBuilder implements ExtractorBuilderInterface
 {
     /** @var callable */
     private $callback;

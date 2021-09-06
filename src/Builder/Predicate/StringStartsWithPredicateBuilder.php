@@ -16,7 +16,7 @@ use Jojo1981\DataResolver\Predicate\StringStartsWithPredicate;
 /**
  * @package Jojo1981\DataResolver\Builder\Predicate
  */
-class StringStartsWithPredicateBuilder implements PredicateBuilderInterface
+final class StringStartsWithPredicateBuilder implements PredicateBuilderInterface
 {
     /** @var string */
     private string $prefix;

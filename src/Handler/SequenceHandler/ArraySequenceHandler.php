@@ -24,7 +24,7 @@ use function is_numeric;
 /**
  * @package Jojo1981\DataResolver\Handler\SequenceHandler
  */
-class ArraySequenceHandler implements SequenceHandlerInterface
+final class ArraySequenceHandler implements SequenceHandlerInterface
 {
     /**
      * @param mixed $data

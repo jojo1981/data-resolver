@@ -18,7 +18,7 @@ use Jojo1981\DataResolver\Handler\SequenceHandlerInterface;
 /**
  * @package Jojo1981\DataResolver\Builder\Extractor
  */
-class SumExtractorBuilder implements ExtractorBuilderInterface
+final class SumExtractorBuilder implements ExtractorBuilderInterface
 {
     /** @var SequenceHandlerInterface */
     private SequenceHandlerInterface $sequenceHandler;

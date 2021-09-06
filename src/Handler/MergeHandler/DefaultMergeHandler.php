@@ -22,7 +22,7 @@ use function is_numeric;
 /**
  * @package Jojo1981\DataResolver\Handler\MergeHandler
  */
-class DefaultMergeHandler implements MergeHandlerInterface
+final class DefaultMergeHandler implements MergeHandlerInterface
 {
     /**
      * @param Context $context

@@ -16,7 +16,7 @@ use Jojo1981\DataResolver\Predicate\StringContainsPredicate;
 /**
  * @package Jojo1981\DataResolver\Builder\Predicate
  */
-class StringContainsPredicateBuilder implements PredicateBuilderInterface
+final class StringContainsPredicateBuilder implements PredicateBuilderInterface
 {
     /** @var string */
     private string $subString;

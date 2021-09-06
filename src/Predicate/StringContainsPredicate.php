@@ -15,7 +15,7 @@ use function mb_strpos;
 /**
  * @package Jojo1981\DataResolver\Predicate
  */
-class StringContainsPredicate extends AbstractStringPredicate
+final class StringContainsPredicate extends AbstractStringPredicate
 {
     /** @var string */
     private string $subString;

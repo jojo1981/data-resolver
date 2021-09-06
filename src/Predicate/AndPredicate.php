@@ -17,7 +17,7 @@ use Jojo1981\DataResolver\Resolver\Context;
 /**
  * @package Jojo1981\DataResolver\Predicate
  */
-class AndPredicate implements PredicateInterface
+final class AndPredicate implements PredicateInterface
 {
     /** @var PredicateInterface */
     private PredicateInterface $leftPredicate;

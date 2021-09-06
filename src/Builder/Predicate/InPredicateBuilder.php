@@ -17,7 +17,7 @@ use Jojo1981\DataResolver\Predicate\PredicateInterface;
 /**
  * @package Jojo1981\DataResolver\Builder\Predicate
  */
-class InPredicateBuilder implements PredicateBuilderInterface
+final class InPredicateBuilder implements PredicateBuilderInterface
 {
     /** @var array */
     private array $expectedValues;

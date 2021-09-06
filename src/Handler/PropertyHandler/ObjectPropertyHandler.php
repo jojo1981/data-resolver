@@ -26,7 +26,7 @@ use function is_object;
 /**
  * @package Jojo1981\DataResolver\Handler\PropertyHandler
  */
-class ObjectPropertyHandler implements PropertyHandlerInterface
+final class ObjectPropertyHandler implements PropertyHandlerInterface
 {
     /** @var ReflectionClass[] */
     private array $reflectionClasses = [];

@@ -16,7 +16,7 @@ use Jojo1981\DataResolver\Resolver\Context;
 /**
  * @package Jojo1981\DataResolver\Predicate
  */
-class ExtractorPredicate implements PredicateInterface
+final class ExtractorPredicate implements PredicateInterface
 {
     /** @var ExtractorInterface */
     private ExtractorInterface $extractor;

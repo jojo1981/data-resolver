@@ -19,7 +19,7 @@ use Jojo1981\DataResolver\Resolver\Context;
 /**
  * @package Jojo1981\DataResolver\Extractor
  */
-class NoneExtractor extends AbstractSequenceExtractor
+final class NoneExtractor extends AbstractSequenceExtractor
 {
     /** @var SequenceHandlerInterface */
     private SequenceHandlerInterface $sequenceHandler;

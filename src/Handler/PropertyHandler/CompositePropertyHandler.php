@@ -17,7 +17,7 @@ use function array_walk;
 /**
  * @package Jojo1981\DataResolver\Handler\PropertyHandler
  */
-class CompositePropertyHandler implements PropertyHandlerInterface
+final class CompositePropertyHandler implements PropertyHandlerInterface
 {
     /** @var PropertyHandlerInterface[] */
     private array $handlers = [];

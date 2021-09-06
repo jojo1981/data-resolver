@@ -16,7 +16,7 @@ use Jojo1981\DataResolver\Predicate\PredicateInterface;
 /**
  * @package Jojo1981\DataResolver\Builder\Predicate
  */
-class CallBackPredicateBuilder implements PredicateBuilderInterface
+final class CallBackPredicateBuilder implements PredicateBuilderInterface
 {
     /** @var callable */
     private $callback;

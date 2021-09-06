@@ -14,7 +14,7 @@ use function preg_match;
 /**
  * @package Jojo1981\DataResolver\Predicate
  */
-class StringRegexPredicate extends AbstractStringPredicate
+final class StringRegexPredicate extends AbstractStringPredicate
 {
     /** @var string */
     private string $pattern;

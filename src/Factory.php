@@ -33,7 +33,7 @@ use function in_array;
  * @api
  * @package Jojo1981\DataResolver
  */
-class Factory
+final class Factory
 {
     /** @var ExtractorBuilderFactory|null */
     private ?ExtractorBuilderFactory $extractorBuilderFactory = null;

@@ -21,7 +21,7 @@ use function sprintf;
 /**
  * @package Jojo1981\DataResolver\Handler\PropertyHandler
  */
-class AssociativeArrayPropertyHandler implements PropertyHandlerInterface
+final class AssociativeArrayPropertyHandler implements PropertyHandlerInterface
 {
     /**
      * @param string $propertyName
