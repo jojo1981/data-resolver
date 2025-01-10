@@ -1,7 +1,7 @@
 Generic extensible data resolver 
 =====================
 
-[![Build Status](https://travis-ci.com/jojo1981/data-resolver.svg?branch=master)](https://travis-ci.com/jojo1981/data-resolver)
+[![Build Status](https://github.com/jojo1981/data-resolver/actions/workflows/build.yml/badge.svg)](https://github.com/jojo1981/data-resolver/actions/workflows/build.yml)
 [![Coverage Status](https://coveralls.io/repos/github/jojo1981/data-resolver/badge.svg)](https://coveralls.io/github/jojo1981/data-resolver)
 [![Latest Stable Version](https://poser.pugx.org/jojo1981/data-resolver/v/stable)](https://packagist.org/packages/jojo1981/data-resolver)
 [![Total Downloads](https://poser.pugx.org/jojo1981/data-resolver/downloads)](https://packagist.org/packages/jojo1981/data-resolver)
@@ -11,7 +11,7 @@ Author: Joost Nijhuis <[jnijhuis81@gmail.com](mailto:jnijhuis81@gmail.com)>
 
 The data resolver is a resolver which will be declarative created and used to extract data in steps from a tree structure.  
 The data resolver will perform all extract operations linear and in order.  
-The next operation will be performed on the last result etc...  
+The next operation will be performed on the last resu lt etc...  
 Some operations are to extract data from an `object` and others for extracting data of a `sequence`.  
 This library has factory class to get a resolver builder and start building a resolver.  
 Also custom `comparator`, `merge`, `property` and `sequence` handlers can be registered.
