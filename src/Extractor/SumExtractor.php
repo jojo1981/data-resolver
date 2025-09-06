@@ -59,7 +59,7 @@ final class SumExtractor extends AbstractSequenceExtractor
                 ));
             }
 
-            $sum += (float)$item;
+            $sum += (float) $item;
         }
 
         return $sum;
