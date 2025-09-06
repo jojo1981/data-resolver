@@ -10,7 +10,6 @@
 namespace Jojo1981\DataResolver\Builder\Extractor;
 
 use Jojo1981\DataResolver\Builder\ExtractorBuilderInterface;
-use Jojo1981\DataResolver\Extractor\CountExtractor;
 use Jojo1981\DataResolver\Extractor\ExtractorInterface;
 use Jojo1981\DataResolver\Extractor\SumExtractor;
 use Jojo1981\DataResolver\Handler\SequenceHandlerInterface;
@@ -32,7 +31,7 @@ final class SumExtractorBuilder implements ExtractorBuilderInterface
     }
 
     /**
-     * @return CountExtractor
+     * @return SumExtractor
      */
     public function build(): ExtractorInterface
     {
