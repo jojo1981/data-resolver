@@ -1,4 +1,4 @@
-<?php declare(strict_types=1);
+<?php
 /*
  * This file is part of the jojo1981/data-resolver package
  *
@@ -7,13 +7,15 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed in the root of the source code
  */
+declare(strict_types=1);
+
 namespace tests\Jojo1981\DataResolver\Handler\Exception;
 
 use Jojo1981\DataResolver\Handler\Exception\HandlerException;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\TestCase;
 use ReflectionException;
-use SebastianBergmann\RecursionContext\InvalidArgumentException;
 
 /**
  * @package tests\Jojo1981\DataResolver\Handler\Exception
@@ -21,52 +23,46 @@ use SebastianBergmann\RecursionContext\InvalidArgumentException;
 final class HandlerExceptionTest extends TestCase
 {
     /**
-     * @test
-     * @dataProvider getIllegalMethodInvocationTestData
-     *
      * @param string $exceptionMessage
      * @param string $className
      * @param string $invokedMethodName
      * @param string $assertMethodName
      * @param string|null $extraMessage
      * @return void
-     * @throws InvalidArgumentException
      * @throws ExpectationFailedException
      */
-    public function IllegalMethodInvocationShouldReturnHandlerException(
+    #[DataProvider("getIllegalMethodInvocationTestData")]
+    public function testIllegalMethodInvocationShouldReturnHandlerException(
         string $exceptionMessage,
         string $className,
         string $invokedMethodName,
         string $assertMethodName,
         ?string $extraMessage = null
     ): void {
-        $this->assertEquals(
+        self::assertEquals(
             new HandlerException($exceptionMessage),
             HandlerException::IllegalMethodInvocation($className, $invokedMethodName, $assertMethodName, $extraMessage)
         );
     }
 
     /**
-     * @test
-     *
      * @return void
      * @throws ExpectationFailedException
-     * @throws InvalidArgumentException
      */
-    public function couldNotGetReflectionShouldReturnHandlerException(): void
+    public function testCouldNotGetReflectionShouldReturnHandlerException(): void
     {
         $reflectionException = new ReflectionException();
         $expectedResult = new HandlerException('Can not get reflection', 0, $reflectionException);
         $actualResult = HandlerException::couldNotGetReflection($reflectionException);
 
-        $this->assertEquals($expectedResult, $actualResult);
-        $this->assertSame($actualResult->getPrevious(), $reflectionException);
+        self::assertEquals($expectedResult, $actualResult);
+        self::assertSame($actualResult->getPrevious(), $reflectionException);
     }
 
     /**
      * @return array[]
      */
-    public function getIllegalMethodInvocationTestData(): array
+    public static function getIllegalMethodInvocationTestData(): array
     {
         return [
             [

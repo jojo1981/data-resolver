@@ -1,4 +1,4 @@
-<?php declare(strict_types=1);
+<?php
 /*
  * This file is part of the jojo1981/data-resolver package
  *
@@ -7,10 +7,13 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed in the root of the source code
  */
+declare(strict_types=1);
+
 namespace tests\Jojo1981\DataResolver\Predicate;
 
 use Jojo1981\DataResolver\Predicate\NullPredicate;
 use Jojo1981\DataResolver\Resolver\Context;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Exception\Doubler\ClassNotFoundException;
@@ -19,7 +22,6 @@ use Prophecy\Exception\Doubler\InterfaceNotFoundException;
 use Prophecy\Exception\Prophecy\ObjectProphecyException;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
-use SebastianBergmann\RecursionContext\InvalidArgumentException;
 use stdClass;
 
 /**
@@ -29,7 +31,7 @@ final class NullPredicateTest extends TestCase
 {
     use ProphecyTrait;
 
-    /** @var ObjectProphecy|Context */
+    /** @var ObjectProphecy<Context> */
     private ObjectProphecy $context;
 
     /**
@@ -44,27 +46,24 @@ final class NullPredicateTest extends TestCase
     }
 
     /**
-     * @test
-     * @dataProvider getTestData
-     *
      * @param mixed $value
      * @param bool $expected
      * @return void
      * @throws ExpectationFailedException
-     * @throws InvalidArgumentException
      * @throws ObjectProphecyException
      */
-    public function matchShouldReturnTheCorrectValueForIsTrue($value, bool $expected): void
+    #[DataProvider("getTestData")]
+    public function testMatchShouldReturnTheCorrectValueForIsTrue(mixed $value, bool $expected): void
     {
         $this->context->getData()->willReturn($value)->shouldBeCalledOnce();
 
-        $this->assertEquals($expected, (new NullPredicate())->match($this->context->reveal()));
+        self::assertEquals($expected, (new NullPredicate())->match($this->context->reveal()));
     }
 
     /**
      * @return array[]
      */
-    public function getTestData(): array
+    public static function getTestData(): array
     {
         return [
             [null, true],

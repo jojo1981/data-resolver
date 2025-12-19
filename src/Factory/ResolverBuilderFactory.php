@@ -1,4 +1,4 @@
-<?php declare(strict_types=1);
+<?php
 /*
  * This file is part of the jojo1981/data-resolver package
  *
@@ -7,6 +7,8 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed in the root of the source code
  */
+declare(strict_types=1);
+
 namespace Jojo1981\DataResolver\Factory;
 
 use Jojo1981\DataResolver\Builder\Predicate\AndPredicateBuilder;
@@ -15,13 +17,11 @@ use Jojo1981\DataResolver\Builder\Predicate\NotPredicateBuilder;
 use Jojo1981\DataResolver\Builder\Predicate\OrPredicateBuilder;
 use Jojo1981\DataResolver\Builder\PredicateBuilderInterface;
 use Jojo1981\DataResolver\Builder\ResolverBuilder;
-use Jojo1981\DataResolver\Factory\Exception\FactoryException;
 use Jojo1981\DataResolver\Resolver;
 use function array_shift;
 use function explode;
 use function is_string;
-use function sprintf;
-use function strpos;
+use function str_contains;
 use function trim;
 
 /**
@@ -157,9 +157,8 @@ final class ResolverBuilderFactory
     /**
      * @param string|ResolverBuilder|null $arg
      * @return ExtractorPredicateBuilder
-     * @throws FactoryException
      */
-    public function where($arg = null): ExtractorPredicateBuilder
+    public function where(string|ResolverBuilder|null $arg = null): ExtractorPredicateBuilder
     {
         if (null === $arg) {
             return $this->predicateBuilderFactory->getExtractorPredicateBuilder(
@@ -171,16 +170,9 @@ final class ResolverBuilderFactory
             return $this->getExtractorPredicateBuilderForPropertyName($arg);
         }
 
-        if ($arg instanceof ResolverBuilder) {
-            return $this->predicateBuilderFactory->getExtractorPredicateBuilder(
-                $this->extractorBuilderFactory->getResolverExtractorBuilder($arg)
-            );
-        }
-
-        throw new FactoryException(sprintf(
-            'Invalid argument given for method `where`, should be of type string or an instance of %s',
-            ResolverBuilder::class
-        ));
+        return $this->predicateBuilderFactory->getExtractorPredicateBuilder(
+            $this->extractorBuilderFactory->getResolverExtractorBuilder($arg)
+        );
     }
 
     /**
@@ -223,7 +215,7 @@ final class ResolverBuilderFactory
     private function getExtractorPredicateBuilderForPropertyName(string $propertyName): ExtractorPredicateBuilder
     {
         $propertyName = trim($propertyName, '.');
-        if (false === strpos($propertyName, '.')) {
+        if (!str_contains($propertyName, '.')) {
             return $this->predicateBuilderFactory->getExtractorPredicateBuilder(
                 $this->extractorBuilderFactory->getPropertyExtractorBuilder($propertyName)
             );

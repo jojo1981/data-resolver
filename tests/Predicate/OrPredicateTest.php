@@ -1,4 +1,4 @@
-<?php declare(strict_types=1);
+<?php
 /*
  * This file is part of the jojo1981/data-resolver package
  *
@@ -7,6 +7,8 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed in the root of the source code
  */
+declare(strict_types=1);
+
 namespace tests\Jojo1981\DataResolver\Predicate;
 
 use Jojo1981\DataResolver\Extractor\Exception\ExtractorException;
@@ -24,7 +26,6 @@ use Prophecy\Exception\Doubler\InterfaceNotFoundException;
 use Prophecy\Exception\Prophecy\ObjectProphecyException;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
-use SebastianBergmann\RecursionContext\InvalidArgumentException;
 
 /**
  * @package tests\Jojo1981\DataResolver\Predicate
@@ -33,16 +34,16 @@ final class OrPredicateTest extends TestCase
 {
     use ProphecyTrait;
 
-    /** @var ObjectProphecy|PredicateInterface */
+    /** @var ObjectProphecy<PredicateInterface> */
     private ObjectProphecy $leftPredicate;
 
-    /** @var ObjectProphecy|PredicateInterface */
+    /** @var ObjectProphecy<PredicateInterface> */
     private ObjectProphecy $rightPredicate;
 
-    /** @var ObjectProphecy|Context */
+    /** @var ObjectProphecy<Context> */
     private ObjectProphecy $originalContext;
 
-    /** @var ObjectProphecy|Context */
+    /** @var ObjectProphecy<Context> */
     private ObjectProphecy $copiedContext;
 
     /**
@@ -60,63 +61,58 @@ final class OrPredicateTest extends TestCase
     }
 
     /**
-     * @test
-     *
      * @return void
      * @throws HandlerException
      * @throws PredicateException
      * @throws ExpectationFailedException
-     * @throws InvalidArgumentException
      * @throws ObjectProphecyException
      * @throws ExtractorException
      */
-    public function matchShouldReturnFalseBecauseLeftPredicateAndRightPredicateReturnFalse(): void
+    public function testMatchShouldReturnFalseBecauseLeftPredicateAndRightPredicateReturnFalse(): void
     {
+        /** @noinspection PhpUndefinedMethodInspection */
         $this->originalContext->copy()->willReturn($this->copiedContext)->shouldBeCalledTimes(2);
         $this->leftPredicate->match($this->copiedContext)->willReturn(false)->shouldBeCalledOnce();
         $this->rightPredicate->match($this->copiedContext)->willReturn(false)->shouldBeCalledOnce();
 
-        $this->assertFalse($this->getOrPredicate()->match($this->originalContext->reveal()));
+        self::assertFalse($this->getOrPredicate()->match($this->originalContext->reveal()));
     }
 
     /**
-     * @test
-     *
      * @return void
      * @throws HandlerException
      * @throws PredicateException
      * @throws ExpectationFailedException
-     * @throws InvalidArgumentException
      * @throws ObjectProphecyException
      * @throws ExtractorException
      */
-    public function matchShouldReturnTrueBecauseLeftPredicateReturnFalseAndRightPredicateReturnTrue(): void
+    public function testMatchShouldReturnTrueBecauseLeftPredicateReturnFalseAndRightPredicateReturnTrue(): void
     {
+        /** @noinspection PhpUndefinedMethodInspection */
         $this->originalContext->copy()->willReturn($this->copiedContext)->shouldBeCalledTimes(2);
         $this->leftPredicate->match($this->copiedContext)->willReturn(false)->shouldBeCalledOnce();
         $this->rightPredicate->match($this->copiedContext)->willReturn(true)->shouldBeCalledOnce();
 
-        $this->assertTrue($this->getOrPredicate()->match($this->originalContext->reveal()));
+        self::assertTrue($this->getOrPredicate()->match($this->originalContext->reveal()));
     }
 
     /**
-     * @test
-     *
      * @return void
      * @throws HandlerException
      * @throws PredicateException
      * @throws ExpectationFailedException
-     * @throws InvalidArgumentException
      * @throws ObjectProphecyException
      * @throws ExtractorException
      */
-    public function matchShouldReturnTrueBecauseLeftPredicateReturnTrueAndRightPredicateShouldNotBeCalled(): void
+    public function testMatchShouldReturnTrueBecauseLeftPredicateReturnTrueAndRightPredicateShouldNotBeCalled(): void
     {
+        /** @noinspection PhpUndefinedMethodInspection */
         $this->originalContext->copy()->willReturn($this->copiedContext)->shouldBeCalledOnce();
         $this->leftPredicate->match($this->copiedContext)->willReturn(true)->shouldBeCalledOnce();
+        /** @noinspection PhpParamsInspection */
         $this->rightPredicate->match(Argument::any())->shouldNotBeCalled();
 
-        $this->assertTrue($this->getOrPredicate()->match($this->originalContext->reveal()));
+        self::assertTrue($this->getOrPredicate()->match($this->originalContext->reveal()));
     }
 
     /**

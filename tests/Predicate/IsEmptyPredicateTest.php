@@ -1,4 +1,4 @@
-<?php declare(strict_types=1);
+<?php
 /*
  * This file is part of the jojo1981/data-resolver package
  *
@@ -7,12 +7,15 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed in the root of the source code
  */
+declare(strict_types=1);
+
 namespace tests\Jojo1981\DataResolver\Predicate;
 
 use Jojo1981\DataResolver\Handler\Exception\HandlerException;
 use Jojo1981\DataResolver\Handler\SequenceHandlerInterface;
 use Jojo1981\DataResolver\Predicate\IsEmptyPredicate;
 use Jojo1981\DataResolver\Resolver\Context;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
@@ -22,7 +25,6 @@ use Prophecy\Exception\Doubler\InterfaceNotFoundException;
 use Prophecy\Exception\Prophecy\ObjectProphecyException;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
-use SebastianBergmann\RecursionContext\InvalidArgumentException as SebastianBergmannInvalidArgumentException;
 use stdClass;
 
 /**
@@ -32,7 +34,7 @@ final class IsEmptyPredicateTest extends TestCase
 {
     use ProphecyTrait;
 
-    /** @var ObjectProphecy|SequenceHandlerInterface */
+    /** @var ObjectProphecy<SequenceHandlerInterface> */
     private ObjectProphecy $sequenceHandler;
 
     /**
@@ -47,41 +49,35 @@ final class IsEmptyPredicateTest extends TestCase
     }
 
     /**
-     * @test
-     *
      * @return void
      * @throws HandlerException
      * @throws ObjectProphecyException
-     * @throws SebastianBergmannInvalidArgumentException
      * @throws ExpectationFailedException
      */
-    public function matchShouldUseSequenceHandlerWhenItSupportTheDataAndReturnItsResult(): void
+    public function testMatchShouldUseSequenceHandlerWhenItSupportTheDataAndReturnItsResult(): void
     {
         $this->sequenceHandler->supports('text1')->willReturn(true)->shouldBeCalledOnce();
         $this->sequenceHandler->count('text1')->willReturn(0)->shouldBeCalledOnce();
         $this->sequenceHandler->supports('text2')->willReturn(true)->shouldBeCalledOnce();
         $this->sequenceHandler->count('text2')->willReturn(1)->shouldBeCalledOnce();
 
-        $this->assertEquals(true, $this->getIsEmptyPredicate()->match(new Context('text1')));
-        $this->assertEquals(false, $this->getIsEmptyPredicate()->match(new Context('text2')));
+        self::assertTrue($this->getIsEmptyPredicate()->match(new Context('text1')));
+        self::assertFalse($this->getIsEmptyPredicate()->match(new Context('text2')));
     }
 
     /**
-     * @test
-     * @dataProvider getTestData
-     *
      * @param mixed $data
      * @param bool $expected
      * @return void
      * @throws HandlerException
      * @throws ExpectationFailedException
-     * @throws SebastianBergmannInvalidArgumentException
      * @throws ObjectProphecyException
      */
-    public function matchShouldReturnTheCorrectResult($data, bool $expected): void
+    #[DataProvider("getTestData")]
+    public function testMatchShouldReturnTheCorrectResult(mixed $data, bool $expected): void
     {
         $this->sequenceHandler->supports(Argument::any())->willReturn(false);
-        $this->assertEquals($expected, $this->getIsEmptyPredicate()->match(new Context($data)));
+        self::assertEquals($expected, $this->getIsEmptyPredicate()->match(new Context($data)));
     }
 
     /**
@@ -96,7 +92,7 @@ final class IsEmptyPredicateTest extends TestCase
     /**
      * @return array[]
      */
-    public function getTestData(): array
+    public static function getTestData(): array
     {
         return [
             [null, true],

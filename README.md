@@ -11,7 +11,7 @@ Author: Joost Nijhuis <[jnijhuis81@gmail.com](mailto:jnijhuis81@gmail.com)>
 
 The data resolver is a resolver which will be declarative created and used to extract data in steps from a tree structure.  
 The data resolver will perform all extract operations linear and in order.  
-The next operation will be performed on the last resu lt etc...  
+The next operation will be performed on the last result etc...  
 Some operations are to extract data from an `object` and others for extracting data of a `sequence`.  
 This library has factory class to get a resolver builder and start building a resolver.  
 Also custom `comparator`, `merge`, `property` and `sequence` handlers can be registered.

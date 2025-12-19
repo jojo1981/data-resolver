@@ -1,4 +1,4 @@
-<?php declare(strict_types=1);
+<?php
 /*
  * This file is part of the jojo1981/data-resolver package
  *
@@ -7,12 +7,14 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed in the root of the source code
  */
+declare(strict_types=1);
+
 namespace Jojo1981\DataResolver\Resolver;
 
 use function array_pop;
 use function explode;
 use function implode;
-use function strpos;
+use function str_contains;
 
 /**
  * @package Jojo1981\DataResolver\Resolver
@@ -20,7 +22,7 @@ use function strpos;
 final class Context
 {
     /** @var mixed */
-    private $data;
+    private mixed $data;
 
     /** @var string[] */
     private array $pathParts;
@@ -29,7 +31,7 @@ final class Context
      * @param mixed $data
      * @param string $path
      */
-    public function __construct($data, string $path = '')
+    public function __construct(mixed $data, string $path = '')
     {
         $this->data = $data;
         $this->setPath($path);
@@ -38,7 +40,7 @@ final class Context
     /**
      * @return mixed
      */
-    public function getData()
+    public function getData(): mixed
     {
         return $this->data;
     }
@@ -55,7 +57,7 @@ final class Context
      * @param int|string $pathPart
      * @return $this
      */
-    public function pushPathPart($pathPart): self
+    public function pushPathPart(int|string $pathPart): self
     {
         $this->pathParts[] = (string) $pathPart;
 
@@ -78,7 +80,7 @@ final class Context
      */
     public function setPath(string $path): self
     {
-        $this->pathParts = false !== strpos($path, '.') ? explode('.', $path) : [];
+        $this->pathParts = str_contains($path, '.') ? explode('.', $path) : [];
 
         return $this;
     }
@@ -87,7 +89,7 @@ final class Context
      * @param mixed $data
      * @return $this
      */
-    public function setData($data): self
+    public function setData(mixed $data): self
     {
         $this->data = $data;
 

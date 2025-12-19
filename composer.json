@@ -20,16 +20,16 @@
   "prefer-stable": true,
   "minimum-stability": "dev",
   "require": {
-    "php": "^7.4|^8.0|^8.1|^8.2|^8.3|^8.4",
-    "sebastian/comparator": "^4.0"
+    "php": "^8.3|^8.4|^8.5",
+    "sebastian/comparator": "^7.0"
   },
   "require-dev": {
     "ext-json": "*",
-    "dg/bypass-finals": "^1.1",
-    "friendsofphp/php-cs-fixer": "^2.16",
+    "dg/bypass-finals": "^1.0",
+    "friendsofphp/php-cs-fixer": "^3.0",
     "phpspec/prophecy-phpunit": "^2.0",
-    "phpunit/phpunit": "^9.0",
-    "roave/security-advisories": "dev-master"
+    "phpunit/phpunit": "^12.0",
+    "roave/security-advisories": "dev-latest"
   },
   "suggest": {
     "jojo1981/data-resolver-handlers": "Add support to work with 3th party libraries"

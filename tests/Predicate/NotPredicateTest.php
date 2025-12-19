@@ -1,4 +1,4 @@
-<?php declare(strict_types=1);
+<?php
 /*
  * This file is part of the jojo1981/data-resolver package
  *
@@ -7,6 +7,8 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed in the root of the source code
  */
+declare(strict_types=1);
+
 namespace tests\Jojo1981\DataResolver\Predicate;
 
 use Jojo1981\DataResolver\Extractor\Exception\ExtractorException;
@@ -23,7 +25,6 @@ use Prophecy\Exception\Doubler\InterfaceNotFoundException;
 use Prophecy\Exception\Prophecy\ObjectProphecyException;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
-use SebastianBergmann\RecursionContext\InvalidArgumentException;
 
 /**
  * @package tests\Jojo1981\DataResolver\Predicate
@@ -32,10 +33,10 @@ final class NotPredicateTest extends TestCase
 {
     use ProphecyTrait;
 
-    /** @var ObjectProphecy|PredicateInterface */
+    /** @var ObjectProphecy<PredicateInterface> */
     private ObjectProphecy $predicate;
 
-    /** @var ObjectProphecy|Context */
+    /** @var ObjectProphecy<Context> */
     private ObjectProphecy $context;
 
     /**
@@ -51,37 +52,31 @@ final class NotPredicateTest extends TestCase
     }
 
     /**
-     * @test
-     *
      * @return void
      * @throws HandlerException
      * @throws PredicateException
      * @throws ExpectationFailedException
-     * @throws InvalidArgumentException
      * @throws ObjectProphecyException
      * @throws ExtractorException
      */
-    public function matchShouldReturnFalseWhenInjectedPredicateMatchReturnsTrue(): void
+    public function testMatchShouldReturnFalseWhenInjectedPredicateMatchReturnsTrue(): void
     {
         $this->predicate->match($this->context)->willReturn(true)->shouldBeCalled();
-        $this->assertFalse($this->getNotPredicate()->match($this->context->reveal()));
+        self::assertFalse($this->getNotPredicate()->match($this->context->reveal()));
     }
 
     /**
-     * @test
-     *
      * @return void
      * @throws HandlerException
      * @throws PredicateException
      * @throws ExpectationFailedException
-     * @throws InvalidArgumentException
      * @throws ObjectProphecyException
      * @throws ExtractorException
      */
-    public function matchShouldReturnTrueWhenInjectedPredicateMatchReturnsFalse(): void
+    public function testMatchShouldReturnTrueWhenInjectedPredicateMatchReturnsFalse(): void
     {
         $this->predicate->match($this->context)->willReturn(false)->shouldBeCalled();
-        $this->assertTrue($this->getNotPredicate()->match($this->context->reveal()));
+        self::assertTrue($this->getNotPredicate()->match($this->context->reveal()));
     }
 
     /**

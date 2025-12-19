@@ -1,4 +1,4 @@
-<?php declare(strict_types=1);
+<?php
 /*
  * This file is part of the jojo1981/data-resolver package
  *
@@ -7,6 +7,8 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed in the root of the source code
  */
+declare(strict_types=1);
+
 namespace Jojo1981\DataResolver\Handler\MergeHandler;
 
 use Jojo1981\DataResolver\Handler\MergeHandlerInterface;
@@ -29,7 +31,7 @@ final class DefaultMergeHandler implements MergeHandlerInterface
      * @param array $elements
      * @return array|stdClass
      */
-    public function merge(Context $context, array $elements)
+    public function merge(Context $context, array $elements): array|stdClass
     {
         if ($this->areAllElementsIndexedArrays($elements)) {
             return $this->flattenElements($elements);
@@ -85,7 +87,7 @@ final class DefaultMergeHandler implements MergeHandlerInterface
      * @param mixed $array
      * @return bool
      */
-    private function isIndexedArray($array): bool
+    private function isIndexedArray(mixed $array): bool
     {
         if (!is_array($array)) {
             return false;

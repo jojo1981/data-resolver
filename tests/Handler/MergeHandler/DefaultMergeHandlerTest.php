@@ -1,4 +1,4 @@
-<?php declare(strict_types=1);
+<?php
 /*
  * This file is part of the jojo1981/data-resolver package
  *
@@ -7,13 +7,14 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed in the root of the source code
  */
+declare(strict_types=1);
+
 namespace tests\Jojo1981\DataResolver\Handler\MergeHandler;
 
 use Jojo1981\DataResolver\Handler\MergeHandler\DefaultMergeHandler;
 use Jojo1981\DataResolver\Resolver\Context;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\TestCase;
-use SebastianBergmann\RecursionContext\InvalidArgumentException;
 use stdClass;
 
 /**
@@ -22,39 +23,30 @@ use stdClass;
 final class DefaultMergeHandlerTest extends TestCase
 {
     /**
-     * @test
-     *
      * @return void
      * @throws ExpectationFailedException
-     * @throws InvalidArgumentException
      */
-    public function mergeWithContextDataNullWithEmptyElementShouldReturnEmptyArray(): void
+    public function testMergeWithContextDataNullWithEmptyElementShouldReturnEmptyArray(): void
     {
         $result = $this->getDefaultMergeHandler()->merge(new Context(null, ''), []);
-        $this->assertEquals([], $result);
+        self::assertEquals([], $result);
     }
 
     /**
-     * @test
-     *
      * @return void
      * @throws ExpectationFailedException
-     * @throws InvalidArgumentException
      */
-    public function mergeWithContextDataArrayWithEmptyElementShouldReturnAnEmptyArray(): void
+    public function testMergeWithContextDataArrayWithEmptyElementShouldReturnAnEmptyArray(): void
     {
         $result = $this->getDefaultMergeHandler()->merge(new Context([], ''), []);
-        $this->assertEquals([], $result);
+        self::assertEquals([], $result);
     }
 
     /**
-     * @test
-     *
      * @return void
      * @throws ExpectationFailedException
-     * @throws InvalidArgumentException
      */
-    public function mergeWithContextDataObjectWithElementsShouldReturnNonEmptyStdClass(): void
+    public function testMergeWithContextDataObjectWithElementsShouldReturnNonEmptyStdClass(): void
     {
         $expected = new stdClass();
         $expected->id = 'id1';
@@ -65,17 +57,14 @@ final class DefaultMergeHandlerTest extends TestCase
             new Context(new stdClass(), ''),
             $this->getElementsTestData()
         );
-        $this->assertEquals($expected, $result);
+        self::assertEquals($expected, $result);
     }
 
     /**
-     * @test
-     *
      * @return void
      * @throws ExpectationFailedException
-     * @throws InvalidArgumentException
      */
-    public function mergeWithContextDataArrayWithElementsShouldReturnNonEmptyAssociativeArray(): void
+    public function testMergeWithContextDataArrayWithElementsShouldReturnNonEmptyAssociativeArray(): void
     {
         $expected = [
             'id' => 'id1',
@@ -84,17 +73,14 @@ final class DefaultMergeHandlerTest extends TestCase
         ];
 
         $result = $this->getDefaultMergeHandler()->merge(new Context([], ''), $this->getElementsTestData());
-        $this->assertEquals($expected, $result);
+        self::assertEquals($expected, $result);
     }
 
     /**
-     * @test
-     *
      * @return void
      * @throws ExpectationFailedException
-     * @throws InvalidArgumentException
      */
-    public function mergeWithContextDataIndexedArrayWithElementsShouldReturnMergedIndexedArray(): void
+    public function testMergeWithContextDataIndexedArrayWithElementsShouldReturnMergedIndexedArray(): void
     {
         $elements = [
             'primaryAddresses' => [
@@ -126,7 +112,7 @@ final class DefaultMergeHandlerTest extends TestCase
         $expected = [['address1'], ['address2'], ['address3'], ['address4'], ['address5'], ['address6']];
 
         $result = $this->getDefaultMergeHandler()->merge(new Context([], ''), $elements);
-        $this->assertEquals($expected, $result);
+        self::assertEquals($expected, $result);
     }
 
     /**

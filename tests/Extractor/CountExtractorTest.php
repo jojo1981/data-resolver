@@ -1,4 +1,4 @@
-<?php declare(strict_types=1);
+<?php
 /*
  * This file is part of the jojo1981/data-resolver package
  *
@@ -7,6 +7,8 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed in the root of the source code
  */
+declare(strict_types=1);
+
 namespace tests\Jojo1981\DataResolver\Extractor;
 
 use Jojo1981\DataResolver\Extractor\CountExtractor;
@@ -23,7 +25,6 @@ use Prophecy\Exception\Doubler\InterfaceNotFoundException;
 use Prophecy\Exception\Prophecy\ObjectProphecyException;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
-use SebastianBergmann\RecursionContext\InvalidArgumentException;
 
 /**
  * @package tests\Jojo1981\DataResolver\Extractor
@@ -32,10 +33,10 @@ final class CountExtractorTest extends TestCase
 {
     use ProphecyTrait;
 
-    /** @var ObjectProphecy|SequenceHandlerInterface */
+    /** @var ObjectProphecy<SequenceHandlerInterface> */
     private ObjectProphecy $sequenceHandler;
 
-    /** @var ObjectProphecy|Context */
+    /** @var ObjectProphecy<Context> */
     private ObjectProphecy $originalContext;
 
     /**
@@ -51,15 +52,13 @@ final class CountExtractorTest extends TestCase
     }
 
     /**
-     * @test
-     *
      * @return void
      * @throws ObjectProphecyException
      * @throws PredicateException
      * @throws ExtractorException
      * @throws HandlerException
      */
-    public function extractShouldThrowAnExceptionBecauseSequenceHandlerDoesNotSupportTheDataFromContext(): void
+    public function testExtractShouldThrowAnExceptionBecauseSequenceHandlerDoesNotSupportTheDataFromContext(): void
     {
         $this->originalContext->getData()->willReturn('my-data')->shouldBeCalledOnce();
         $this->originalContext->getPath()->willReturn('my-path')->shouldBeCalledOnce();
@@ -71,25 +70,23 @@ final class CountExtractorTest extends TestCase
     }
 
     /**
-     * @test
-     *
      * @return void
      * @throws ObjectProphecyException
      * @throws PredicateException
      * @throws ExpectationFailedException
-     * @throws InvalidArgumentException
      * @throws ExtractorException
      * @throws HandlerException
      */
-    public function extractShouldReturnTheResultFromTheSequenceHandlerFilterMethod(): void
+    public function testExtractShouldReturnTheResultFromTheSequenceHandlerFilterMethod(): void
     {
         $this->originalContext->getData()->willReturn('my-data')->shouldBeCalledTimes(2);
         $this->originalContext->getPath()->shouldNotBeCalled();
+        /** @noinspection PhpUndefinedMethodInspection */
         $this->originalContext->copy()->shouldNotBeCalled();
         $this->sequenceHandler->supports('my-data')->willReturn(true)->shouldBeCalledOnce();
         $this->sequenceHandler->count('my-data')->willReturn(25)->shouldBeCalledOnce();
 
-        $this->assertEquals(25, $this->getCountExtractor()->extract($this->originalContext->reveal()));
+        self::assertEquals(25, $this->getCountExtractor()->extract($this->originalContext->reveal()));
     }
 
     /**

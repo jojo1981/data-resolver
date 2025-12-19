@@ -1,4 +1,4 @@
-<?php declare(strict_types=1);
+<?php
 /*
  * This file is part of the jojo1981/data-resolver package
  *
@@ -7,11 +7,14 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed in the root of the source code
  */
+declare(strict_types=1);
+
 namespace tests\Jojo1981\DataResolver\Handler\PropertyHandler;
 
 use Jojo1981\DataResolver\Handler\Exception\HandlerException;
 use Jojo1981\DataResolver\Handler\PropertyHandler\ObjectPropertyHandler;
 use Jojo1981\DataResolver\NamingStrategy\NamingStrategyInterface;
+use PHPUnit\Framework\Attributes\RunInSeparateProcess;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
@@ -22,7 +25,6 @@ use Prophecy\Exception\Prophecy\ObjectProphecyException;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
 use ReflectionException;
-use SebastianBergmann\RecursionContext\InvalidArgumentException;
 use stdClass;
 use function define;
 
@@ -62,7 +64,7 @@ final class ObjectPropertyHandlerTest extends TestCase
 {
     use ProphecyTrait;
 
-    /** @var ObjectProphecy|NamingStrategyInterface */
+    /** @var ObjectProphecy<NamingStrategyInterface> */
     private ObjectProphecy $namingStrategy;
 
     /**
@@ -77,49 +79,41 @@ final class ObjectPropertyHandlerTest extends TestCase
     }
 
     /**
-     * @test
-     *
      * @return void
-     * @throws InvalidArgumentException
      * @throws ExpectationFailedException
      */
-    public function supportShouldReturnFalseForDataWhichIsNotAnObject(): void
+    public function testSupportShouldReturnFalseForDataWhichIsNotAnObject(): void
     {
-        $this->assertFalse($this->getObjectPropertyHandler()->supports('my-property', []));
-        $this->assertFalse($this->getObjectPropertyHandler()->supports('my-property', ['item1', 'item2', 'item2']));
-        $this->assertFalse($this->getObjectPropertyHandler()->supports('my-property', ['key1' => 'value1']));
-        $this->assertFalse($this->getObjectPropertyHandler()->supports('my-property', true));
-        $this->assertFalse($this->getObjectPropertyHandler()->supports('my-property', false));
-        $this->assertFalse($this->getObjectPropertyHandler()->supports('my-property', null));
-        $this->assertFalse($this->getObjectPropertyHandler()->supports('my-property', ''));
-        $this->assertFalse($this->getObjectPropertyHandler()->supports('my-property', 'text'));
-        $this->assertFalse($this->getObjectPropertyHandler()->supports('my-property', 25));
-        $this->assertFalse($this->getObjectPropertyHandler()->supports('my-property', 3.99));
+        self::assertFalse($this->getObjectPropertyHandler()->supports('my-property', []));
+        self::assertFalse($this->getObjectPropertyHandler()->supports('my-property', ['item1', 'item2', 'item2']));
+        self::assertFalse($this->getObjectPropertyHandler()->supports('my-property', ['key1' => 'value1']));
+        self::assertFalse($this->getObjectPropertyHandler()->supports('my-property', true));
+        self::assertFalse($this->getObjectPropertyHandler()->supports('my-property', false));
+        self::assertFalse($this->getObjectPropertyHandler()->supports('my-property', null));
+        self::assertFalse($this->getObjectPropertyHandler()->supports('my-property', ''));
+        self::assertFalse($this->getObjectPropertyHandler()->supports('my-property', 'text'));
+        self::assertFalse($this->getObjectPropertyHandler()->supports('my-property', 25));
+        self::assertFalse($this->getObjectPropertyHandler()->supports('my-property', 3.99));
     }
 
     /**
-     * @test
-     *
      * @return void
-     * @throws InvalidArgumentException
      * @throws ExpectationFailedException
      */
-    public function supportShouldReturnTrueForDataWhichIsAnObject(): void
+    public function testSupportShouldReturnTrueForDataWhichIsAnObject(): void
     {
-        $this->assertTrue($this->getObjectPropertyHandler()->supports('my-property', new stdClass()));
-        $this->assertTrue($this->getObjectPropertyHandler()->supports('my-property', new TestEntity()));
+        self::assertTrue($this->getObjectPropertyHandler()->supports('my-property', new stdClass()));
+        self::assertTrue($this->getObjectPropertyHandler()->supports('my-property', new TestEntity()));
     }
 
     /**
-     * @test
-     * @runInSeparateProcess
-     *
      * @return void
      * @throws ReflectionException
      * @throws HandlerException
      * @throws ObjectProphecyException
      */
-    public function getValueForPropertyNameShouldThrowHandlerExceptionBecauseReflectionExceptionOccurs(): void
+    #[RunInSeparateProcess]
+    public function testGetValueForPropertyNameShouldThrowHandlerExceptionBecauseReflectionExceptionOccurs(): void
     {
         $this->expectExceptionObject(new HandlerException('Can not get reflection'));
 
@@ -132,14 +126,12 @@ final class ObjectPropertyHandlerTest extends TestCase
     }
 
     /**
-     * @test
-     * @runInSeparateProcess
-     *
      * @return void
      * @throws HandlerException
      * @throws ObjectProphecyException
      */
-    public function hasValueForPropertyNameShouldThrowHandlerExceptionBecauseReflectionExceptionOccurs(): void
+    #[RunInSeparateProcess]
+    public function testHasValueForPropertyNameShouldThrowHandlerExceptionBecauseReflectionExceptionOccurs(): void
     {
         $this->expectExceptionObject(new HandlerException('Can not get reflection'));
 
@@ -152,14 +144,12 @@ final class ObjectPropertyHandlerTest extends TestCase
     }
 
     /**
-     * @test
-     *
      * @return void
      * @throws ReflectionException
      * @throws HandlerException
      * @throws ObjectProphecyException
      */
-    public function getValueForPropertyNameShouldThrowHandlerExceptionBecauseCalledWithUnsupportedData(): void
+    public function testGetValueForPropertyNameShouldThrowHandlerExceptionBecauseCalledWithUnsupportedData(): void
     {
         $this->expectExceptionObject(new HandlerException(
             'The `' . ObjectPropertyHandler::class . '` can only handle objects. Illegal invocation of method ' .
@@ -174,24 +164,22 @@ final class ObjectPropertyHandlerTest extends TestCase
     }
 
     /**
-     * @test
-     *
      * @return void
      * @throws ReflectionException
-     * @throws InvalidArgumentException
      * @throws ObjectProphecyException
      * @throws ExpectationFailedException
      * @throws HandlerException
      */
-    public function getValueForPropertyNameShouldReturnNullWhenDataCanNotBeFoundUsingStdClassAsData(): void
+    public function testGetValueForPropertyNameShouldReturnNullWhenDataCanNotBeFoundUsingStdClassAsData(): void
     {
         $this->namingStrategy->getPropertyNames('property-name')->willReturn([
             'property_name',
             'propertyName'
         ])->shouldBeCalledOnce();
+        /** @noinspection PhpStrictTypeCheckingInspection */
         $this->namingStrategy->getMethodNames(Argument::any())->shouldNotBeCalled();
 
-        $this->assertNull($this->getObjectPropertyHandler()->getValueForPropertyName(
+        self::assertNull($this->getObjectPropertyHandler()->getValueForPropertyName(
             $this->namingStrategy->reveal(),
             'property-name',
             new stdClass()
@@ -199,27 +187,25 @@ final class ObjectPropertyHandlerTest extends TestCase
     }
 
     /**
-     * @test
-     *
      * @return void
      * @throws ReflectionException
-     * @throws InvalidArgumentException
      * @throws ObjectProphecyException
      * @throws ExpectationFailedException
      * @throws HandlerException
      */
-    public function getValueForPropertyNameShouldReturnFoundValueWhenDataCanBeFoundUsingStdClassAsData(): void
+    public function testGetValueForPropertyNameShouldReturnFoundValueWhenDataCanBeFoundUsingStdClassAsData(): void
     {
         $this->namingStrategy->getPropertyNames('property-name')->willReturn([
             'property_name',
             'propertyName'
         ])->shouldBeCalledOnce();
+        /** @noinspection PhpStrictTypeCheckingInspection */
         $this->namingStrategy->getMethodNames(Argument::any())->shouldNotBeCalled();
 
         $data = new stdClass();
         $data->propertyName = 'MY-DATA';
 
-        $this->assertEquals(
+        self::assertEquals(
             'MY-DATA',
             $this->getObjectPropertyHandler()->getValueForPropertyName(
                 $this->namingStrategy->reveal(),
@@ -230,16 +216,13 @@ final class ObjectPropertyHandlerTest extends TestCase
     }
 
     /**
-     * @test
-     *
      * @return void
      * @throws ReflectionException
-     * @throws InvalidArgumentException
      * @throws ObjectProphecyException
      * @throws ExpectationFailedException
      * @throws HandlerException
      */
-    public function getValueForPropertyNameShouldReturnNullWhenDataCanNotBeFoundUsingTestEntityAsData(): void
+    public function testGetValueForPropertyNameShouldReturnNullWhenDataCanNotBeFoundUsingTestEntityAsData(): void
     {
         $this->namingStrategy->getPropertyNames('property-name')->willReturn([
             'property_name',
@@ -247,7 +230,7 @@ final class ObjectPropertyHandlerTest extends TestCase
         ])->shouldBeCalledOnce();
         $this->namingStrategy->getMethodNames('property-name')->willReturn(['getPropertyName'])->shouldBeCalledOnce();
 
-        $this->assertNull($this->getObjectPropertyHandler()->getValueForPropertyName(
+        self::assertNull($this->getObjectPropertyHandler()->getValueForPropertyName(
             $this->namingStrategy->reveal(),
             'property-name',
             new TestEntity()
@@ -255,16 +238,13 @@ final class ObjectPropertyHandlerTest extends TestCase
     }
 
     /**
-     * @test
-     *
      * @return void
      * @throws ReflectionException
-     * @throws InvalidArgumentException
      * @throws ObjectProphecyException
      * @throws ExpectationFailedException
      * @throws HandlerException
      */
-    public function getValueForPropertyNameShouldReturnFoundValueByPropertyNameUsingTestEntityAsData(): void
+    public function testGetValueForPropertyNameShouldReturnFoundValueByPropertyNameUsingTestEntityAsData(): void
     {
         $this->namingStrategy->getMethodNames('myProp')->willReturn(['getMyProp'])->shouldBeCalledOnce();
         $this->namingStrategy->getPropertyNames('myProp')->willReturn(['my_prop', 'myProp'])->shouldBeCalledOnce();
@@ -272,7 +252,7 @@ final class ObjectPropertyHandlerTest extends TestCase
         $data = new TestEntity();
         $data->myProp = 'My-DaTa';
 
-        $this->assertEquals(
+        self::assertEquals(
             'My-DaTa',
             $this->getObjectPropertyHandler()->getValueForPropertyName(
                 $this->namingStrategy->reveal(),
@@ -283,24 +263,22 @@ final class ObjectPropertyHandlerTest extends TestCase
     }
 
     /**
-     * @test
-     *
      * @return void
      * @throws ReflectionException
-     * @throws InvalidArgumentException
      * @throws ObjectProphecyException
      * @throws ExpectationFailedException
      * @throws HandlerException
      */
-    public function getValueForPropertyNameShouldReturnFoundValueByMethodNameUsingTestEntityAsData(): void
+    public function testGetValueForPropertyNameShouldReturnFoundValueByMethodNameUsingTestEntityAsData(): void
     {
         $this->namingStrategy->getMethodNames('my_name')->willReturn(['getMyName'])->shouldBeCalledOnce();
+        /** @noinspection PhpStrictTypeCheckingInspection */
         $this->namingStrategy->getPropertyNames(Argument::any())->shouldNotBeCalled();
 
         $data = new TestEntity();
         $data->setMyName('TheName');
 
-        $this->assertEquals(
+        self::assertEquals(
             'TheName',
             $this->getObjectPropertyHandler()->getValueForPropertyName(
                 $this->namingStrategy->reveal(),
@@ -311,13 +289,11 @@ final class ObjectPropertyHandlerTest extends TestCase
     }
 
     /**
-     * @test
-     *
      * @return void
      * @throws HandlerException
      * @throws ObjectProphecyException
      */
-    public function hasValueForPropertyNameShouldThrowHandlerExceptionBecauseCalledWithUnsupportedData(): void
+    public function testHasValueForPropertyNameShouldThrowHandlerExceptionBecauseCalledWithUnsupportedData(): void
     {
         $this->expectExceptionObject(new HandlerException(
             'The `' . ObjectPropertyHandler::class . '` can only handle objects. Illegal invocation of method ' .
@@ -332,23 +308,21 @@ final class ObjectPropertyHandlerTest extends TestCase
     }
 
     /**
-     * @test
-     *
      * @return void
-     * @throws InvalidArgumentException
      * @throws ObjectProphecyException
      * @throws ExpectationFailedException
      * @throws HandlerException
      */
-    public function hasValueForPropertyNameShouldReturnFalseWhenDataCanNotBeFoundUsingStdClassAsData(): void
+    public function testHasValueForPropertyNameShouldReturnFalseWhenDataCanNotBeFoundUsingStdClassAsData(): void
     {
         $this->namingStrategy->getPropertyNames('property-name')->willReturn([
             'property_name',
             'propertyName'
         ])->shouldBeCalledOnce();
+        /** @noinspection PhpStrictTypeCheckingInspection */
         $this->namingStrategy->getMethodNames(Argument::any())->shouldNotBeCalled();
 
-        $this->assertFalse($this->getObjectPropertyHandler()->hasValueForPropertyName(
+        self::assertFalse($this->getObjectPropertyHandler()->hasValueForPropertyName(
             $this->namingStrategy->reveal(),
             'property-name',
             new stdClass()
@@ -356,26 +330,24 @@ final class ObjectPropertyHandlerTest extends TestCase
     }
 
     /**
-     * @test
-     *
      * @return void
-     * @throws InvalidArgumentException
      * @throws ObjectProphecyException
      * @throws ExpectationFailedException
      * @throws HandlerException
      */
-    public function hasValueForPropertyNameShouldReturnTrueWhenValueFoundUsingStdClassAsData(): void
+    public function testHasValueForPropertyNameShouldReturnTrueWhenValueFoundUsingStdClassAsData(): void
     {
         $this->namingStrategy->getPropertyNames('property-name')->willReturn([
             'property_name',
             'propertyName'
         ])->shouldBeCalledOnce();
+        /** @noinspection PhpStrictTypeCheckingInspection */
         $this->namingStrategy->getMethodNames(Argument::any())->shouldNotBeCalled();
 
         $data = new stdClass();
         $data->propertyName = 'MY-DATA';
 
-        $this->assertTrue($this->getObjectPropertyHandler()->hasValueForPropertyName(
+        self::assertTrue($this->getObjectPropertyHandler()->hasValueForPropertyName(
             $this->namingStrategy->reveal(),
             'property-name',
             $data
@@ -383,15 +355,12 @@ final class ObjectPropertyHandlerTest extends TestCase
     }
 
     /**
-     * @test
-     *
      * @return void
-     * @throws InvalidArgumentException
      * @throws ObjectProphecyException
      * @throws ExpectationFailedException
      * @throws HandlerException
      */
-    public function hasValueForPropertyNameShouldReturnFalseWhenDataCanNotBeFoundUsingTestEntityAsData(): void
+    public function testHasValueForPropertyNameShouldReturnFalseWhenDataCanNotBeFoundUsingTestEntityAsData(): void
     {
         $this->namingStrategy->getPropertyNames('property-name')->willReturn([
             'property_name',
@@ -399,7 +368,7 @@ final class ObjectPropertyHandlerTest extends TestCase
         ])->shouldBeCalledOnce();
         $this->namingStrategy->getMethodNames('property-name')->willReturn(['getPropertyName'])->shouldBeCalledOnce();
 
-        $this->assertFalse($this->getObjectPropertyHandler()->hasValueForPropertyName(
+        self::assertFalse($this->getObjectPropertyHandler()->hasValueForPropertyName(
             $this->namingStrategy->reveal(),
             'property-name',
             new TestEntity()
@@ -407,15 +376,12 @@ final class ObjectPropertyHandlerTest extends TestCase
     }
 
     /**
-     * @test
-     *
      * @return void
-     * @throws InvalidArgumentException
      * @throws ObjectProphecyException
      * @throws ExpectationFailedException
      * @throws HandlerException
      */
-    public function hasValueForPropertyNameShouldReturnTrueWhenFoundValueByPropertyNameUsingTestEntityAsData(): void
+    public function testHasValueForPropertyNameShouldReturnTrueWhenFoundValueByPropertyNameUsingTestEntityAsData(): void
     {
         $this->namingStrategy->getMethodNames('myProp')->willReturn(['getMyProp'])->shouldBeCalledOnce();
         $this->namingStrategy->getPropertyNames('myProp')->willReturn(['my_prop', 'myProp'])->shouldBeCalledOnce();
@@ -423,7 +389,7 @@ final class ObjectPropertyHandlerTest extends TestCase
         $data = new TestEntity();
         $data->myProp = 'My-DaTa';
 
-        $this->assertTrue($this->getObjectPropertyHandler()->hasValueForPropertyName(
+        self::assertTrue($this->getObjectPropertyHandler()->hasValueForPropertyName(
             $this->namingStrategy->reveal(),
             'myProp',
             $data
@@ -431,23 +397,21 @@ final class ObjectPropertyHandlerTest extends TestCase
     }
 
     /**
-     * @test
-     *
      * @return void
-     * @throws InvalidArgumentException
      * @throws ObjectProphecyException
      * @throws ExpectationFailedException
      * @throws HandlerException
      */
-    public function hasValueForPropertyNameShouldReturnTrueWhenFoundValueByMethodNameUsingTestEntityAsData(): void
+    public function testHasValueForPropertyNameShouldReturnTrueWhenFoundValueByMethodNameUsingTestEntityAsData(): void
     {
         $this->namingStrategy->getMethodNames('my_name')->willReturn(['getMyName'])->shouldBeCalledOnce();
+        /** @noinspection PhpStrictTypeCheckingInspection */
         $this->namingStrategy->getPropertyNames(Argument::any())->shouldNotBeCalled();
 
         $data = new TestEntity();
         $data->setMyName('TheName');
 
-        $this->assertTrue($this->getObjectPropertyHandler()->hasValueForPropertyName(
+        self::assertTrue($this->getObjectPropertyHandler()->hasValueForPropertyName(
             $this->namingStrategy->reveal(),
             'my_name',
             $data

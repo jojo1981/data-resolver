@@ -1,4 +1,4 @@
-<?php declare(strict_types=1);
+<?php
 /*
  * This file is part of the jojo1981/data-resolver package
  *
@@ -7,6 +7,8 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed in the root of the source code
  */
+declare(strict_types=1);
+
 namespace Jojo1981\DataResolver\Comparator;
 
 use SebastianBergmann\Comparator\ComparisonFailure;
@@ -36,16 +38,12 @@ final class DefaultComparator implements ComparatorInterface
      * @throws RuntimeException
      * @throws RuntimeException
      */
-    public function isEqual($referenceValue, $toCompareValue): bool
+    public function isEqual(mixed $referenceValue, mixed $toCompareValue): bool
     {
         $comparator = $this->comparatorFactory->getComparatorFor($referenceValue, $toCompareValue);
-        if (null === $comparator) {
-            return false;
-        }
-
         try {
             $comparator->assertEquals($referenceValue, $toCompareValue);
-        } catch (ComparisonFailure $f) {
+        } catch (ComparisonFailure) {
             return false;
         }
 
@@ -57,7 +55,7 @@ final class DefaultComparator implements ComparatorInterface
      * @param mixed $toCompareValue
      * @return bool
      */
-    public function isGreaterThan($referenceValue, $toCompareValue): bool
+    public function isGreaterThan(mixed $referenceValue, mixed $toCompareValue): bool
     {
         return $toCompareValue > $referenceValue;
     }
@@ -67,7 +65,7 @@ final class DefaultComparator implements ComparatorInterface
      * @param mixed $toCompareValue
      * @return bool
      */
-    public function isLessThan($referenceValue, $toCompareValue): bool
+    public function isLessThan(mixed $referenceValue, mixed $toCompareValue): bool
     {
         return $toCompareValue < $referenceValue;
     }

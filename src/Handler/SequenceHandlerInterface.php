@@ -1,4 +1,4 @@
-<?php declare(strict_types=1);
+<?php
 /*
  * This file is part of the jojo1981/data-resolver package
  *
@@ -7,6 +7,8 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed in the root of the source code
  */
+declare(strict_types=1);
+
 namespace Jojo1981\DataResolver\Handler;
 
 use Jojo1981\DataResolver\Handler\Exception\HandlerException;
@@ -23,14 +25,14 @@ interface SequenceHandlerInterface
      * @param mixed $data
      * @return bool
      */
-    public function supports($data): bool;
+    public function supports(mixed $data): bool;
 
     /**
      * @param mixed $data
      * @return Traversable
      * @throws HandlerException
      */
-    public function getIterator($data): Traversable;
+    public function getIterator(mixed $data): Traversable;
 
     /**
      * @param mixed $data
@@ -38,14 +40,14 @@ interface SequenceHandlerInterface
      * @return mixed
      * @throws HandlerException
      */
-    public function filter($data, callable $callback);
+    public function filter(mixed $data, callable $callback): mixed;
 
     /**
      * @param mixed $data
      * @return int
      * @throws HandlerException
      */
-    public function count($data): int;
+    public function count(mixed $data): int;
 
     /**
      * @param mixed $data
@@ -53,5 +55,5 @@ interface SequenceHandlerInterface
      * @return mixed
      * @throws HandlerException
      */
-    public function flatten($data, callable $callback);
+    public function flatten(mixed $data, callable $callback): mixed;
 }

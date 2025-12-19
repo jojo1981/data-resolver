@@ -1,4 +1,4 @@
-<?php declare(strict_types=1);
+<?php
 /*
  * This file is part of the jojo1981/data-resolver package
  *
@@ -7,6 +7,8 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed in the root of the source code
  */
+declare(strict_types=1);
+
 namespace Jojo1981\DataResolver\Extractor;
 
 use Jojo1981\DataResolver\Extractor\Exception\ExtractorException;
@@ -29,7 +31,7 @@ abstract class AbstractSequenceExtractor implements ExtractorInterface
      * @throws ExtractorException
      * @throws HandlerException
      */
-    final public function extract(Context $context)
+    final public function extract(Context $context): mixed
     {
         if (!$this->getSequenceHandler()->supports($context->getData())) {
             throw new ExtractorException(sprintf(
@@ -53,5 +55,5 @@ abstract class AbstractSequenceExtractor implements ExtractorInterface
      * @throws HandlerException
      * @throws PredicateException
      */
-    abstract protected function performExtract(Context $context);
+    abstract protected function performExtract(Context $context): mixed;
 }

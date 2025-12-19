@@ -1,4 +1,4 @@
-<?php declare(strict_types=1);
+<?php
 /*
  * This file is part of the jojo1981/data-resolver package
  *
@@ -7,6 +7,8 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed in the root of the source code
  */
+declare(strict_types=1);
+
 namespace tests\Jojo1981\DataResolver\Handler\SequenceHandler;
 
 use ArrayIterator;
@@ -22,7 +24,6 @@ use Prophecy\Exception\Doubler\InterfaceNotFoundException;
 use Prophecy\Exception\Prophecy\ObjectProphecyException;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
-use SebastianBergmann\RecursionContext\InvalidArgumentException;
 use stdClass;
 
 /**
@@ -32,10 +33,10 @@ final class CompositeSequenceHandlerTest extends TestCase
 {
     use ProphecyTrait;
 
-    /** @var ObjectProphecy|SequenceHandlerInterface */
+    /** @var ObjectProphecy<SequenceHandlerInterface> */
     private ObjectProphecy $sequenceHandler1;
 
-    /** @var ObjectProphecy|SequenceHandlerInterface */
+    /** @var ObjectProphecy<SequenceHandlerInterface> */
     private ObjectProphecy $sequenceHandler2;
 
     /**
@@ -51,13 +52,11 @@ final class CompositeSequenceHandlerTest extends TestCase
     }
 
     /**
-     * @test
-     *
      * @return void
      * @throws HandlerException
      * @throws ObjectProphecyException
      */
-    public function getIteratorShouldThrowHandlerExceptionBecauseNoHandlerSupportsTheData(): void
+    public function testGetIteratorShouldThrowHandlerExceptionBecauseNoHandlerSupportsTheData(): void
     {
         $data = new stdClass();
         $this->sequenceHandler1->supports($data)->willReturn(false)->shouldBeCalledOnce();
@@ -72,13 +71,11 @@ final class CompositeSequenceHandlerTest extends TestCase
     }
 
     /**
-     * @test
-     *
      * @return void
      * @throws HandlerException
      * @throws ObjectProphecyException
      */
-    public function filterShouldThrowHandlerExceptionBecauseNoHandlerSupportsTheData(): void
+    public function testFilterShouldThrowHandlerExceptionBecauseNoHandlerSupportsTheData(): void
     {
         $data = new stdClass();
         $this->sequenceHandler1->supports($data)->willReturn(false)->shouldBeCalledOnce();
@@ -94,13 +91,11 @@ final class CompositeSequenceHandlerTest extends TestCase
     }
 
     /**
-     * @test
-     *
      * @return void
      * @throws HandlerException
      * @throws ObjectProphecyException
      */
-    public function flattenShouldThrowHandlerExceptionBecauseNoHandlerSupportsTheData(): void
+    public function testFlattenShouldThrowHandlerExceptionBecauseNoHandlerSupportsTheData(): void
     {
         $data = new stdClass();
         $this->sequenceHandler1->supports($data)->willReturn(false)->shouldBeCalledOnce();
@@ -116,13 +111,11 @@ final class CompositeSequenceHandlerTest extends TestCase
     }
 
     /**
-     * @test
-     *
      * @return void
      * @throws HandlerException
      * @throws ObjectProphecyException
      */
-    public function countShouldThrowHandlerExceptionBecauseNoHandlerSupportsTheData(): void
+    public function testCountShouldThrowHandlerExceptionBecauseNoHandlerSupportsTheData(): void
     {
         $data = new stdClass();
         $this->sequenceHandler1->supports($data)->willReturn(false)->shouldBeCalledOnce();
@@ -137,70 +130,60 @@ final class CompositeSequenceHandlerTest extends TestCase
     }
 
     /**
-     * @test
-     *
      * @return void
-     * @throws InvalidArgumentException
      * @throws ObjectProphecyException
      * @throws ExpectationFailedException
      */
-    public function supportShouldReturnFalseWhenThereIsNoHandlerWhichSupportsTheData(): void
+    public function testSupportShouldReturnFalseWhenThereIsNoHandlerWhichSupportsTheData(): void
     {
         $data = new stdClass();
         $this->sequenceHandler1->supports($data)->willReturn(false)->shouldBeCalledOnce();
         $this->sequenceHandler2->supports($data)->willReturn(false)->shouldBeCalledOnce();
 
-        $this->assertFalse($this->getCompositeSequenceHandler()->supports($data));
+        self::assertFalse($this->getCompositeSequenceHandler()->supports($data));
     }
 
     /**
-     * @test
-     *
      * @return void
-     * @throws InvalidArgumentException
      * @throws ObjectProphecyException
      * @throws ExpectationFailedException
      */
-    public function supportShouldReturnTrueAsSoonAsAHandlerSupportsTheData(): void
+    public function testSupportShouldReturnTrueAsSoonAsAHandlerSupportsTheData(): void
     {
         $data = new stdClass();
         $this->sequenceHandler1->supports($data)->willReturn(true)->shouldBeCalledOnce();
         $this->sequenceHandler2->supports(Argument::any())->shouldNotBeCalled();
 
-        $this->assertTrue($this->getCompositeSequenceHandler()->supports($data));
+        self::assertTrue($this->getCompositeSequenceHandler()->supports($data));
     }
 
     /**
-     * @test
-     *
      * @return void
-     * @throws InvalidArgumentException
      * @throws ObjectProphecyException
      * @throws ExpectationFailedException
      * @throws HandlerException
      */
-    public function getIteratorShouldReturnTheIteratorGottenFromTheSupportedHandler(): void
+    public function testGetIteratorShouldReturnTheIteratorGottenFromTheSupportedHandler(): void
     {
         $data = ['key' => 'value'];
         $iterator = new ArrayIterator($data);
         $this->sequenceHandler1->supports($data)->willReturn(false)->shouldBeCalledOnce();
+        /** @noinspection PhpUndefinedMethodInspection */
         $this->sequenceHandler1->getIterator(Argument::any())->shouldNotBeCalled();
         $this->sequenceHandler2->supports($data)->willReturn(true)->shouldBeCalledOnce();
+        /** @noinspection PhpUndefinedMethodInspection */
         $this->sequenceHandler2->getIterator($data)->willReturn($iterator)->shouldBeCalledOnce();
 
-        $this->assertEquals($iterator, $this->getCompositeSequenceHandler()->getIterator($data));
+        self::assertEquals($iterator, $this->getCompositeSequenceHandler()->getIterator($data));
     }
 
     /**
-     * @test
-     *
      * @return void
-     * @throws InvalidArgumentException
      * @throws ObjectProphecyException
      * @throws ExpectationFailedException
      * @throws HandlerException
      */
-    public function filterShouldReturnTheFilteredResultFromTheSupportedHandler(): void
+    public function testFilterShouldReturnTheFilteredResultFromTheSupportedHandler(): void
     {
         $data = ['key' => 'value'];
         $callback = static function () {
@@ -209,21 +192,19 @@ final class CompositeSequenceHandlerTest extends TestCase
         $this->sequenceHandler1->supports($data)->willReturn(true)->shouldBeCalledOnce();
         $this->sequenceHandler1->filter($data, $callback)->willReturn($filteredResult)->shouldBeCalledOnce();
         $this->sequenceHandler2->supports(Argument::any())->shouldNotBeCalled();
+        /** @noinspection PhpUndefinedMethodInspection */
         $this->sequenceHandler2->getIterator(Argument::any())->shouldNotBeCalled();
 
-        $this->assertEquals($filteredResult, $this->getCompositeSequenceHandler()->filter($data, $callback));
+        self::assertEquals($filteredResult, $this->getCompositeSequenceHandler()->filter($data, $callback));
     }
 
     /**
-     * @test
-     *
      * @return void
-     * @throws InvalidArgumentException
      * @throws ObjectProphecyException
      * @throws ExpectationFailedException
      * @throws HandlerException
      */
-    public function flattenShouldReturnTheFlattenResultFromTheSupportedHandler(): void
+    public function testFlattenShouldReturnTheFlattenResultFromTheSupportedHandler(): void
     {
         $data = ['key' => 'value'];
         $callback = static function () {
@@ -232,30 +213,29 @@ final class CompositeSequenceHandlerTest extends TestCase
         $this->sequenceHandler1->supports($data)->willReturn(true)->shouldBeCalledOnce();
         $this->sequenceHandler1->flatten($data, $callback)->willReturn($filteredResult)->shouldBeCalledOnce();
         $this->sequenceHandler2->supports(Argument::any())->shouldNotBeCalled();
+        /** @noinspection PhpUndefinedMethodInspection */
         $this->sequenceHandler2->getIterator(Argument::any())->shouldNotBeCalled();
 
-        $this->assertEquals($filteredResult, $this->getCompositeSequenceHandler()->flatten($data, $callback));
+        self::assertEquals($filteredResult, $this->getCompositeSequenceHandler()->flatten($data, $callback));
     }
 
     /**
-     * @test
-     *
      * @return void
-     * @throws InvalidArgumentException
      * @throws ObjectProphecyException
      * @throws ExpectationFailedException
      * @throws HandlerException
      */
-    public function countShouldReturnTheFlattenResultFromTheSupportedHandler(): void
+    public function testCountShouldReturnTheFlattenResultFromTheSupportedHandler(): void
     {
         $data = ['key' => 'value'];
         $countResult = 3;
         $this->sequenceHandler1->supports($data)->willReturn(true)->shouldBeCalledOnce();
         $this->sequenceHandler1->count($data)->willReturn($countResult)->shouldBeCalledOnce();
         $this->sequenceHandler2->supports(Argument::any())->shouldNotBeCalled();
+        /** @noinspection PhpUndefinedMethodInspection */
         $this->sequenceHandler2->getIterator(Argument::any())->shouldNotBeCalled();
 
-        $this->assertEquals($countResult, $this->getCompositeSequenceHandler()->count($data));
+        self::assertEquals($countResult, $this->getCompositeSequenceHandler()->count($data));
     }
 
     /**

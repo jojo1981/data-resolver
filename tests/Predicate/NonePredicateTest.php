@@ -1,4 +1,4 @@
-<?php declare(strict_types=1);
+<?php
 /*
  * This file is part of the jojo1981/data-resolver package
  *
@@ -7,6 +7,8 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed in the root of the source code
  */
+declare(strict_types=1);
+
 namespace tests\Jojo1981\DataResolver\Predicate;
 
 use ArrayIterator;
@@ -26,7 +28,6 @@ use Prophecy\Exception\Doubler\InterfaceNotFoundException;
 use Prophecy\Exception\Prophecy\ObjectProphecyException;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
-use SebastianBergmann\RecursionContext\InvalidArgumentException;
 
 /**
  * @package tests\Jojo1981\DataResolver\Predicate
@@ -35,16 +36,16 @@ final class NonePredicateTest extends TestCase
 {
     use ProphecyTrait;
 
-    /** @var ObjectProphecy|SequenceHandlerInterface */
+    /** @var ObjectProphecy<SequenceHandlerInterface> */
     private ObjectProphecy $sequenceHandler;
 
-    /** @var ObjectProphecy|PredicateInterface */
+    /** @var ObjectProphecy<PredicateInterface> */
     private ObjectProphecy $predicate;
 
-    /** @var ObjectProphecy|Context */
+    /** @var ObjectProphecy<Context> */
     private ObjectProphecy $originalContext;
 
-    /** @var ObjectProphecy|Context */
+    /** @var ObjectProphecy<Context> */
     private ObjectProphecy $copiedContext;
 
     /**
@@ -62,20 +63,20 @@ final class NonePredicateTest extends TestCase
     }
 
     /**
-     * @test
-     *
      * @return void
      * @throws PredicateException
      * @throws ObjectProphecyException
      * @throws ExtractorException
      * @throws HandlerException
      */
-    public function matchShouldThrowAnExceptionBecauseSequenceHandlerDoesNotSupportTheDataFromContext(): void
+    public function testMatchShouldThrowAnExceptionBecauseSequenceHandlerDoesNotSupportTheDataFromContext(): void
     {
         $this->originalContext->getData()->willReturn('my-data-1')->shouldBeCalledTimes(1);
         $this->originalContext->getPath()->willReturn('a-path-value')->shouldBeCalled();
         $this->sequenceHandler->supports(Argument::exact('my-data-1'))->willReturn(false)->shouldBeCalled();
+        /** @noinspection PhpUndefinedMethodInspection */
         $this->sequenceHandler->getIterator(Argument::any())->shouldNotBeCalled();
+        /** @noinspection PhpParamsInspection */
         $this->predicate->match(Argument::any())->shouldNotBeCalled();
 
         $this->expectExceptionObject(new PredicateException('Could not match data with `' . NonePredicate::class . '` at path: `a-path-value`'));
@@ -84,89 +85,96 @@ final class NonePredicateTest extends TestCase
     }
 
     /**
-     * @test
-     *
      * @return void
      * @throws HandlerException
-     * @throws InvalidArgumentException
      * @throws ObjectProphecyException
      * @throws PredicateException
      * @throws ExpectationFailedException
      * @throws ExtractorException
      */
-    public function matchShouldReturnTrueWhenDataIsAnEmptyArray(): void
+    public function testMatchShouldReturnTrueWhenDataIsAnEmptyArray(): void
     {
         $this->originalContext->getData()->willReturn('my-data-2')->shouldBeCalledTimes(2);
         $this->originalContext->getPath()->shouldNotBeCalled();
 
         $this->sequenceHandler->supports(Argument::exact('my-data-2'))->willReturn(true)->shouldBeCalled();
+        /** @noinspection PhpUndefinedMethodInspection */
         $this->sequenceHandler->getIterator(Argument::exact('my-data-2'))->willReturn(new ArrayIterator())->shouldBeCalled();
 
+        /** @noinspection PhpParamsInspection */
         $this->predicate->match(Argument::any())->shouldNotBeCalled();
 
-        $this->assertTrue($this->getNonePredicate()->match($this->originalContext->reveal()));
+        self::assertTrue($this->getNonePredicate()->match($this->originalContext->reveal()));
     }
 
     /**
-     * @test
-     *
      * @return void
      * @throws HandlerException
-     * @throws InvalidArgumentException
      * @throws ObjectProphecyException
      * @throws PredicateException
      * @throws ExpectationFailedException
      * @throws ExtractorException
      */
-    public function matchShouldReturnFalseAsSoonAsPossibleThusWhenAnItemIsMatching(): void
+    public function testMatchShouldReturnFalseAsSoonAsPossibleThusWhenAnItemIsMatching(): void
     {
         $this->originalContext->getData()->willReturn('my-data-2')->shouldBeCalledTimes(2);
         $this->originalContext->getPath()->shouldNotBeCalled();
+        /** @noinspection PhpUndefinedMethodInspection */
         $this->originalContext->copy()->willReturn($this->copiedContext)->shouldBeCalledTimes(2);
+        /** @noinspection PhpUndefinedMethodInspection */
         $this->copiedContext->pushPathPart('key1')->willReturn($this->copiedContext)->shouldBeCalled();
+        /** @noinspection PhpUndefinedMethodInspection */
         $this->copiedContext->pushPathPart('key2')->willReturn($this->copiedContext)->shouldBeCalled();
+        /** @noinspection PhpUndefinedMethodInspection */
         $this->copiedContext->setData('value1')->willReturn($this->copiedContext)->shouldBeCalled();
+        /** @noinspection PhpUndefinedMethodInspection */
         $this->copiedContext->setData('value2')->willReturn($this->copiedContext)->shouldBeCalled();
 
         $iterator = new ArrayIterator(['key1' => 'value1', 'key2' => 'value2', 'key3' => 'value3']);
         $this->sequenceHandler->supports(Argument::exact('my-data-2'))->willReturn(true)->shouldBeCalled();
+        /** @noinspection PhpUndefinedMethodInspection */
         $this->sequenceHandler->getIterator(Argument::exact('my-data-2'))->willReturn($iterator)->shouldBeCalled();
 
         $this->predicate->match($this->copiedContext)->willReturn(false, true)->shouldBeCalledTimes(2);
 
-        $this->assertFalse($this->getNonePredicate()->match($this->originalContext->reveal()));
+        self::assertFalse($this->getNonePredicate()->match($this->originalContext->reveal()));
     }
 
     /**
-     * @test
-     *
      * @return void
      * @throws HandlerException
-     * @throws InvalidArgumentException
      * @throws ObjectProphecyException
      * @throws PredicateException
      * @throws ExpectationFailedException
      * @throws ExtractorException
      */
-    public function matchShouldReturnTrueWhenAllItemsAreNotMatching(): void
+    public function testMatchShouldReturnTrueWhenAllItemsAreNotMatching(): void
     {
         $this->originalContext->getData()->willReturn('my-data-3')->shouldBeCalledTimes(2);
         $this->originalContext->getPath()->shouldNotBeCalled();
+        /** @noinspection PhpUndefinedMethodInspection */
         $this->originalContext->copy()->willReturn($this->copiedContext)->shouldBeCalledTimes(3);
+        /** @noinspection PhpUndefinedMethodInspection */
         $this->copiedContext->pushPathPart('key1')->willReturn($this->copiedContext)->shouldBeCalled();
+        /** @noinspection PhpUndefinedMethodInspection */
         $this->copiedContext->pushPathPart('key2')->willReturn($this->copiedContext)->shouldBeCalled();
+        /** @noinspection PhpUndefinedMethodInspection */
         $this->copiedContext->pushPathPart('key3')->willReturn($this->copiedContext)->shouldBeCalled();
+        /** @noinspection PhpUndefinedMethodInspection */
         $this->copiedContext->setData('value1')->willReturn($this->copiedContext)->shouldBeCalled();
+        /** @noinspection PhpUndefinedMethodInspection */
         $this->copiedContext->setData('value2')->willReturn($this->copiedContext)->shouldBeCalled();
+        /** @noinspection PhpUndefinedMethodInspection */
         $this->copiedContext->setData('value3')->willReturn($this->copiedContext)->shouldBeCalled();
 
         $iterator = new ArrayIterator(['key1' => 'value1', 'key2' => 'value2', 'key3' => 'value3']);
         $this->sequenceHandler->supports(Argument::exact('my-data-3'))->willReturn(true)->shouldBeCalled();
+        /** @noinspection PhpUndefinedMethodInspection */
         $this->sequenceHandler->getIterator(Argument::exact('my-data-3'))->willReturn($iterator)->shouldBeCalled();
 
         $this->predicate->match($this->copiedContext)->willReturn(false, false, false)->shouldBeCalledTimes(3);
 
-        $this->assertTrue($this->getNonePredicate()->match($this->originalContext->reveal()));
+        self::assertTrue($this->getNonePredicate()->match($this->originalContext->reveal()));
     }
 
     /**

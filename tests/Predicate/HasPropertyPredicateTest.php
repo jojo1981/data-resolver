@@ -1,4 +1,4 @@
-<?php declare(strict_types=1);
+<?php
 /*
  * This file is part of the jojo1981/data-resolver package
  *
@@ -7,6 +7,8 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed in the root of the source code
  */
+declare(strict_types=1);
+
 namespace tests\Jojo1981\DataResolver\Predicate;
 
 use Exception;
@@ -21,7 +23,6 @@ use Prophecy\Exception\Doubler\InterfaceNotFoundException;
 use Prophecy\Exception\Prophecy\ObjectProphecyException;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
-use SebastianBergmann\RecursionContext\InvalidArgumentException;
 
 /**
  * @package tests\Jojo1981\DataResolver\Predicate
@@ -30,10 +31,10 @@ final class HasPropertyPredicateTest extends TestCase
 {
     use ProphecyTrait;
 
-    /** @var ObjectProphecy|HasPropertyExtractor */
+    /** @var ObjectProphecy<HasPropertyExtractor> */
     private ObjectProphecy $hasPropertyExtractor;
 
-    /** @var ObjectProphecy|Context */
+    /** @var ObjectProphecy<Context> */
     private ObjectProphecy $context;
 
     /**
@@ -49,45 +50,36 @@ final class HasPropertyPredicateTest extends TestCase
     }
 
     /**
-     * @test
-     *
      * @return void
-     * @throws InvalidArgumentException
      * @throws ObjectProphecyException
      * @throws ExpectationFailedException
      */
-    public function matchShouldReturnFalseWhenExtractorThrowsAnException(): void
+    public function testMatchShouldReturnFalseWhenExtractorThrowsAnException(): void
     {
         $this->hasPropertyExtractor->extract($this->context)->willThrow(Exception::class)->shouldBeCalledOnce();
-        $this->assertFalse($this->getHasPropertyPredicate()->match($this->context->reveal()));
+        self::assertFalse($this->getHasPropertyPredicate()->match($this->context->reveal()));
     }
 
     /**
-     * @test
-     *
      * @return void
      * @throws ObjectProphecyException
      * @throws ExpectationFailedException
-     * @throws InvalidArgumentException
      */
-    public function matchShouldReturnFalseWhenWhenExtractorReturnsFalse(): void
+    public function testMatchShouldReturnFalseWhenWhenExtractorReturnsFalse(): void
     {
         $this->hasPropertyExtractor->extract($this->context)->willReturn(false)->shouldBeCalledOnce();
-        $this->assertFalse($this->getHasPropertyPredicate()->match($this->context->reveal()));
+        self::assertFalse($this->getHasPropertyPredicate()->match($this->context->reveal()));
     }
 
     /**
-     * @test
-     *
      * @return void
      * @throws ObjectProphecyException
      * @throws ExpectationFailedException
-     * @throws InvalidArgumentException
      */
-    public function matchShouldReturnTrueWhenWhenExtractorReturnsTrue(): void
+    public function testMatchShouldReturnTrueWhenWhenExtractorReturnsTrue(): void
     {
         $this->hasPropertyExtractor->extract($this->context)->willReturn(true)->shouldBeCalledOnce();
-        $this->assertTrue($this->getHasPropertyPredicate()->match($this->context->reveal()));
+        self::assertTrue($this->getHasPropertyPredicate()->match($this->context->reveal()));
     }
 
     /**

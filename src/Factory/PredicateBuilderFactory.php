@@ -1,4 +1,4 @@
-<?php declare(strict_types=1);
+<?php
 /*
  * This file is part of the jojo1981/data-resolver package
  *
@@ -7,6 +7,8 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed in the root of the source code
  */
+declare(strict_types=1);
+
 namespace Jojo1981\DataResolver\Factory;
 
 use Jojo1981\DataResolver\Builder\ExtractorBuilderInterface;
@@ -104,7 +106,7 @@ final class PredicateBuilderFactory
      * @param mixed $referenceValue
      * @return EqualsPredicateBuilder
      */
-    public function getEqualsPredicateBuilder($referenceValue): EqualsPredicateBuilder
+    public function getEqualsPredicateBuilder(mixed $referenceValue): EqualsPredicateBuilder
     {
         return new EqualsPredicateBuilder($this->comparator, $referenceValue);
     }
@@ -113,7 +115,7 @@ final class PredicateBuilderFactory
      * @param mixed $referenceValue
      * @return GreaterThanPredicateBuilder
      */
-    public function getGreaterThanPredicateBuilder($referenceValue): GreaterThanPredicateBuilder
+    public function getGreaterThanPredicateBuilder(mixed $referenceValue): GreaterThanPredicateBuilder
     {
         return new GreaterThanPredicateBuilder($this->comparator, $referenceValue);
     }
@@ -122,7 +124,7 @@ final class PredicateBuilderFactory
      * @param mixed $referenceValue
      * @return LessThanPredicateBuilder
      */
-    public function getLessThanPredicateBuilder($referenceValue): LessThanPredicateBuilder
+    public function getLessThanPredicateBuilder(mixed $referenceValue): LessThanPredicateBuilder
     {
         return new LessThanPredicateBuilder($this->comparator, $referenceValue);
     }

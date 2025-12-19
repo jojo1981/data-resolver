@@ -1,4 +1,4 @@
-<?php declare(strict_types=1);
+<?php
 /*
  * This file is part of the jojo1981/data-resolver package
  *
@@ -7,6 +7,8 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed in the root of the source code
  */
+declare(strict_types=1);
+
 namespace Jojo1981\DataResolver\Extractor;
 
 use Jojo1981\DataResolver\Extractor\Exception\ExtractorException;
@@ -61,7 +63,7 @@ final class PropertyExtractor implements ExtractorInterface
      * @throws ExtractorException
      * @throws HandlerException
      */
-    public function extract(Context $context)
+    public function extract(Context $context): mixed
     {
         $elements = [];
         foreach ($this->propertyNames as $propertyName) {
@@ -96,7 +98,7 @@ final class PropertyExtractor implements ExtractorInterface
      * @return bool
      * @throws HandlerException
      */
-    private function canExtract($data, string $propertyName): bool
+    private function canExtract(mixed $data, string $propertyName): bool
     {
         return $this->propertyHandler->supports($propertyName, $data)
             && $this->propertyHandler->hasValueForPropertyName($this->namingStrategy, $propertyName, $data);

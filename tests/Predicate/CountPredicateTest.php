@@ -1,4 +1,4 @@
-<?php declare(strict_types=1);
+<?php
 /*
  * This file is part of the jojo1981/data-resolver package
  *
@@ -7,6 +7,8 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed in the root of the source code
  */
+declare(strict_types=1);
+
 namespace tests\Jojo1981\DataResolver\Predicate;
 
 use Jojo1981\DataResolver\Handler\Exception\HandlerException;
@@ -21,7 +23,6 @@ use Prophecy\Exception\Doubler\InterfaceNotFoundException;
 use Prophecy\Exception\Prophecy\ObjectProphecyException;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
-use SebastianBergmann\RecursionContext\InvalidArgumentException as SebastianBergmannInvalidArgumentException;
 
 /**
  * @package tests\Jojo1981\DataResolver\Predicate
@@ -30,7 +31,7 @@ final class CountPredicateTest extends TestCase
 {
     use ProphecyTrait;
 
-    /** @var ObjectProphecy|SequenceHandlerInterface */
+    /** @var ObjectProphecy<SequenceHandlerInterface> */
     private ObjectProphecy $sequenceHandler;
 
     /**
@@ -45,20 +46,17 @@ final class CountPredicateTest extends TestCase
     }
 
     /**
-     * @test
-     *
      * @return void
      * @throws HandlerException
      * @throws PHPUnitExpectationFailedException
-     * @throws SebastianBergmannInvalidArgumentException
      * @throws ObjectProphecyException
      */
-    public function matchShouldReturnTheCorrectResult(): void
+    public function testMatchShouldReturnTheCorrectResult(): void
     {
         $this->sequenceHandler->count('text1')->willReturn(1)->shouldBeCalledOnce();
         $this->sequenceHandler->count('text2')->willReturn(4)->shouldBeCalledOnce();
-        $this->assertTrue($this->getIsEmptyPredicate()->match(new Context('text1')));
-        $this->assertFalse($this->getIsEmptyPredicate()->match(new Context('text2')));
+        self::assertTrue($this->getIsEmptyPredicate()->match(new Context('text1')));
+        self::assertFalse($this->getIsEmptyPredicate()->match(new Context('text2')));
     }
 
     /**

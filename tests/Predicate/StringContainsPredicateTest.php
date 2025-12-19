@@ -1,4 +1,4 @@
-<?php declare(strict_types=1);
+<?php
 /*
  * This file is part of the jojo1981/data-resolver package
  *
@@ -7,10 +7,13 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed in the root of the source code
  */
+declare(strict_types=1);
+
 namespace tests\Jojo1981\DataResolver\Predicate;
 
 use Jojo1981\DataResolver\Predicate\StringContainsPredicate;
 use Jojo1981\DataResolver\Resolver\Context;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Exception\Doubler\ClassNotFoundException;
@@ -19,7 +22,6 @@ use Prophecy\Exception\Doubler\InterfaceNotFoundException;
 use Prophecy\Exception\Prophecy\ObjectProphecyException;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
-use SebastianBergmann\RecursionContext\InvalidArgumentException;
 use stdClass;
 
 /**
@@ -29,7 +31,7 @@ final class StringContainsPredicateTest extends TestCase
 {
     use ProphecyTrait;
 
-    /** @var ObjectProphecy|Context */
+    /** @var ObjectProphecy<Context> */
     private ObjectProphecy $context;
 
     /**
@@ -44,9 +46,6 @@ final class StringContainsPredicateTest extends TestCase
     }
 
     /**
-     * @test
-     * @dataProvider getTestData
-     *
      * @param string $substring
      * @param bool $caseSensitive
      * @param mixed $testData
@@ -54,16 +53,16 @@ final class StringContainsPredicateTest extends TestCase
      * @return void
      * @throws ObjectProphecyException
      * @throws ExpectationFailedException
-     * @throws InvalidArgumentException
      */
-    public function matchShouldReturnExpectedResult(
+    #[DataProvider("getTestData")]
+    public function testMatchShouldReturnExpectedResult(
         string $substring,
         bool $caseSensitive,
-        $testData,
+        mixed $testData,
         bool $expectedResult
     ): void {
         $this->context->getData()->willReturn($testData)->shouldBeCalledOnce();
-        $this->assertEquals(
+        self::assertEquals(
             $expectedResult,
             $this->getStringContainsPredicate($substring, $caseSensitive)->match($this->context->reveal())
         );
@@ -72,7 +71,7 @@ final class StringContainsPredicateTest extends TestCase
     /**
      * @return array[]
      */
-    public function getTestData(): array
+    public static function getTestData(): array
     {
         return [
             ['text', true, true, false],

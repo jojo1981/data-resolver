@@ -1,4 +1,4 @@
-<?php declare(strict_types=1);
+<?php
 /*
  * This file is part of the jojo1981/data-resolver package
  *
@@ -7,6 +7,8 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed in the root of the source code
  */
+declare(strict_types=1);
+
 namespace Jojo1981\DataResolver\Builder\Predicate;
 
 use Jojo1981\DataResolver\Builder\ExtractorBuilderInterface;
@@ -64,7 +66,7 @@ final class ExtractorPredicateBuilder
      * @param mixed $referenceValue
      * @return ConditionalPredicateBuilder
      */
-    public function equals($referenceValue): ConditionalPredicateBuilder
+    public function equals(mixed $referenceValue): ConditionalPredicateBuilder
     {
         return $this->getConditionalPredicateBuilder(
             $this->predicateBuilderFactory->getEqualsPredicateBuilder($referenceValue)
@@ -75,7 +77,7 @@ final class ExtractorPredicateBuilder
      * @param mixed $referenceValue
      * @return ConditionalPredicateBuilder
      */
-    public function greaterThan($referenceValue): ConditionalPredicateBuilder
+    public function greaterThan(mixed $referenceValue): ConditionalPredicateBuilder
     {
         return $this->getConditionalPredicateBuilder(
             $this->predicateBuilderFactory->getGreaterThanPredicateBuilder($referenceValue)
@@ -86,7 +88,7 @@ final class ExtractorPredicateBuilder
      * @param mixed $referenceValue
      * @return ConditionalPredicateBuilder
      */
-    public function lessThan($referenceValue): ConditionalPredicateBuilder
+    public function lessThan(mixed $referenceValue): ConditionalPredicateBuilder
     {
         return $this->getConditionalPredicateBuilder(
             $this->predicateBuilderFactory->getLessThanPredicateBuilder($referenceValue)
@@ -97,7 +99,7 @@ final class ExtractorPredicateBuilder
      * @param mixed $referenceValue
      * @return ConditionalPredicateBuilder
      */
-    public function greaterThanOrEquals($referenceValue): ConditionalPredicateBuilder
+    public function greaterThanOrEquals(mixed $referenceValue): ConditionalPredicateBuilder
     {
         return $this->getConditionalPredicateBuilder(
             $this->predicateBuilderFactory->getOrPredicateBuilder(
@@ -111,7 +113,7 @@ final class ExtractorPredicateBuilder
      * @param mixed $referenceValue
      * @return ConditionalPredicateBuilder
      */
-    public function lessThanOrEquals($referenceValue): ConditionalPredicateBuilder
+    public function lessThanOrEquals(mixed $referenceValue): ConditionalPredicateBuilder
     {
         return $this->getConditionalPredicateBuilder(
             $this->predicateBuilderFactory->getOrPredicateBuilder(
@@ -125,7 +127,7 @@ final class ExtractorPredicateBuilder
      * @param mixed $referenceValue
      * @return ConditionalPredicateBuilder
      */
-    public function notEquals($referenceValue): ConditionalPredicateBuilder
+    public function notEquals(mixed $referenceValue): ConditionalPredicateBuilder
     {
         return $this->not($this->predicateBuilderFactory->getEqualsPredicateBuilder($referenceValue));
     }

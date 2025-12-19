@@ -1,4 +1,4 @@
-<?php declare(strict_types=1);
+<?php
 /*
  * This file is part of the jojo1981/data-resolver package
  *
@@ -7,6 +7,8 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed in the root of the source code
  */
+declare(strict_types=1);
+
 namespace Jojo1981\DataResolver\Handler\PropertyHandler;
 
 use Jojo1981\DataResolver\Handler\Exception\HandlerException;
@@ -44,7 +46,7 @@ final class CompositePropertyHandler implements PropertyHandlerInterface
      * @param mixed $data
      * @return bool
      */
-    public function supports(string $propertyName, $data): bool
+    public function supports(string $propertyName, mixed $data): bool
     {
         foreach ($this->handlers as $handler) {
             if ($handler->supports($propertyName, $data)) {
@@ -62,7 +64,7 @@ final class CompositePropertyHandler implements PropertyHandlerInterface
      * @return mixed
      * @throws HandlerException
      */
-    public function getValueForPropertyName(NamingStrategyInterface $namingStrategy, string $propertyName, $data)
+    public function getValueForPropertyName(NamingStrategyInterface $namingStrategy, string $propertyName, mixed $data): mixed
     {
         return $this->getSupportedHandler('getValueForPropertyName', $propertyName, $data)
             ->getValueForPropertyName($namingStrategy, $propertyName, $data);
@@ -75,7 +77,7 @@ final class CompositePropertyHandler implements PropertyHandlerInterface
      * @return bool
      * @throws HandlerException
      */
-    public function hasValueForPropertyName(NamingStrategyInterface $namingStrategy, string $propertyName, $data): bool
+    public function hasValueForPropertyName(NamingStrategyInterface $namingStrategy, string $propertyName, mixed $data): bool
     {
         return $this->getSupportedHandler('hasValueForPropertyName', $propertyName, $data)
             ->hasValueForPropertyName($namingStrategy, $propertyName, $data);
@@ -88,7 +90,7 @@ final class CompositePropertyHandler implements PropertyHandlerInterface
      * @return PropertyHandlerInterface
      * @throws HandlerException
      */
-    private function getSupportedHandler(string $methodName, string $propertyName, $data): PropertyHandlerInterface
+    private function getSupportedHandler(string $methodName, string $propertyName, mixed $data): PropertyHandlerInterface
     {
         foreach ($this->handlers as $handler) {
             if ($handler->supports($propertyName, $data)) {

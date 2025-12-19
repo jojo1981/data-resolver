@@ -1,4 +1,4 @@
-<?php declare(strict_types=1);
+<?php
 /*
  * This file is part of the jojo1981/data-resolver package
  *
@@ -7,6 +7,8 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed in the root of the source code
  */
+declare(strict_types=1);
+
 namespace tests\Jojo1981\DataResolver\Integration\Predicate;
 
 use Jojo1981\DataResolver\Builder\Predicate\ConditionalPredicateBuilder;
@@ -15,9 +17,9 @@ use Jojo1981\DataResolver\Extractor\Exception\ExtractorException;
 use Jojo1981\DataResolver\Handler\Exception\HandlerException;
 use Jojo1981\DataResolver\Predicate\Exception\PredicateException;
 use Jojo1981\DataResolver\Resolver\Context;
+use PHPUnit\Framework\Attributes\CoversNothing;
 use PHPUnit\Framework\Exception as PHPUnitException;
 use PHPUnit\Framework\ExpectationFailedException;
-use SebastianBergmann\RecursionContext\InvalidArgumentException;
 use stdClass;
 use tests\Jojo1981\DataResolver\Integration\AbstractIntegrationTestCase;
 
@@ -27,11 +29,7 @@ use tests\Jojo1981\DataResolver\Integration\AbstractIntegrationTestCase;
 final class HasPropertyPredicateTest extends AbstractIntegrationTestCase
 {
     /**
-     * @test
-     * @coversNothing
-     *
      * @return void
-     * @throws InvalidArgumentException
      * @throws ResolverException
      * @throws ExtractorException
      * @throws HandlerException
@@ -39,22 +37,24 @@ final class HasPropertyPredicateTest extends AbstractIntegrationTestCase
      * @throws PHPUnitException
      * @throws ExpectationFailedException
      */
-    public function checkHasProperty(): void
+    #[CoversNothing]
+    public function testCheckHasProperty(): void
     {
         $predicateBuilder = $this->getResolverBuilderFactory()->where()->hasProperty('name');
-        $this->assertInstanceOf(ConditionalPredicateBuilder::class, $predicateBuilder);
+        /** @noinspection PhpConditionAlreadyCheckedInspection */
+        self::assertInstanceOf(ConditionalPredicateBuilder::class, $predicateBuilder);
         $predicate = $predicateBuilder->build();
 
         $data1 = [];
         $data2 = new stdClass();
 
-        $this->assertFalse($predicate->match(new Context($data1)));
-        $this->assertFalse($predicate->match(new Context($data2)));
+        self::assertFalse($predicate->match(new Context($data1)));
+        self::assertFalse($predicate->match(new Context($data2)));
 
         $data1['name'] = 'myName';
         $data2->name = 'myName';
 
-        $this->assertTrue($predicate->match(new Context($data1)));
-        $this->assertTrue($predicate->match(new Context($data2)));
+        self::assertTrue($predicate->match(new Context($data1)));
+        self::assertTrue($predicate->match(new Context($data2)));
     }
 }

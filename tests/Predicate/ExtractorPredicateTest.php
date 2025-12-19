@@ -1,4 +1,4 @@
-<?php declare(strict_types=1);
+<?php
 /*
  * This file is part of the jojo1981/data-resolver package
  *
@@ -7,6 +7,8 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed in the root of the source code
  */
+declare(strict_types=1);
+
 namespace tests\Jojo1981\DataResolver\Predicate;
 
 use Exception;
@@ -26,7 +28,6 @@ use Prophecy\Exception\Doubler\InterfaceNotFoundException;
 use Prophecy\Exception\Prophecy\ObjectProphecyException;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
-use SebastianBergmann\RecursionContext\InvalidArgumentException;
 
 /**
  * @package tests\Jojo1981\DataResolver\Predicate
@@ -35,16 +36,16 @@ final class ExtractorPredicateTest extends TestCase
 {
     use ProphecyTrait;
 
-    /** @var ObjectProphecy|ExtractorInterface */
+    /** @var ObjectProphecy<ExtractorInterface> */
     private ObjectProphecy $extractor;
 
-    /** @var ObjectProphecy|PredicateInterface */
+    /** @var ObjectProphecy<PredicateInterface> */
     private ObjectProphecy $predicate;
 
-    /** @var ObjectProphecy|Context */
+    /** @var ObjectProphecy<Context> */
     private ObjectProphecy $originalContext;
 
-    /** @var ObjectProphecy|Context */
+    /** @var ObjectProphecy<Context> */
     private ObjectProphecy $copiedContext;
 
     /**
@@ -62,57 +63,48 @@ final class ExtractorPredicateTest extends TestCase
     }
 
     /**
-     * @test
-     *
      * @return void
      * @throws HandlerException
      * @throws PredicateException
      * @throws ExpectationFailedException
-     * @throws InvalidArgumentException
      * @throws ObjectProphecyException
      * @throws ExtractorException
      */
-    public function matchShouldReturnFalseBecauseTheTheExtractorThrowsAnException(): void
+    public function testMatchShouldReturnFalseBecauseTheTheExtractorThrowsAnException(): void
     {
         $this->predicate->match($this->copiedContext)->willThrow(Exception::class)->shouldBeCalled();
 
-        $this->assertFalse($this->getExtractorPredicate()->match($this->originalContext->reveal()));
+        self::assertFalse($this->getExtractorPredicate()->match($this->originalContext->reveal()));
     }
 
     /**
-     * @test
-     *
      * @return void
      * @throws HandlerException
      * @throws PredicateException
      * @throws ExpectationFailedException
-     * @throws InvalidArgumentException
      * @throws ObjectProphecyException
      * @throws ExtractorException
      */
-    public function matchShouldReturnFalseBecauseThePredicateReturnFalseWhenMatchingTheReturnedValueOfTheExtractor(
-    ): void {
+    public function testMatchShouldReturnFalseBecauseThePredicateReturnFalseWhenMatchingTheReturnedValueOfTheExtractor(): void
+    {
         $this->predicate->match($this->copiedContext)->willReturn(false)->shouldBeCalled();
 
-        $this->assertFalse($this->getExtractorPredicate()->match($this->originalContext->reveal()));
+        self::assertFalse($this->getExtractorPredicate()->match($this->originalContext->reveal()));
     }
 
     /**
-     * @test
-     *
      * @return void
      * @throws HandlerException
-     * @throws InvalidArgumentException
      * @throws ObjectProphecyException
      * @throws PredicateException
      * @throws ExpectationFailedException
      * @throws ExtractorException
      */
-    public function matchShouldReturnTrueBecauseThePredicateReturnTrueWhenMatchingTheReturnedValueOfTheExtractor(): void
+    public function testMatchShouldReturnTrueBecauseThePredicateReturnTrueWhenMatchingTheReturnedValueOfTheExtractor(): void
     {
         $this->predicate->match($this->copiedContext)->willReturn(true)->shouldBeCalled();
 
-        $this->assertTrue($this->getExtractorPredicate()->match($this->originalContext->reveal()));
+        self::assertTrue($this->getExtractorPredicate()->match($this->originalContext->reveal()));
     }
 
     /**
@@ -124,8 +116,11 @@ final class ExtractorPredicateTest extends TestCase
      */
     private function getExtractorPredicate(): ExtractorPredicate
     {
+        /** @noinspection PhpUndefinedMethodInspection */
         $this->originalContext->copy()->willReturn($this->copiedContext)->shouldBeCalled();
+        /** @noinspection PhpUndefinedMethodInspection */
         $this->originalContext->setData(Argument::any())->shouldNotBeCalled();
+        /** @noinspection PhpUndefinedMethodInspection */
         $this->copiedContext->setData('my-extracted-data')->willReturn($this->copiedContext)->shouldBeCalled();
 
         $this->extractor->extract($this->originalContext)->willReturn('my-extracted-data')->shouldBeCalled();

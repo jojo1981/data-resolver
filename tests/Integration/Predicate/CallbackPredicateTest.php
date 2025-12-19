@@ -1,4 +1,4 @@
-<?php declare(strict_types=1);
+<?php
 /*
  * This file is part of the jojo1981/data-resolver package
  *
@@ -7,6 +7,8 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed in the root of the source code
  */
+declare(strict_types=1);
+
 namespace tests\Jojo1981\DataResolver\Integration\Predicate;
 
 use Jojo1981\DataResolver\Builder\Predicate\ConditionalPredicateBuilder;
@@ -15,9 +17,10 @@ use Jojo1981\DataResolver\Extractor\Exception\ExtractorException;
 use Jojo1981\DataResolver\Handler\Exception\HandlerException;
 use Jojo1981\DataResolver\Predicate\Exception\PredicateException;
 use Jojo1981\DataResolver\Resolver\Context;
+use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Exception as PHPUnitException;
 use PHPUnit\Framework\ExpectationFailedException;
-use SebastianBergmann\RecursionContext\InvalidArgumentException;
 use stdClass;
 use tests\Jojo1981\DataResolver\Integration\AbstractIntegrationTestCase;
 
@@ -27,42 +30,40 @@ use tests\Jojo1981\DataResolver\Integration\AbstractIntegrationTestCase;
 final class CallbackPredicateTest extends AbstractIntegrationTestCase
 {
     /**
-     * @test
-     * @coversNothing
-     * @dataProvider getTestData
-     *
      * @param mixed $testValue
      * @param bool $expected
      * @return void
      * @throws ExpectationFailedException
      * @throws ExtractorException
      * @throws HandlerException
-     * @throws InvalidArgumentException
      * @throws PredicateException
      * @throws ResolverException
      * @throws PHPUnitException
      */
-    public function checkCallbackPredicate($testValue, bool $expected): void
+    #[CoversNothing]
+    #[DataProvider("getTestData")]
+    public function testCheckCallbackPredicate(mixed $testValue, bool $expected): void
     {
         $calledTimes = 0;
         $callback = function ($arg) use (&$calledTimes, $testValue) {
             $calledTimes++;
-            $this->assertEquals($testValue, $arg);
+            self::assertEquals($testValue, $arg);
 
             return $arg;
         };
         $predicateBuilder = $this->getResolverBuilderFactory()->where()->callback($callback);
-        $this->assertInstanceOf(ConditionalPredicateBuilder::class, $predicateBuilder);
+        /** @noinspection PhpConditionAlreadyCheckedInspection */
+        self::assertInstanceOf(ConditionalPredicateBuilder::class, $predicateBuilder);
         $predicate = $predicateBuilder->build();
 
-        $this->assertEquals($expected, $predicate->match(new Context($testValue)));
-        $this->assertEquals(1, $calledTimes);
+        self::assertEquals($expected, $predicate->match(new Context($testValue)));
+        self::assertEquals(1, $calledTimes);
     }
 
     /**
      * @return array[]
      */
-    public function getTestData(): array
+    public static function getTestData(): array
     {
         return [
             [true, true],

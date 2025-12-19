@@ -1,4 +1,4 @@
-<?php declare(strict_types=1);
+<?php
 /*
  * This file is part of the jojo1981/data-resolver package
  *
@@ -7,6 +7,8 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed in the root of the source code
  */
+declare(strict_types=1);
+
 namespace Jojo1981\DataResolver\Handler;
 
 use Jojo1981\DataResolver\Handler\Exception\HandlerException;
@@ -24,7 +26,7 @@ interface PropertyHandlerInterface
      * @param mixed $data
      * @return bool
      */
-    public function supports(string $propertyName, $data): bool;
+    public function supports(string $propertyName, mixed $data): bool;
 
     /**
      * @param NamingStrategyInterface $namingStrategy
@@ -33,7 +35,7 @@ interface PropertyHandlerInterface
      * @return mixed
      * @throws HandlerException
      */
-    public function getValueForPropertyName(NamingStrategyInterface $namingStrategy, string $propertyName, $data);
+    public function getValueForPropertyName(NamingStrategyInterface $namingStrategy, string $propertyName, mixed $data): mixed;
 
     /**
      * @param NamingStrategyInterface $namingStrategy
@@ -42,5 +44,5 @@ interface PropertyHandlerInterface
      * @return bool
      * @throws HandlerException
      */
-    public function hasValueForPropertyName(NamingStrategyInterface $namingStrategy, string $propertyName, $data): bool;
+    public function hasValueForPropertyName(NamingStrategyInterface $namingStrategy, string $propertyName, mixed $data): bool;
 }

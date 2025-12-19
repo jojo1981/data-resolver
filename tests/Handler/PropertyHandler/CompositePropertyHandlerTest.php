@@ -1,4 +1,4 @@
-<?php declare(strict_types=1);
+<?php
 /*
  * This file is part of the jojo1981/data-resolver package
  *
@@ -7,6 +7,8 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed in the root of the source code
  */
+declare(strict_types=1);
+
 namespace tests\Jojo1981\DataResolver\Handler\PropertyHandler;
 
 use Jojo1981\DataResolver\Handler\Exception\HandlerException;
@@ -22,7 +24,6 @@ use Prophecy\Exception\Doubler\InterfaceNotFoundException;
 use Prophecy\Exception\Prophecy\ObjectProphecyException;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
-use SebastianBergmann\RecursionContext\InvalidArgumentException;
 
 /**
  * @package tests\Jojo1981\DataResolver\Handler\PropertyHandler
@@ -31,13 +32,13 @@ final class CompositePropertyHandlerTest extends TestCase
 {
     use ProphecyTrait;
 
-    /** @var ObjectProphecy|NamingStrategyInterface */
+    /** @var ObjectProphecy<NamingStrategyInterface> */
     private ObjectProphecy $namingStrategy;
 
-    /** @var ObjectProphecy|PropertyHandlerInterface */
+    /** @var ObjectProphecy<PropertyHandlerInterface> */
     private ObjectProphecy $propertyHandler1;
 
-    /** @var ObjectProphecy|PropertyHandlerInterface */
+    /** @var ObjectProphecy<PropertyHandlerInterface> */
     private ObjectProphecy $propertyHandler2;
 
     /**
@@ -54,13 +55,11 @@ final class CompositePropertyHandlerTest extends TestCase
     }
 
     /**
-     * @test
-     *
      * @return void
      * @throws HandlerException
      * @throws ObjectProphecyException
      */
-    public function getValueForPropertyNameShouldThrowHandlerExceptionBecauseCalledWithUnsupportedData(): void
+    public function testGetValueForPropertyNameShouldThrowHandlerExceptionBecauseCalledWithUnsupportedData(): void
     {
         $propertyName = 'my-prop';
         $data = [];
@@ -80,13 +79,11 @@ final class CompositePropertyHandlerTest extends TestCase
     }
 
     /**
-     * @test
-     *
      * @return void
      * @throws HandlerException
      * @throws ObjectProphecyException
      */
-    public function hasValueForPropertyNameShouldThrowHandlerExceptionBecauseCalledWithUnsupportedData(): void
+    public function testHasValueForPropertyNameShouldThrowHandlerExceptionBecauseCalledWithUnsupportedData(): void
     {
         $propertyName = 'my-prop';
         $data = [];
@@ -106,51 +103,43 @@ final class CompositePropertyHandlerTest extends TestCase
     }
 
     /**
-     * @test
-     *
      * @return void
-     * @throws InvalidArgumentException
      * @throws ObjectProphecyException
      * @throws ExpectationFailedException
      */
-    public function supportShouldReturnFalseWhenThereIsNoHandlerWhichSupportsThePropertyName(): void
+    public function testSupportShouldReturnFalseWhenThereIsNoHandlerWhichSupportsThePropertyName(): void
     {
         $propertyName = 'my-prop';
         $data = [];
         $this->propertyHandler1->supports($propertyName, $data)->willReturn(false)->shouldBeCalledOnce();
         $this->propertyHandler2->supports($propertyName, $data)->willReturn(false)->shouldBeCalledOnce();
 
-        $this->assertFalse($this->getCompositePropertyHandler()->supports($propertyName, $data));
+        self::assertFalse($this->getCompositePropertyHandler()->supports($propertyName, $data));
     }
 
     /**
-     * @test
-     *
      * @return void
-     * @throws InvalidArgumentException
      * @throws ObjectProphecyException
      * @throws ExpectationFailedException
      */
-    public function supportShouldReturnTrueAsSoonAsAHandlerSupportsTheData(): void
+    public function testSupportShouldReturnTrueAsSoonAsAHandlerSupportsTheData(): void
     {
         $propertyName = 'my-prop';
         $data = [];
         $this->propertyHandler1->supports($propertyName, $data)->willReturn(true)->shouldBeCalledOnce();
+        /** @noinspection PhpStrictTypeCheckingInspection */
         $this->propertyHandler2->supports(Argument::any(), Argument::any())->shouldNotBeCalled();
 
-        $this->assertTrue($this->getCompositePropertyHandler()->supports($propertyName, $data));
+        self::assertTrue($this->getCompositePropertyHandler()->supports($propertyName, $data));
     }
 
     /**
-     * @test
-     *
      * @return void
      * @throws ObjectProphecyException
      * @throws HandlerException
      * @throws ExpectationFailedException
-     * @throws InvalidArgumentException
      */
-    public function getValueForPropertyNameShouldReturnTheValueFromTheSupportedHandler(): void
+    public function testGetValueForPropertyNameShouldReturnTheValueFromTheSupportedHandler(): void
     {
         $propertyName = 'my-prop';
         $data = [];
@@ -160,10 +149,11 @@ final class CompositePropertyHandlerTest extends TestCase
             $propertyName,
             $data
         )->willReturn('FoundData')->shouldBeCalledOnce();
+        /** @noinspection PhpStrictTypeCheckingInspection */
         $this->propertyHandler2->supports(Argument::any(), Argument::any())->shouldNotBeCalled();
 
 
-        $this->assertEquals(
+        self::assertEquals(
             'FoundData',
             $this->getCompositePropertyHandler()->getValueForPropertyName(
                 $this->namingStrategy->reveal(),
@@ -174,15 +164,12 @@ final class CompositePropertyHandlerTest extends TestCase
     }
 
     /**
-     * @test
-     *
      * @return void
      * @throws ObjectProphecyException
      * @throws HandlerException
      * @throws ExpectationFailedException
-     * @throws InvalidArgumentException
      */
-    public function hasValueForPropertyNameShouldReturnFalseWhenTheSupportedHandlerReturnFalse(): void
+    public function testHasValueForPropertyNameShouldReturnFalseWhenTheSupportedHandlerReturnFalse(): void
     {
         $propertyName = 'my-prop';
         $data = [];
@@ -192,14 +179,17 @@ final class CompositePropertyHandlerTest extends TestCase
             $propertyName,
             $data
         )->willReturn(false)->shouldBeCalledOnce();
+        /** @noinspection PhpStrictTypeCheckingInspection */
         $this->propertyHandler2->supports(Argument::any(), Argument::any())->shouldNotBeCalled();
+        /** @noinspection PhpStrictTypeCheckingInspection */
+        /** @noinspection PhpParamsInspection */
         $this->propertyHandler2->hasValueForPropertyName(
             Argument::any(),
             Argument::any(),
             Argument::any()
         )->shouldNotBeCalled();
 
-        $this->assertFalse($this->getCompositePropertyHandler()->hasValueForPropertyName(
+        self::assertFalse($this->getCompositePropertyHandler()->hasValueForPropertyName(
             $this->namingStrategy->reveal(),
             $propertyName,
             $data
@@ -207,19 +197,18 @@ final class CompositePropertyHandlerTest extends TestCase
     }
 
     /**
-     * @test
-     *
      * @return void
      * @throws ObjectProphecyException
      * @throws HandlerException
      * @throws ExpectationFailedException
-     * @throws InvalidArgumentException
      */
-    public function hasValueForPropertyNameShouldReturnTrueWhenTheSupportedHandlerReturnTrue(): void
+    public function testHasValueForPropertyNameShouldReturnTrueWhenTheSupportedHandlerReturnTrue(): void
     {
         $propertyName = 'my-prop';
         $data = [];
         $this->propertyHandler1->supports($propertyName, $data)->willReturn(false)->shouldBeCalledOnce();
+        /** @noinspection PhpStrictTypeCheckingInspection */
+        /** @noinspection PhpParamsInspection */
         $this->propertyHandler1->hasValueForPropertyName(
             Argument::any(),
             Argument::any(),
@@ -232,7 +221,7 @@ final class CompositePropertyHandlerTest extends TestCase
             $data
         )->willReturn(true)->shouldBeCalledOnce();
 
-        $this->assertTrue($this->getCompositePropertyHandler()->hasValueForPropertyName(
+        self::assertTrue($this->getCompositePropertyHandler()->hasValueForPropertyName(
             $this->namingStrategy->reveal(),
             $propertyName,
             $data

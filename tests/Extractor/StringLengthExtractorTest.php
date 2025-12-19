@@ -1,4 +1,4 @@
-<?php declare(strict_types=1);
+<?php
 /*
  * This file is part of the jojo1981/data-resolver package
  *
@@ -7,6 +7,8 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed in the root of the source code
  */
+declare(strict_types=1);
+
 namespace tests\Jojo1981\DataResolver\Extractor;
 
 use Jojo1981\DataResolver\Extractor\Exception\ExtractorException;
@@ -20,7 +22,6 @@ use Prophecy\Exception\Doubler\InterfaceNotFoundException;
 use Prophecy\Exception\Prophecy\ObjectProphecyException;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
-use SebastianBergmann\RecursionContext\InvalidArgumentException;
 use stdClass;
 
 /**
@@ -30,7 +31,7 @@ final class StringLengthExtractorTest extends TestCase
 {
     use ProphecyTrait;
 
-    /** @var ObjectProphecy|Context */
+    /** @var ObjectProphecy<Context> */
     private ObjectProphecy $context;
 
     /**
@@ -45,13 +46,11 @@ final class StringLengthExtractorTest extends TestCase
     }
 
     /**
-     * @test
-     *
      * @return void
      * @throws ExtractorException
      * @throws ObjectProphecyException
      */
-    public function extractShouldThrowAnExceptionBecauseOnlyStringDataIsSupportedTest1(): void
+    public function testExtractShouldThrowAnExceptionBecauseOnlyStringDataIsSupportedTest1(): void
     {
         $this->context->getData()->willReturn(20)->shouldBeCalledOnce();
         $this->context->getPath()->willReturn('my-path')->shouldBeCalledOnce();
@@ -65,13 +64,11 @@ final class StringLengthExtractorTest extends TestCase
     }
 
     /**
-     * @test
-     *
      * @return void
      * @throws ExtractorException
      * @throws ObjectProphecyException
      */
-    public function extractShouldThrowAnExceptionBecauseOnlyStringDataIsSupportedTest2(): void
+    public function testExtractShouldThrowAnExceptionBecauseOnlyStringDataIsSupportedTest2(): void
     {
         $this->context->getData()->willReturn(new stdClass())->shouldBeCalledOnce();
         $this->context->getPath()->willReturn('my-path')->shouldBeCalledOnce();
@@ -85,24 +82,21 @@ final class StringLengthExtractorTest extends TestCase
     }
 
     /**
-     * @test
-     *
      * @return void
      * @throws ExpectationFailedException
-     * @throws InvalidArgumentException
      * @throws ExtractorException
      * @throws ObjectProphecyException
      */
-    public function extractShouldReturnTheStringLength(): void
+    public function testExtractShouldReturnTheStringLength(): void
     {
         $this->context->getData()->willReturn('', 'text', 'a', 'not')->shouldBeCalledTimes(4);
         $this->context->getPath()->shouldNotBeCalled();
 
         $context = $this->context->reveal();
-        $this->assertEquals(0, $this->getStringLengthExtractor()->extract($context));
-        $this->assertEquals(4, $this->getStringLengthExtractor()->extract($context));
-        $this->assertEquals(1, $this->getStringLengthExtractor()->extract($context));
-        $this->assertEquals(3, $this->getStringLengthExtractor()->extract($context));
+        self::assertEquals(0, $this->getStringLengthExtractor()->extract($context));
+        self::assertEquals(4, $this->getStringLengthExtractor()->extract($context));
+        self::assertEquals(1, $this->getStringLengthExtractor()->extract($context));
+        self::assertEquals(3, $this->getStringLengthExtractor()->extract($context));
     }
 
     /**
