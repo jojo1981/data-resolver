@@ -1,4 +1,4 @@
-<?php declare(strict_types=1);
+<?php
 /*
  * This file is part of the jojo1981/data-resolver package
  *
@@ -7,6 +7,8 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed in the root of the source code
  */
+declare(strict_types=1);
+
 namespace Jojo1981\DataResolver\Builder;
 
 use Jojo1981\DataResolver\Extractor\ExtractorInterface;
@@ -42,9 +44,9 @@ final class ResolverBuilder
     /**
      * @param string $propertyName
      * @param string ...$propertyNames
-     * @return $this
+     * @return ResolverBuilder
      */
-    public function get(string $propertyName, string ...$propertyNames): self
+    public function get(string $propertyName, string ...$propertyNames): ResolverBuilder
     {
         $result = clone $this;
         $result->extractors[] = $this->extractorBuilderFactory
@@ -56,9 +58,9 @@ final class ResolverBuilder
 
     /**
      * @param PredicateBuilderInterface $predicateBuilder
-     * @return $this
+     * @return ResolverBuilder
      */
-    public function find(PredicateBuilderInterface $predicateBuilder): self
+    public function find(PredicateBuilderInterface $predicateBuilder): ResolverBuilder
     {
         $result = clone $this;
         $result->extractors[] = $this->extractorBuilderFactory->getFindExtractorBuilder($predicateBuilder)->build();
@@ -68,9 +70,9 @@ final class ResolverBuilder
 
     /**
      * @param PredicateBuilderInterface $predicateBuilder
-     * @return $this
+     * @return ResolverBuilder
      */
-    public function filter(PredicateBuilderInterface $predicateBuilder): self
+    public function filter(PredicateBuilderInterface $predicateBuilder): ResolverBuilder
     {
         $result = clone $this;
         $result->extractors[] = $this->extractorBuilderFactory->getFilterExtractorBuilder($predicateBuilder)->build();
@@ -80,9 +82,9 @@ final class ResolverBuilder
 
     /**
      * @param ResolverBuilder $resolverBuilder
-     * @return $this
+     * @return ResolverBuilder
      */
-    public function flatten(ResolverBuilder $resolverBuilder): self
+    public function flatten(ResolverBuilder $resolverBuilder): ResolverBuilder
     {
         $result = clone $this;
         $result->extractors[] = $this->extractorBuilderFactory->getFlattenExtractorBuilder(
@@ -94,9 +96,9 @@ final class ResolverBuilder
 
     /**
      * @param callable $callback
-     * @return $this
+     * @return ResolverBuilder
      */
-    public function callback(callable $callback): self
+    public function callback(callable $callback): ResolverBuilder
     {
         $result = clone $this;
         $result->extractors[] = $this->extractorBuilderFactory->getCallbackExtractorBuilder($callback)->build();

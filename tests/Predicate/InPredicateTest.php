@@ -1,4 +1,4 @@
-<?php declare(strict_types=1);
+<?php
 /*
  * This file is part of the jojo1981/data-resolver package
  *
@@ -7,6 +7,8 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed in the root of the source code
  */
+declare(strict_types=1);
+
 namespace tests\Jojo1981\DataResolver\Predicate;
 
 use Jojo1981\DataResolver\Comparator\ComparatorInterface;
@@ -20,7 +22,6 @@ use Prophecy\Exception\Doubler\InterfaceNotFoundException;
 use Prophecy\Exception\Prophecy\ObjectProphecyException;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
-use SebastianBergmann\RecursionContext\InvalidArgumentException;
 
 /**
  * @package tests\Jojo1981\DataResolver\Predicate
@@ -29,7 +30,7 @@ final class InPredicateTest extends TestCase
 {
     use ProphecyTrait;
 
-    /** @var ObjectProphecy|ComparatorInterface */
+    /** @var ObjectProphecy<ComparatorInterface> */
     private ObjectProphecy $comparator;
 
     /**
@@ -44,67 +45,55 @@ final class InPredicateTest extends TestCase
     }
 
     /**
-     * @test
-     *
      * @return void
      * @throws ObjectProphecyException
-     * @throws InvalidArgumentException
      * @throws ExpectationFailedException
      */
-    public function matchShouldReturnFalseWhenValueDoesNotExistsInExpectedValues(): void
+    public function testMatchShouldReturnFalseWhenValueDoesNotExistsInExpectedValues(): void
     {
         $this->comparator->isEqual('value1', 'value2')->willReturn(false)->shouldBeCalledOnce();
         $this->comparator->isEqual('value3', 'value2')->willReturn(false)->shouldBeCalledOnce();
 
-        $this->assertFalse($this->getInPredicate(['value1', 'value3'])->match(new Context('value2')));
+        self::assertFalse($this->getInPredicate(['value1', 'value3'])->match(new Context('value2')));
     }
 
     /**
-     * @test
-     *
      * @return void
      * @throws ObjectProphecyException
-     * @throws InvalidArgumentException
      * @throws ExpectationFailedException
      */
-    public function matchShouldReturnTrueWhenValueDoesExistsInExpectedValuesTest1(): void
+    public function testMatchShouldReturnTrueWhenValueDoesExistsInExpectedValuesTest1(): void
     {
         $this->comparator->isEqual('value1', 'value1')->willReturn(true)->shouldBeCalledOnce();
 
-        $this->assertTrue($this->getInPredicate(['value1', 'value2', 'value3'])->match(new Context('value1')));
+        self::assertTrue($this->getInPredicate(['value1', 'value2', 'value3'])->match(new Context('value1')));
     }
 
     /**
-     * @test
-     *
      * @return void
      * @throws ObjectProphecyException
-     * @throws InvalidArgumentException
      * @throws ExpectationFailedException
      */
-    public function matchShouldReturnTrueWhenValueDoesExistsInExpectedValuesTest2(): void
+    public function testMatchShouldReturnTrueWhenValueDoesExistsInExpectedValuesTest2(): void
     {
         $this->comparator->isEqual('value1', 'value2')->willReturn(false)->shouldBeCalledOnce();
         $this->comparator->isEqual('value2', 'value2')->willReturn(true)->shouldBeCalledOnce();
 
-        $this->assertTrue($this->getInPredicate(['value1', 'value2', 'value3'])->match(new Context('value2')));
+        self::assertTrue($this->getInPredicate(['value1', 'value2', 'value3'])->match(new Context('value2')));
     }
 
     /**
-     * @test
-     *
      * @return void
      * @throws ObjectProphecyException
-     * @throws InvalidArgumentException
      * @throws ExpectationFailedException
      */
-    public function matchShouldReturnTrueWhenValueDoesExistsInExpectedValuesTest3(): void
+    public function testMatchShouldReturnTrueWhenValueDoesExistsInExpectedValuesTest3(): void
     {
         $this->comparator->isEqual('value1', 'value3')->willReturn(false)->shouldBeCalledOnce();
         $this->comparator->isEqual('value2', 'value3')->willReturn(false)->shouldBeCalledOnce();
         $this->comparator->isEqual('value3', 'value3')->willReturn(true)->shouldBeCalledOnce();
 
-        $this->assertTrue($this->getInPredicate(['value1', 'value2', 'value3'])->match(new Context('value3')));
+        self::assertTrue($this->getInPredicate(['value1', 'value2', 'value3'])->match(new Context('value3')));
     }
 
     /**

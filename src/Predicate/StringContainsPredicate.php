@@ -1,4 +1,4 @@
-<?php declare(strict_types=1);
+<?php
 /*
  * This file is part of the jojo1981/data-resolver package
  *
@@ -7,6 +7,8 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed in the root of the source code
  */
+declare(strict_types=1);
+
 namespace Jojo1981\DataResolver\Predicate;
 
 use function mb_stripos;
@@ -37,7 +39,7 @@ final class StringContainsPredicate extends AbstractStringPredicate
      * @param mixed $data
      * @return bool
      */
-    protected function performMatch($data): bool
+    protected function performMatch(mixed $data): bool
     {
         if ($this->caseSensitive) {
             return false !== mb_strpos($data, $this->subString);

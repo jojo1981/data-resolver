@@ -1,4 +1,4 @@
-<?php declare(strict_types=1);
+<?php
 /*
  * This file is part of the jojo1981/data-resolver package
  *
@@ -7,6 +7,8 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed in the root of the source code
  */
+declare(strict_types=1);
+
 namespace Jojo1981\DataResolver\Handler\SequenceHandler;
 
 use ArrayIterator;
@@ -30,7 +32,7 @@ final class ArraySequenceHandler implements SequenceHandlerInterface
      * @param mixed $data
      * @return bool
      */
-    public function supports($data): bool
+    public function supports(mixed $data): bool
     {
         return $this->isIndexedArray($data);
     }
@@ -40,7 +42,7 @@ final class ArraySequenceHandler implements SequenceHandlerInterface
      * @return Traversable
      * @throws HandlerException
      */
-    public function getIterator($data): Traversable
+    public function getIterator(mixed $data): Traversable
     {
         if (!$this->supports($data)) {
             $this->throwUnsupportedException('getIterator');
@@ -55,7 +57,7 @@ final class ArraySequenceHandler implements SequenceHandlerInterface
      * @return mixed
      * @throws HandlerException
      */
-    public function filter($data, callable $callback)
+    public function filter(mixed $data, callable $callback): mixed
     {
         if (!$this->supports($data)) {
             $this->throwUnsupportedException('filter');
@@ -69,7 +71,7 @@ final class ArraySequenceHandler implements SequenceHandlerInterface
      * @return int
      * @throws HandlerException
      */
-    public function count($data): int
+    public function count(mixed $data): int
     {
         if (!$this->supports($data)) {
             $this->throwUnsupportedException('count');
@@ -84,7 +86,7 @@ final class ArraySequenceHandler implements SequenceHandlerInterface
      * @return array
      * @throws HandlerException
      */
-    public function flatten($data, callable $callback): array
+    public function flatten(mixed $data, callable $callback): array
     {
         if (!$this->supports($data)) {
             $this->throwUnsupportedException('flatten');
@@ -110,7 +112,7 @@ final class ArraySequenceHandler implements SequenceHandlerInterface
      * @param mixed $data
      * @return bool
      */
-    private function isIndexedArray($data): bool
+    private function isIndexedArray(mixed $data): bool
     {
         if (!is_array($data)) {
             return false;

@@ -1,4 +1,4 @@
-<?php declare(strict_types=1);
+<?php
 /*
  * This file is part of the jojo1981/data-resolver package
  *
@@ -7,6 +7,8 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed in the root of the source code
  */
+declare(strict_types=1);
+
 namespace tests\Jojo1981\DataResolver;
 
 use Jojo1981\DataResolver\Extractor\Exception\ExtractorException;
@@ -25,7 +27,6 @@ use Prophecy\Exception\InvalidArgumentException as ProphecyInvalidArgumentExcept
 use Prophecy\Exception\Prophecy\ObjectProphecyException;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
-use SebastianBergmann\RecursionContext\InvalidArgumentException;
 use function array_key_exists;
 
 /**
@@ -35,13 +36,13 @@ final class ResolverTest extends TestCase
 {
     use ProphecyTrait;
 
-    /** @var ObjectProphecy|Context */
+    /** @var ObjectProphecy<Context> */
     private ObjectProphecy $context;
 
-    /** @var ObjectProphecy|ExtractorInterface */
+    /** @var ObjectProphecy<ExtractorInterface> */
     private ObjectProphecy $extractor1;
 
-    /** @var ObjectProphecy|ExtractorInterface */
+    /** @var ObjectProphecy<ExtractorInterface> */
     private ObjectProphecy $extractor2;
 
     /**
@@ -58,73 +59,63 @@ final class ResolverTest extends TestCase
     }
 
     /**
-     * @test
-     *
      * @return void
      * @throws PredicateException
      * @throws ExpectationFailedException
-     * @throws InvalidArgumentException
      * @throws ExtractorException
      * @throws HandlerException
      */
-    public function resolverWithoutExtractorsShouldSimplyReturnTheDataWhichIsGivenToTheResolveMethod(): void
+    public function testResolverWithoutExtractorsShouldSimplyReturnTheDataWhichIsGivenToTheResolveMethod(): void
     {
         $data = ['key' => 'value'];
-        $this->assertSame($data, (new Resolver([]))->resolve($data));
+        self::assertSame($data, (new Resolver([]))->resolve($data));
     }
 
     /**
-     * @test
-     *
      * @return void
      * @throws HandlerException
-     * @throws InvalidArgumentException
      * @throws ObjectProphecyException
      * @throws PredicateException
      * @throws ExpectationFailedException
      * @throws ExtractorException
      */
-    public function resolverWithoutExtractorsShouldSimplyReturnTheDataFromThePassedContext(): void
+    public function testResolverWithoutExtractorsShouldSimplyReturnTheDataFromThePassedContext(): void
     {
         $data = ['key' => 'value'];
         $this->context->getData()->willReturn($data)->shouldBeCalledOnce();
-        $this->assertSame($data, (new Resolver([]))->resolve($this->context->reveal()));
+        self::assertSame($data, (new Resolver([]))->resolve($this->context->reveal()));
     }
 
     /**
-     * @test
-     *
      * @return void
      * @throws HandlerException
-     * @throws InvalidArgumentException
      * @throws ObjectProphecyException
      * @throws PredicateException
      * @throws ExpectationFailedException
      * @throws ExtractorException
      */
-    public function resolverWithPassingContextToTheResolveMethodShouldUpdateContextAndPassItToTheExtractors(): void
+    public function testResolverWithPassingContextToTheResolveMethodShouldUpdateContextAndPassItToTheExtractors(): void
     {
+        /** @noinspection PhpUndefinedMethodInspection */
         $this->context->setData(['key1' => 'value1'])->willReturn($this->context)->shouldBeCalledOnce();
         $this->extractor1->extract($this->context)->willReturn(['key1' => 'value1'])->shouldBeCalledOnce();
         $this->extractor2->extract($this->context)->willReturn(['key2' => 'value2'])->shouldBeCalledOnce();
 
-        $this->assertEquals(['key2' => 'value2'], $this->getResolver()->resolve($this->context->reveal()));
+        self::assertEquals(['key2' => 'value2'], $this->getResolver()->resolve($this->context->reveal()));
     }
 
     /**
-     * @test
-     *
      * @return void
      * @throws ExtractorException
      * @throws HandlerException
-     * @throws InvalidArgumentException
      * @throws ObjectProphecyException
      * @throws PredicateException
      * @throws ProphecyInvalidArgumentException
      * @throws ExpectationFailedException
      */
-    public function resolverWithPassingDataToTheResolveMethodShouldTransformItIntoAContextObjectAnPassItToTheExtractors(): void
+    public function testResolverWithPassingDataToTheResolveMethodShouldTransformItIntoAContextObjectAnPassItToTheExtractors(): void
     {
+        /** @noinspection PhpParamsInspection */
         $this->extractor1->extract(Argument::that(static function ($arg): bool {
             return (
                 $arg instanceof Context
@@ -133,6 +124,7 @@ final class ResolverTest extends TestCase
                 && $arg === $arg->pushPathPart('root')
             );
         }))->willReturn(['key1' => 'value1'])->shouldBeCalledOnce();
+        /** @noinspection PhpParamsInspection */
         $this->extractor2->extract(Argument::that(static function ($arg): bool {
             return (
                 $arg instanceof Context
@@ -142,7 +134,7 @@ final class ResolverTest extends TestCase
             );
         }))->willReturn('last-result')->shouldBeCalledOnce();
 
-        $this->assertEquals('last-result', $this->getResolver()->resolve('just-some-data'));
+        self::assertEquals('last-result', $this->getResolver()->resolve('just-some-data'));
     }
 
     /**

@@ -1,4 +1,4 @@
-<?php declare(strict_types=1);
+<?php
 /*
  * This file is part of the jojo1981/data-resolver package
  *
@@ -7,6 +7,8 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed in the root of the source code
  */
+declare(strict_types=1);
+
 namespace Jojo1981\DataResolver\Extractor;
 
 use Jojo1981\DataResolver\Extractor\Exception\ExtractorException;
@@ -42,7 +44,7 @@ final class CompositeExtractor implements ExtractorInterface
      * @throws PredicateException
      * @throws HandlerException
      */
-    public function extract(Context $context)
+    public function extract(Context $context): mixed
     {
         return $this->extractor2->extract($context->copy()->setData($this->extractor1->extract($context)));
     }

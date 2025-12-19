@@ -1,4 +1,4 @@
-<?php declare(strict_types=1);
+<?php
 /*
  * This file is part of the jojo1981/data-resolver package
  *
@@ -7,6 +7,8 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed in the root of the source code
  */
+declare(strict_types=1);
+
 namespace Jojo1981\DataResolver\Comparator;
 
 /**
@@ -19,19 +21,19 @@ interface ComparatorInterface
      * @param mixed $toCompareValue
      * @return bool
      */
-    public function isEqual($referenceValue, $toCompareValue): bool;
+    public function isEqual(mixed $referenceValue, mixed $toCompareValue): bool;
 
     /**
      * @param mixed $referenceValue
      * @param mixed $toCompareValue
      * @return bool
      */
-    public function isGreaterThan($referenceValue, $toCompareValue): bool;
+    public function isGreaterThan(mixed $referenceValue, mixed $toCompareValue): bool;
 
     /**
      * @param mixed $referenceValue
      * @param mixed $toCompareValue
      * @return bool
      */
-    public function isLessThan($referenceValue, $toCompareValue): bool;
+    public function isLessThan(mixed $referenceValue, mixed $toCompareValue): bool;
 }

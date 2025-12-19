@@ -1,4 +1,4 @@
-<?php declare(strict_types=1);
+<?php
 /*
  * This file is part of the jojo1981/data-resolver package
  *
@@ -7,6 +7,8 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed in the root of the source code
  */
+declare(strict_types=1);
+
 namespace Jojo1981\DataResolver\Extractor;
 
 use Exception;
@@ -49,14 +51,14 @@ final class FilterExtractor extends AbstractSequenceExtractor
      * @return mixed
      * @throws HandlerException
      */
-    protected function performExtract(Context $context)
+    protected function performExtract(Context $context): mixed
     {
         return $this->sequenceHandler->filter(
             $context->getData(),
             function ($value) use ($context): bool {
                 try {
                     return $this->predicate->match($context->copy()->setData($value));
-                } catch (Exception $exception) {
+                } catch (Exception) {
                     return false;
                 }
             }

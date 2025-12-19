@@ -1,4 +1,4 @@
-<?php declare(strict_types=1);
+<?php
 /*
  * This file is part of the jojo1981/data-resolver package
  *
@@ -7,6 +7,8 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed in the root of the source code
  */
+declare(strict_types=1);
+
 namespace tests\Jojo1981\DataResolver\Extractor;
 
 use Jojo1981\DataResolver\Extractor\Exception\ExtractorException;
@@ -19,13 +21,12 @@ use Jojo1981\DataResolver\Resolver\Context;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
-use Prophecy\Exception\Doubler\ClassNotFoundException;
 use Prophecy\Exception\Doubler\DoubleException;
 use Prophecy\Exception\Doubler\InterfaceNotFoundException;
+use Prophecy\Exception\InvalidArgumentException;
 use Prophecy\Exception\Prophecy\ObjectProphecyException;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
-use SebastianBergmann\RecursionContext\InvalidArgumentException;
 use stdClass;
 use function array_merge;
 
@@ -36,51 +37,55 @@ final class PropertyExtractorTest extends TestCase
 {
     use ProphecyTrait;
 
-    /** @var ObjectProphecy|NamingStrategyInterface */
+    /** @var ObjectProphecy<NamingStrategyInterface> */
     private ObjectProphecy $namingStrategy;
 
-    /** @var ObjectProphecy|PropertyHandlerInterface */
+    /** @var ObjectProphecy<PropertyHandlerInterface> */
     private ObjectProphecy $propertyHandler;
 
-    /** @var ObjectProphecy|MergeHandlerInterface */
+    /** @var ObjectProphecy<MergeHandlerInterface> */
     private ObjectProphecy $mergeHandler;
 
-    /** @var ObjectProphecy|Context */
+    /** @var ObjectProphecy<Context> */
     private ObjectProphecy $context;
 
     /**
      * @return void
      * @throws InterfaceNotFoundException
-     * @throws ClassNotFoundException
+     * @throws InvalidArgumentException
      * @throws DoubleException
      */
     protected function setUp(): void
     {
         $this->namingStrategy = $this->prophesize(NamingStrategyInterface::class);
+        /** @noinspection PhpStrictTypeCheckingInspection */
         $this->namingStrategy->getMethodNames(Argument::any())->shouldNotBeCalled();
+        /** @noinspection PhpStrictTypeCheckingInspection */
         $this->namingStrategy->getPropertyNames(Argument::any())->shouldNotBeCalled();
         $this->propertyHandler = $this->prophesize(PropertyHandlerInterface::class);
         $this->mergeHandler = $this->prophesize(MergeHandlerInterface::class);
         $this->context = $this->prophesize(Context::class);
         $this->context->setData(Argument::any())->shouldNotBeCalled();
+        /** @noinspection PhpStrictTypeCheckingInspection */
         $this->context->setPath(Argument::any())->shouldNotBeCalled();
     }
 
     /**
-     * @test
-     *
      * @return void
      * @throws HandlerException
      * @throws ObjectProphecyException
      * @throws ExtractorException
      */
-    public function extractShouldThrowAnExceptionBecausePropertyHandlerDoesNotSupportThePropertyAndDataFromContext(
+    public function testExtractShouldThrowAnExceptionBecausePropertyHandlerDoesNotSupportThePropertyAndDataFromContext(
     ): void {
         $propertyName = 'property-name';
+        /** @noinspection PhpParamsInspection */
         $this->mergeHandler->merge(Argument::any(), Argument::any())->shouldNotBeCalled();
         $this->context->getData()->willReturn('my-data')->shouldBeCalledOnce();
         $this->context->getPath()->willReturn('my-path')->shouldBeCalledOnce();
         $this->propertyHandler->supports($propertyName, 'my-data')->willReturn(false)->shouldBeCalledOnce();
+        /** @noinspection PhpStrictTypeCheckingInspection */
+        /** @noinspection PhpParamsInspection */
         $this->propertyHandler->hasValueForPropertyName(
             Argument::any(),
             Argument::any(),
@@ -93,16 +98,15 @@ final class PropertyExtractorTest extends TestCase
     }
 
     /**
-     * @test
-     *
      * @return void
      * @throws HandlerException
      * @throws ObjectProphecyException
      * @throws ExtractorException
      */
-    public function extractShouldThrowAnExceptionBecausePropertyHandlerSupportThePropertyAndDataFromContextButHasNoValueForThePropertyName(
+    public function testExtractShouldThrowAnExceptionBecausePropertyHandlerSupportThePropertyAndDataFromContextButHasNoValueForThePropertyName(
     ): void {
         $propertyName = 'property-name';
+        /** @noinspection PhpParamsInspection */
         $this->mergeHandler->merge(Argument::any(), Argument::any())->shouldNotBeCalled();
         $this->context->getData()->willReturn('my-data')->shouldBeCalledOnce();
         $this->context->getPath()->willReturn('my-path')->shouldBeCalledOnce();
@@ -119,22 +123,22 @@ final class PropertyExtractorTest extends TestCase
     }
 
     /**
-     * @test
-     *
      * @return void
      * @throws ObjectProphecyException
      * @throws ExpectationFailedException
-     * @throws InvalidArgumentException
      * @throws ExtractorException
      * @throws HandlerException
      */
-    public function extractShouldReturnTheResultFromThePropertyHandlerGetValueForPropertyNameMethod(): void
+    public function testExtractShouldReturnTheResultFromThePropertyHandlerGetValueForPropertyNameMethod(): void
     {
         $propertyName = 'the-prop';
+        /** @noinspection PhpParamsInspection */
         $this->mergeHandler->merge(Argument::any(), Argument::any())->shouldNotBeCalled();
         $this->context->getData()->willReturn('my-data')->shouldBeCalledTimes(2);
         $this->context->getPath()->shouldNotBeCalled();
+        /** @noinspection PhpUndefinedMethodInspection */
         $this->context->pushPathPart($propertyName)->shouldBeCalledOnce();
+        /** @noinspection PhpUndefinedMethodInspection */
         $this->context->popPathPart()->shouldBeCalledOnce();
         $this->propertyHandler->supports($propertyName, 'my-data')->willReturn(true)->shouldBeCalledOnce();
         $this->propertyHandler->hasValueForPropertyName(
@@ -148,32 +152,31 @@ final class PropertyExtractorTest extends TestCase
             'my-data'
         )->willReturn('returned-value')->shouldBeCalledOnce();
 
-        $this->assertEquals(
+        self::assertEquals(
             'returned-value',
             $this->getPropertyExtractor($propertyName)->extract($this->context->reveal())
         );
     }
 
     /**
-     * @test
-     *
      * @return void
      * @throws HandlerException
-     * @throws InvalidArgumentException
      * @throws ObjectProphecyException
      * @throws ExpectationFailedException
      * @throws ExtractorException
      */
-    public function extractWithMultiplePropertiesShouldReturnTheResultFromTheMergeHandler(): void
+    public function testExtractWithMultiplePropertiesShouldReturnTheResultFromTheMergeHandler(): void
     {
         $propertyNames = ['prop1', 'prop2'];
         $resolvedValues = ['value1', 'value2'];
 
+        /** @noinspection PhpUndefinedMethodInspection */
         $this->context->popPathPart()->shouldBeCalledTimes(2);
         $this->context->getData()->willReturn('my-data')->shouldBeCalledTimes(4);
 
         $this->context->getPath()->shouldNotBeCalled();
         foreach ($propertyNames as $index => $propertyName) {
+            /** @noinspection PhpUndefinedMethodInspection */
             $this->context->pushPathPart($propertyName)->shouldBeCalledOnce();
             $this->propertyHandler->supports($propertyName, 'my-data')->willReturn(true)->shouldBeCalledOnce();
             $this->propertyHandler->hasValueForPropertyName(
@@ -194,7 +197,7 @@ final class PropertyExtractorTest extends TestCase
             ['prop1' => 'value1', 'prop2' => 'value2']
         )->shouldBeCalled()->willReturn($result);
 
-        $this->assertSame($result, $this->getPropertyExtractor(...$propertyNames)->extract($this->context->reveal()));
+        self::assertSame($result, $this->getPropertyExtractor(...$propertyNames)->extract($this->context->reveal()));
     }
 
     /**

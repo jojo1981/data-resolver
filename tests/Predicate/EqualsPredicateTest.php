@@ -1,4 +1,4 @@
-<?php declare(strict_types=1);
+<?php
 /*
  * This file is part of the jojo1981/data-resolver package
  *
@@ -7,6 +7,8 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed in the root of the source code
  */
+declare(strict_types=1);
+
 namespace tests\Jojo1981\DataResolver\Predicate;
 
 use Jojo1981\DataResolver\Comparator\ComparatorInterface;
@@ -15,13 +17,12 @@ use Jojo1981\DataResolver\Resolver\Context;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
-use Prophecy\Exception\Doubler\ClassNotFoundException;
 use Prophecy\Exception\Doubler\DoubleException;
 use Prophecy\Exception\Doubler\InterfaceNotFoundException;
+use Prophecy\Exception\InvalidArgumentException;
 use Prophecy\Exception\Prophecy\ObjectProphecyException;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
-use SebastianBergmann\RecursionContext\InvalidArgumentException;
 
 /**
  * @package tests\Jojo1981\DataResolver\Predicate
@@ -30,13 +31,13 @@ final class EqualsPredicateTest extends TestCase
 {
     use ProphecyTrait;
 
-    /** @var ObjectProphecy|ComparatorInterface */
+    /** @var ObjectProphecy<ComparatorInterface> */
     private ObjectProphecy $comparator;
 
     /**
      * @return void
      * @throws InterfaceNotFoundException
-     * @throws ClassNotFoundException
+     * @throws InvalidArgumentException
      * @throws DoubleException
      */
     protected function setUp(): void
@@ -47,35 +48,29 @@ final class EqualsPredicateTest extends TestCase
     }
 
     /**
-     * @test
-     *
      * @return void
      * @throws ObjectProphecyException
      * @throws ExpectationFailedException
-     * @throws InvalidArgumentException
      */
-    public function matchShouldReturnTrueFromComparator(): void
+    public function testMatchShouldReturnTrueFromComparator(): void
     {
         $referenceValue = 'dummy1';
         $toCompareValue = 'dummy2';
         $this->comparator->isEqual($referenceValue, $toCompareValue)->willReturn(true)->shouldBeCalledOnce();
-        $this->assertTrue($this->getEqualsPredicate($referenceValue)->match(new Context($toCompareValue)));
+        self::assertTrue($this->getEqualsPredicate($referenceValue)->match(new Context($toCompareValue)));
     }
 
     /**
-     * @test
-     *
      * @return void
      * @throws ObjectProphecyException
      * @throws ExpectationFailedException
-     * @throws InvalidArgumentException
      */
-    public function matchShouldReturnFalseFromComparator(): void
+    public function testMatchShouldReturnFalseFromComparator(): void
     {
         $referenceValue = 'dummy1';
         $toCompareValue = 'dummy2';
         $this->comparator->isEqual($referenceValue, $toCompareValue)->willReturn(false)->shouldBeCalledOnce();
-        $this->assertFalse($this->getEqualsPredicate($referenceValue)->match(new Context($toCompareValue)));
+        self::assertFalse($this->getEqualsPredicate($referenceValue)->match(new Context($toCompareValue)));
     }
 
     /**
@@ -83,7 +78,7 @@ final class EqualsPredicateTest extends TestCase
      * @return EqualsPredicate
      * @throws ObjectProphecyException
      */
-    private function getEqualsPredicate($referenceValue): EqualsPredicate
+    private function getEqualsPredicate(mixed $referenceValue): EqualsPredicate
     {
         return new EqualsPredicate($this->comparator->reveal(), $referenceValue);
     }

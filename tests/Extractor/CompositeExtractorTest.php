@@ -1,4 +1,4 @@
-<?php declare(strict_types=1);
+<?php
 /*
  * This file is part of the jojo1981/data-resolver package
  *
@@ -7,6 +7,8 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed in the root of the source code
  */
+declare(strict_types=1);
+
 namespace tests\Jojo1981\DataResolver\Extractor;
 
 use Jojo1981\DataResolver\Extractor\CompositeExtractor;
@@ -23,7 +25,6 @@ use Prophecy\Exception\Doubler\InterfaceNotFoundException;
 use Prophecy\Exception\Prophecy\ObjectProphecyException;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
-use SebastianBergmann\RecursionContext\InvalidArgumentException;
 
 /**
  * @package tests\Jojo1981\DataResolver\Extractor
@@ -32,16 +33,16 @@ final class CompositeExtractorTest extends TestCase
 {
     use ProphecyTrait;
 
-    /** @var ObjectProphecy|ExtractorInterface */
+    /** @var ObjectProphecy<ExtractorInterface> */
     private ObjectProphecy $extractor1;
 
-    /** @var ObjectProphecy|ExtractorInterface */
+    /** @var ObjectProphecy<ExtractorInterface> */
     private ObjectProphecy $extractor2;
 
-    /** @var ObjectProphecy|Context */
+    /** @var ObjectProphecy<Context> */
     private ObjectProphecy $originalContext;
 
-    /** @var ObjectProphecy|Context */
+    /** @var ObjectProphecy<Context> */
     private ObjectProphecy $copiedContext;
 
     /**
@@ -59,24 +60,23 @@ final class CompositeExtractorTest extends TestCase
     }
 
     /**
-     * @test
-     *
      * @return void
      * @throws HandlerException
      * @throws PredicateException
      * @throws ExpectationFailedException
-     * @throws InvalidArgumentException
      * @throws ObjectProphecyException
      * @throws ExtractorException
      */
-    public function extractShouldReturnTheResultOfExtractor2WhichGetTheResultOfExtractor1(): void
+    public function testExtractShouldReturnTheResultOfExtractor2WhichGetTheResultOfExtractor1(): void
     {
         $this->extractor1->extract($this->originalContext)->willReturn('Result1')->shouldBeCalledOnce();
+        /** @noinspection PhpUndefinedMethodInspection */
         $this->originalContext->copy()->willReturn($this->copiedContext)->shouldBeCalledOnce();
+        /** @noinspection PhpUndefinedMethodInspection */
         $this->copiedContext->setData('Result1')->willReturn($this->copiedContext)->shouldBeCalledOnce();
         $this->extractor2->extract($this->copiedContext)->willReturn('Result2')->shouldBeCalledOnce();
 
-        $this->assertEquals('Result2', $this->getCompositeExtractor()->extract($this->originalContext->reveal()));
+        self::assertEquals('Result2', $this->getCompositeExtractor()->extract($this->originalContext->reveal()));
     }
 
     /**

@@ -1,4 +1,4 @@
-<?php declare(strict_types=1);
+<?php
 /*
  * This file is part of the jojo1981/data-resolver package
  *
@@ -7,6 +7,8 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed in the root of the source code
  */
+declare(strict_types=1);
+
 namespace Jojo1981\DataResolver\Predicate;
 
 use Jojo1981\DataResolver\Comparator\ComparatorInterface;
@@ -21,13 +23,13 @@ final class EqualsPredicate implements PredicateInterface
     private ComparatorInterface $comparator;
 
     /** @var mixed */
-    private $referenceValue;
+    private mixed $referenceValue;
 
     /**
      * @param mixed $referenceValue
      * @param ComparatorInterface $comparator
      */
-    public function __construct(ComparatorInterface $comparator, $referenceValue)
+    public function __construct(ComparatorInterface $comparator, mixed $referenceValue)
     {
         $this->comparator = $comparator;
         $this->referenceValue = $referenceValue;

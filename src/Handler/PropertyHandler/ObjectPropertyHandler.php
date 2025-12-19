@@ -1,4 +1,4 @@
-<?php declare(strict_types=1);
+<?php
 /*
  * This file is part of the jojo1981/data-resolver package
  *
@@ -7,6 +7,8 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed in the root of the source code
  */
+declare(strict_types=1);
+
 namespace Jojo1981\DataResolver\Handler\PropertyHandler;
 
 use Jojo1981\DataResolver\Handler\Exception\HandlerException;
@@ -36,7 +38,7 @@ final class ObjectPropertyHandler implements PropertyHandlerInterface
      * @param mixed $data
      * @return bool
      */
-    public function supports(string $propertyName, $data): bool
+    public function supports(string $propertyName, mixed $data): bool
     {
         return is_object($data);
     }
@@ -49,7 +51,7 @@ final class ObjectPropertyHandler implements PropertyHandlerInterface
      * @throws ReflectionException
      * @throws HandlerException
      */
-    public function getValueForPropertyName(NamingStrategyInterface $namingStrategy, string $propertyName, $data)
+    public function getValueForPropertyName(NamingStrategyInterface $namingStrategy, string $propertyName, mixed $data): mixed
     {
         if (!$this->supports($propertyName, $data)) {
             $this->throwUnsupportedException('getValueForPropertyName');
@@ -88,7 +90,7 @@ final class ObjectPropertyHandler implements PropertyHandlerInterface
      * @return bool
      * @throws HandlerException
      */
-    public function hasValueForPropertyName(NamingStrategyInterface $namingStrategy, string $propertyName, $data): bool
+    public function hasValueForPropertyName(NamingStrategyInterface $namingStrategy, string $propertyName, mixed $data): bool
     {
         if (!$this->supports($propertyName, $data)) {
             $this->throwUnsupportedException('hasValueForPropertyName');
@@ -131,7 +133,7 @@ final class ObjectPropertyHandler implements PropertyHandlerInterface
             if ($method->isPublic()) {
                 return $method;
             }
-        } catch (ReflectionException $exception) {
+        } catch (ReflectionException) {
             // nothing to do, just catch
         }
 
@@ -150,7 +152,7 @@ final class ObjectPropertyHandler implements PropertyHandlerInterface
             if ($property->isPublic()) {
                 return $property;
             }
-        } catch (ReflectionException $exception) {
+        } catch (ReflectionException) {
             // nothing to do, just catch
         }
 

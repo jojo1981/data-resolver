@@ -1,4 +1,4 @@
-<?php declare(strict_types=1);
+<?php
 /*
  * This file is part of the jojo1981/data-resolver package
  *
@@ -7,6 +7,8 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed in the root of the source code
  */
+declare(strict_types=1);
+
 namespace tests\Jojo1981\DataResolver\Extractor;
 
 use Jojo1981\DataResolver\Extractor\CallbackExtractor;
@@ -19,7 +21,6 @@ use Prophecy\Exception\Doubler\InterfaceNotFoundException;
 use Prophecy\Exception\Prophecy\ObjectProphecyException;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
-use SebastianBergmann\RecursionContext\InvalidArgumentException;
 
 /**
  * @package tests\Jojo1981\DataResolver\Extractor
@@ -28,10 +29,10 @@ final class CallbackExtractorTest extends TestCase
 {
     use ProphecyTrait;
 
-    /** @var ObjectProphecy|Context */
+    /** @var ObjectProphecy<Context> */
     private ObjectProphecy $originalContext;
 
-    /** @var ObjectProphecy|Context */
+    /** @var ObjectProphecy<Context> */
     private ObjectProphecy $copiedContext;
 
     /**
@@ -48,27 +49,25 @@ final class CallbackExtractorTest extends TestCase
 
 
     /**
-     * @test
-     *
      * @return void
      * @throws ObjectProphecyException
      * @throws ExpectationFailedException
-     * @throws InvalidArgumentException
      */
-    public function extractShouldReturnTheResultFromTheCallback(): void
+    public function testExtractShouldReturnTheResultFromTheCallback(): void
     {
+        /** @noinspection PhpUndefinedMethodInspection */
         $this->originalContext->copy()->willReturn($this->copiedContext)->shouldBeCalled();
         $this->originalContext->getData()->shouldNotBeCalled();
         $this->copiedContext->getData()->willReturn('my-data')->shouldBeCalledOnce();
 
         $invokerCounter = 0;
         $callback = function (string $item) use (&$invokerCounter): string {
-            $this->assertEquals('my-data', $item);
+            self::assertEquals('my-data', $item);
             $invokerCounter++;
 
             return 'newResult';
         };
-        $this->assertEquals('newResult', (new CallbackExtractor($callback))->extract($this->originalContext->reveal()));
-        $this->assertEquals(1, $invokerCounter);
+        self::assertEquals('newResult', (new CallbackExtractor($callback))->extract($this->originalContext->reveal()));
+        self::assertEquals(1, $invokerCounter);
     }
 }

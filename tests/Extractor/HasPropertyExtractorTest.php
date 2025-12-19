@@ -1,4 +1,4 @@
-<?php declare(strict_types=1);
+<?php
 /*
  * This file is part of the jojo1981/data-resolver package
  *
@@ -7,6 +7,8 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed in the root of the source code
  */
+declare(strict_types=1);
+
 namespace tests\Jojo1981\DataResolver\Extractor;
 
 use Exception;
@@ -18,13 +20,12 @@ use Jojo1981\DataResolver\Resolver\Context;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
-use Prophecy\Exception\Doubler\ClassNotFoundException;
 use Prophecy\Exception\Doubler\DoubleException;
 use Prophecy\Exception\Doubler\InterfaceNotFoundException;
+use Prophecy\Exception\InvalidArgumentException;
 use Prophecy\Exception\Prophecy\ObjectProphecyException;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
-use SebastianBergmann\RecursionContext\InvalidArgumentException;
 
 /**
  * @package tests\Jojo1981\DataResolver\Extractor
@@ -33,55 +34,51 @@ final class HasPropertyExtractorTest extends TestCase
 {
     use ProphecyTrait;
 
-    /** @var ObjectProphecy|NamingStrategyInterface */
+    /** @var ObjectProphecy<NamingStrategyInterface> */
     private ObjectProphecy $namingStrategy;
 
-    /** @var ObjectProphecy|PropertyHandlerInterface */
+    /** @var ObjectProphecy<PropertyHandlerInterface> */
     private ObjectProphecy $propertyHandler;
 
-    /** @var ObjectProphecy|Context */
+    /** @var ObjectProphecy<Context> */
     private ObjectProphecy $context;
 
     /**
      * @return void
      * @throws InterfaceNotFoundException
-     * @throws ClassNotFoundException
+     * @throws InvalidArgumentException
      * @throws DoubleException
      */
     protected function setUp(): void
     {
         $this->namingStrategy = $this->prophesize(NamingStrategyInterface::class);
+        /** @noinspection PhpStrictTypeCheckingInspection */
         $this->namingStrategy->getMethodNames(Argument::any())->shouldNotBeCalled();
+        /** @noinspection PhpStrictTypeCheckingInspection */
         $this->namingStrategy->getPropertyNames(Argument::any())->shouldNotBeCalled();
         $this->propertyHandler = $this->prophesize(PropertyHandlerInterface::class);
         $this->context = $this->prophesize(Context::class);
     }
 
     /**
-     * @test
-     *
      * @return void
-     * @throws InvalidArgumentException
      * @throws ObjectProphecyException
      * @throws ExpectationFailedException
      */
-    public function extractShouldReturnFalseWhenPropertyHandlerDoesNotSupport(): void
+    public function testExtractShouldReturnFalseWhenPropertyHandlerDoesNotSupport(): void
     {
         $this->context->getData()->willReturn('my-data')->shouldBeCalledOnce();
         $this->propertyHandler->supports('propertyName', 'my-data')->willReturn(false)->shouldBeCalledOnce();
-        $this->assertFalse($this->getHasPropertyExtractor()->extract($this->context->reveal()));
+        self::assertFalse($this->getHasPropertyExtractor()->extract($this->context->reveal()));
     }
 
     /**
-     * @test
-     *
      * @return void
      * @throws ObjectProphecyException
      * @throws HandlerException
      * @throws ExpectationFailedException
-     * @throws InvalidArgumentException
      */
-    public function extractShouldReturnFalseWhenPropertyHandlerHasValueForPropertyNameThrowsAnException(): void
+    public function testExtractShouldReturnFalseWhenPropertyHandlerHasValueForPropertyNameThrowsAnException(): void
     {
         $this->context->getData()->willReturn('my-data')->shouldBeCalledOnce();
         $this->propertyHandler->supports('propertyName', 'my-data')->willReturn(true)->shouldBeCalledOnce();
@@ -89,19 +86,16 @@ final class HasPropertyExtractorTest extends TestCase
             ->willThrow(Exception::class)
             ->shouldBeCalledOnce();
 
-        $this->assertFalse($this->getHasPropertyExtractor()->extract($this->context->reveal()));
+        self::assertFalse($this->getHasPropertyExtractor()->extract($this->context->reveal()));
     }
 
     /**
-     * @test
-     *
      * @return void
      * @throws ObjectProphecyException
      * @throws HandlerException
      * @throws ExpectationFailedException
-     * @throws InvalidArgumentException
      */
-    public function extractShouldReturnTrueWhenPropertyHandlerHasValueForPropertyNameReturnsTrue(): void
+    public function testExtractShouldReturnTrueWhenPropertyHandlerHasValueForPropertyNameReturnsTrue(): void
     {
         $this->context->getData()->willReturn('my-data')->shouldBeCalledOnce();
         $this->propertyHandler->supports('propertyName', 'my-data')->willReturn(true)->shouldBeCalledOnce();
@@ -109,7 +103,7 @@ final class HasPropertyExtractorTest extends TestCase
             ->willReturn(true)
             ->shouldBeCalledOnce();
 
-        $this->assertTrue($this->getHasPropertyExtractor()->extract($this->context->reveal()));
+        self::assertTrue($this->getHasPropertyExtractor()->extract($this->context->reveal()));
     }
 
     /**

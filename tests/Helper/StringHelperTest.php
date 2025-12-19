@@ -1,5 +1,4 @@
 <?php
-declare(strict_types=1);
 /*
  * This file is part of the jojo1981/data-resolver package
  *
@@ -8,12 +7,13 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed in the root of the source code
  */
+declare(strict_types=1);
+
 namespace tests\Jojo1981\DataResolver\Helper;
 
 use Jojo1981\DataResolver\Helper\StringHelper;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\TestCase;
-use SebastianBergmann\RecursionContext\InvalidArgumentException;
 
 /**
  * @package tests\Jojo1981\DataResolver\Helper
@@ -21,39 +21,33 @@ use SebastianBergmann\RecursionContext\InvalidArgumentException;
 final class StringHelperTest extends TestCase
 {
     /**
-     * @test
-     *
      * @return void
      * @throws ExpectationFailedException
-     * @throws InvalidArgumentException
      */
-    public function toCamelCaseShouldReturnTheStringPassedConvertedToCamelCase(): void
+    public function testToCamelCaseShouldReturnTheStringPassedConvertedToCamelCase(): void
     {
-        $this->assertEquals('test', StringHelper::toCamelCase('test'));
-        $this->assertEquals('myTest', StringHelper::toCamelCase('myTest'));
-        $this->assertEquals('MyTest', StringHelper::toCamelCase('myTest', true));
-        $this->assertEquals('mySnakeCaseTest', StringHelper::toCamelCase('my_snake_case_test'));
-        $this->assertEquals('mySnakeCaseTest', StringHelper::toCamelCase('my-snake-case-test'));
-        $this->assertEquals('MySnakeCaseTest', StringHelper::toCamelCase('my snake case test', true));
-        $this->assertEquals('mySnakeCaseTest', StringHelper::toCamelCase('My-Snake-Case-Test'));
-        $this->assertEquals('mySnakeCaseTest', StringHelper::toCamelCase('My Snake-case Test'));
+        self::assertEquals('test', StringHelper::toCamelCase('test'));
+        self::assertEquals('myTest', StringHelper::toCamelCase('myTest'));
+        self::assertEquals('MyTest', StringHelper::toCamelCase('myTest', true));
+        self::assertEquals('mySnakeCaseTest', StringHelper::toCamelCase('my_snake_case_test'));
+        self::assertEquals('mySnakeCaseTest', StringHelper::toCamelCase('my-snake-case-test'));
+        self::assertEquals('MySnakeCaseTest', StringHelper::toCamelCase('my snake case test', true));
+        self::assertEquals('mySnakeCaseTest', StringHelper::toCamelCase('My-Snake-Case-Test'));
+        self::assertEquals('mySnakeCaseTest', StringHelper::toCamelCase('My Snake-case Test'));
     }
 
     /**
-     * @test
-     *
      * @return void
      * @throws ExpectationFailedException
-     * @throws InvalidArgumentException
      */
-    public function camelToSnakeCaseShouldReturnTheStringPassedConvertedToSnakeCase(): void
+    public function testCamelToSnakeCaseShouldReturnTheStringPassedConvertedToSnakeCase(): void
     {
-        $this->assertEquals('test', StringHelper::toSnakeCase('test'));
-        $this->assertEquals('my_test', StringHelper::toSnakeCase('my_test'));
-        $this->assertEquals('my_test', StringHelper::toSnakeCase('myTest'));
-        $this->assertEquals('my_snake_case_test', StringHelper::toSnakeCase('mySnakeCaseTest'));
-        $this->assertEquals('my_snake_case_test', StringHelper::toSnakeCase('my Snake Case Test'));
-        $this->assertEquals('my_snake_case_test', StringHelper::toSnakeCase('my-Snake-Case Test'));
-        $this->assertEquals('my_snake_case_test', StringHelper::toSnakeCase('MY-SNAKE-CASE-TEST'));
+        self::assertEquals('test', StringHelper::toSnakeCase('test'));
+        self::assertEquals('my_test', StringHelper::toSnakeCase('my_test'));
+        self::assertEquals('my_test', StringHelper::toSnakeCase('myTest'));
+        self::assertEquals('my_snake_case_test', StringHelper::toSnakeCase('mySnakeCaseTest'));
+        self::assertEquals('my_snake_case_test', StringHelper::toSnakeCase('my Snake Case Test'));
+        self::assertEquals('my_snake_case_test', StringHelper::toSnakeCase('my-Snake-Case Test'));
+        self::assertEquals('my_snake_case_test', StringHelper::toSnakeCase('MY-SNAKE-CASE-TEST'));
     }
 }

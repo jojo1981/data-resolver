@@ -1,4 +1,4 @@
-<?php declare(strict_types=1);
+<?php
 /*
  * This file is part of the jojo1981/data-resolver package
  *
@@ -7,14 +7,16 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed in the root of the source code
  */
+declare(strict_types=1);
+
 namespace tests\Jojo1981\DataResolver\Integration\Resolver;
 
 use Jojo1981\DataResolver\Extractor\Exception\ExtractorException;
 use Jojo1981\DataResolver\Handler\Exception\HandlerException;
 use Jojo1981\DataResolver\Predicate\Exception\PredicateException;
+use PHPUnit\Framework\Attributes\CoversNothing;
 use PHPUnit\Framework\Exception as PHPUnitException;
 use PHPUnit\Framework\ExpectationFailedException;
-use SebastianBergmann\RecursionContext\InvalidArgumentException;
 use tests\Jojo1981\DataResolver\Integration\AbstractIntegrationTestCase;
 
 /**
@@ -23,18 +25,15 @@ use tests\Jojo1981\DataResolver\Integration\AbstractIntegrationTestCase;
 final class FlattenTest extends AbstractIntegrationTestCase
 {
     /**
-     * @test
-     * @coversNothing
-     *
      * @return void
      * @throws ExtractorException
      * @throws HandlerException
-     * @throws InvalidArgumentException
      * @throws PredicateException
      * @throws PHPUnitException
      * @throws ExpectationFailedException
      */
-    public function checkFlatten(): void
+    #[CoversNothing]
+    public function testCheckFlatten(): void
     {
         $resolver = $this->getResolverBuilderFactory()->create()
             ->flatten($this->getResolverBuilderFactory()->get('name'))

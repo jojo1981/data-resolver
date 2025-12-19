@@ -1,4 +1,4 @@
-<?php declare(strict_types=1);
+<?php
 /*
  * This file is part of the jojo1981/data-resolver package
  *
@@ -7,6 +7,8 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed in the root of the source code
  */
+declare(strict_types=1);
+
 namespace Jojo1981\DataResolver\Handler\SequenceHandler;
 
 use Jojo1981\DataResolver\Handler\Exception\HandlerException;
@@ -43,7 +45,7 @@ final class CompositeSequenceHandler implements SequenceHandlerInterface
      * @param mixed $data
      * @return bool
      */
-    public function supports($data): bool
+    public function supports(mixed $data): bool
     {
         foreach ($this->handlers as $handler) {
             if ($handler->supports($data)) {
@@ -59,7 +61,7 @@ final class CompositeSequenceHandler implements SequenceHandlerInterface
      * @return Traversable
      * @throws HandlerException
      */
-    public function getIterator($data): Traversable
+    public function getIterator(mixed $data): Traversable
     {
         return $this->getSupportedHandler('getIterator', $data)->getIterator($data);
     }
@@ -70,7 +72,7 @@ final class CompositeSequenceHandler implements SequenceHandlerInterface
      * @return mixed
      * @throws HandlerException
      */
-    public function filter($data, callable $callback)
+    public function filter(mixed $data, callable $callback): mixed
     {
         return $this->getSupportedHandler('filter', $data)->filter($data, $callback);
     }
@@ -80,7 +82,7 @@ final class CompositeSequenceHandler implements SequenceHandlerInterface
      * @return int
      * @throws HandlerException
      */
-    public function count($data): int
+    public function count(mixed $data): int
     {
         return $this->getSupportedHandler('count', $data)->count($data);
     }
@@ -91,7 +93,7 @@ final class CompositeSequenceHandler implements SequenceHandlerInterface
      * @return mixed
      * @throws HandlerException
      */
-    public function flatten($data, callable $callback)
+    public function flatten(mixed $data, callable $callback): mixed
     {
         return $this->getSupportedHandler('flatten', $data)->flatten($data, $callback);
     }
