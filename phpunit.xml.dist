@@ -29,7 +29,6 @@
         </report>
     </coverage>
 
-
     <logging>
         <teamcity outputFile="build/reports/teamcity-report.txt"/>
         <testdoxHtml outputFile="build/reports/html-report.html"/>

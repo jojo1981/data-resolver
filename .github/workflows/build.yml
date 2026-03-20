@@ -17,7 +17,23 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        php-version: [ "8.3", "8.4", "8.5" ]
+        include:
+
+          # PHP 8.3
+          - php-version: "8.3"
+            sebastian-comparator-version: "^7.0"
+
+          # PHP 8.4
+          - php-version: "8.4"
+            sebastian-comparator-version: "^7.0"
+          - php-version: "8.4"
+            sebastian-comparator-version: "^8.0"
+
+          # PHP 8.5
+          - php-version: "8.5"
+            sebastian-comparator-version: "^7.0"
+          - php-version: "8.5"
+            sebastian-comparator-version: "^8.0"
 
     steps:
       - uses: actions/checkout@v4
@@ -42,7 +58,9 @@ jobs:
             ${{ runner.os }}-php-${{ matrix.php-version }}-
 
       - name: Install dependencies
-        run: composer install --prefer-dist --no-progress
+        run: |
+          composer require sebastian/comparator:${{ matrix.sebastian-comparator-version }} --no-update
+          composer install --prefer-dist --no-progress
 
       - name: Lint PHP files
         run: |
